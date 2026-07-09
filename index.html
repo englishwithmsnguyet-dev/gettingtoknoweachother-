@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPEAKING LESSON 01 - GETTING TO KNOW EACH OTHER</title>
+    <meta name="description" content="Interactive English Speaking Lesson 01 by EnglishWithMissNguyet - Getting to know each other.">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Outfit:wght@400;600;800&family=Roboto+Serif:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Student Name Modal -->
+    <div id="name-modal" class="modal-overlay">
+        <div class="modal-content glass-panel">
+            <h2>Welcome to Miss Nguyet's class!</h2>
+            <p style="margin-bottom: 1.5rem; color: #4a5568; font-weight: bold;">NHẬP HỌ TÊN VÀ LỚP ĐỂ BẮT ĐẦU HỌC</p>
+            <input type="text" id="student-name-input" placeholder="Họ và tên (Ví dụ: Phạm Minh Nguyệt)" autocomplete="off" style="margin-bottom: 15px;">
+            <input type="text" id="student-class-input" placeholder="Mã lớp (Ví dụ: ONB103)" autocomplete="off">
+            <div id="class-error" style="color: #e53e3e; font-size: 0.9rem; margin-top: 10px; display: none;">Mã lớp không hợp lệ. Vui lòng kiểm tra lại!</div>
+            <button id="start-lesson-btn" class="primary-btn" style="width: 100%; margin-top: 1.5rem;">BẮT ĐẦU HỌC</button>
+        </div>
+    </div>
+
+    <!-- Student Name Display -->
+    <div id="student-name-display" class="hidden">
+        <span class="emoji">🎓</span> Học viên: <strong id="display-name"></strong>
+    </div>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <a href="https://www.facebook.com/anhnguRiverCT" target="_blank" class="brand" style="text-decoration: none;">
+                <img src="ava 1 copy.png" alt="River English Center Logo" style="width: 80px; height: auto; margin-bottom: 15px; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                <h3 class="welcome-text">RIVER ENGLISH<br>CENTER</h3>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#name" class="tab-link active">
+                    <span class="tab-icon">🏷️</span>
+                    <div class="tab-text">NAME<br><span class="vi-text">(TÊN)</span></div>
+                </a></li>
+                <li><a href="#age" class="tab-link">
+                    <span class="tab-icon">🎂</span>
+                    <div class="tab-text">AGE<br><span class="vi-text">(TUỔI TÁC)</span></div>
+                </a></li>
+                <li><a href="#hometown" class="tab-link">
+                    <span class="tab-icon">🏡</span>
+                    <div class="tab-text">HOMETOWN<br><span class="vi-text">(QUÊ QUÁN)</span></div>
+                </a></li>
+                <li><a href="#studies" class="tab-link">
+                    <span class="tab-icon">🎓</span>
+                    <div class="tab-text">STUDIES & JOB<br><span class="vi-text">(HỌC VẤN - CÔNG VIỆC)</span></div>
+                </a></li>
+                <li><a href="#family" class="tab-link">
+                    <span class="tab-icon">👨‍👩‍👧‍👦</span>
+                    <div class="tab-text">FAMILY<br><span class="vi-text">(GIA ĐÌNH)</span></div>
+                </a></li>
+                <li><a href="#hobbies" class="tab-link">
+                    <span class="tab-icon">🎨</span>
+                    <div class="tab-text">HOBBIES<br><span class="vi-text">(SỞ THÍCH)</span></div>
+                </a></li>
+                <li><a href="#goals" class="tab-link">
+                    <span class="tab-icon">🎯</span>
+                    <div class="tab-text">GOALS<br><span class="vi-text">(MỤC TIÊU)</span></div>
+                </a></li>
+                <li><a href="#self-intro" class="tab-link nav-highlight">
+                    <span class="tab-icon">✨</span>
+                    <div class="tab-text">SELF-INTRODUCTION<br><span class="vi-text">(TỰ GIỚI THIỆU)</span></div>
+                </a></li>
+            </ul>
+            <div class="cute-gif sidebar-gif">
+                <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcDQ3eHNlZnF2bmxqd2xld2QweDQ0MXlwaWFyYzRxbHRqYnl6MWk5dSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/JIX9t2j0ZTN9S/giphy.gif" alt="Cute Cat" width="120">
+            </div>
+            <div class="sidebar-footer">
+                <a href="https://www.facebook.com/nguyetpham28" target="_blank" class="welcome-text">@englishwithmissnguyet</a>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="hero">
+                <div class="hero-bg"></div>
+                <a href="https://www.facebook.com/nguyetpham28" target="_blank" class="welcome-badge">✨ WELCOME TO MISS NGUYET'S CLASS ✨</a>
+                <h1 class="main-title">GETTING TO KNOW EACH OTHER</h1>
+                <h2 class="section-main">PERSONAL INFORMATION</h2>
+            </header>
+
+            <!-- 1. NAME -->
+            <section id="name" class="lesson-section glass-panel">
+                <h2 class="section-title">1. NAME <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f4db/512.webp" alt="🏷️" width="35" class="inline-emoji" onerror="this.src='https://media.giphy.com/media/l1J9I5KFN8zwGG4k8/giphy.gif'; this.width=40;"></h2>
+                <div class="highlight-banner">
+                    <span class="highlight-text">Hỏi & Đáp về các thành phần trong tên:</span>
+                </div>
+                
+
+                <div class="interactive-list">
+                    <div class="qa-block">
+                        <div class="q-row">
+                            <button class="toggle-btn q-btn">Question <span class="emoji">❓</span></button>
+                            <div class="content q-content hidden">What's your <strong><span class="bracket-note">[thành phần tên]</span></strong>?</div>
+                        </div>
+                        <div class="a-row">
+                            <button class="toggle-btn a-btn">Answer <span class="emoji">💡</span></button>
+                            <div class="content a-content hidden">My <strong><span class="bracket-note">[thành phần tên]</span></strong> is ____________.</div>
+                        </div>
+                    </div>
+
+                    <div class="qa-block">
+                        <div class="q-row">
+                            <button class="toggle-btn q-btn">Question <span class="emoji">❓</span></button>
+                            <div class="content q-content hidden">How do you spell it?</div>
+                        </div>
+                        <div class="a-row">
+                            <button class="toggle-btn a-btn">Answer <span class="emoji">💡</span></button>
+                            <div class="content a-content hidden">It's _ _ _ _ _.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-block" style="background: rgba(255, 255, 255, 0.7); padding: 15px; border-radius: 12px; margin-bottom: 20px; border-left: 4px solid var(--primary-color);">
+                    <button class="toggle-btn example-btn" style="width: 100%; text-align: left; border: none; padding: 12px 15px; border-radius: 8px; font-weight: 800; letter-spacing: 1px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        EXAMPLE <span class="emoji">📖</span>
+                    </button>
+                    <div class="content hidden" style="padding: 15px; background: white; border-radius: 8px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05); margin-top: 15px; border: 1px solid #e2e8f0; position: relative;">
+                        <!-- Thêm mũi tên nhỏ chỉ lên nút -->
+                        <div style="position: absolute; top: -8px; left: 20px; width: 16px; height: 16px; background: white; transform: rotate(45deg); border-left: 1px solid #e2e8f0; border-top: 1px solid #e2e8f0;"></div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                            <div>
+                                <span class="emoji">❓</span>
+                                <span><strong>What's your first name?</strong></span>
+                            </div>
+                            <button class="play-audio-btn" data-text="What's your first name?" data-gender="male" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
+                            <div>
+                                <span class="emoji">💡</span>
+                                <span>My first name is Minh.</span>
+                            </div>
+                            <button class="play-audio-btn" data-text="My first name is Minh." data-gender="female" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+                        
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                            <div>
+                                <span class="emoji">❓</span>
+                                <span><strong>How do you spell it?</strong></span>
+                            </div>
+                            <button class="play-audio-btn" data-text="How do you spell it?" data-gender="male" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <div>
+                                <span class="emoji">💡</span>
+                                <span>M - I - N - H</span>
+                            </div>
+                            <button class="play-audio-btn" data-text="M, I, N, H" data-gender="female" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="vocab-title">VOCABULARY: <span class="click-hint">(Click words to reveal meaning)</span></h3>
+                <ul class="vocab-list">
+                    <li><button class="vocab-btn">first name = given name</button> <span class="vocab-meaning hidden">tên</span></li>
+                    <li><button class="vocab-btn">last name = family name = surname</button> <span class="vocab-meaning hidden">họ</span></li>
+                    <li><button class="vocab-btn">middle name</button> <span class="vocab-meaning hidden">tên đệm, chữ lót</span></li>
+                    <li><button class="vocab-btn">full name</button> <span class="vocab-meaning hidden">họ tên đầy đủ</span></li>
+                    <li><button class="vocab-btn">nickname</button> <span class="vocab-meaning hidden">biệt danh</span></li>
+                    <li><button class="vocab-btn">spell</button> <span class="vocab-meaning hidden">đánh vần</span></li>
+                </ul>
+
+                <div class="highlight-banner mt-3">
+                    <span class="highlight-text">Hỏi & Đáp về biệt danh:</span>
+                </div>
+                <div class="interactive-list">
+                    <div class="qa-block">
+                        <div class="q-row">
+                            <button class="toggle-btn q-btn">Question <span class="emoji">❓</span></button>
+                            <div class="content q-content hidden">What's your <strong>nickname</strong>?</div>
+                        </div>
+                        <div class="a-row">
+                            <button class="toggle-btn a-btn">Answer <span class="emoji">💡</span></button>
+                            <div class="content a-content hidden">My <strong>nickname</strong> is ____________.</div>
+                        </div>
+                    </div>
+                    <div class="qa-block">
+                        <div class="q-row">
+                            <button class="toggle-btn q-btn">Question <span class="emoji">❓</span></button>
+                            <div class="content q-content hidden">Do you have a <strong>nickname</strong>?</div>
+                        </div>
+                        <div class="a-row">
+                            <button class="toggle-btn a-btn">Answer <span class="emoji">💡</span></button>
+                            <div class="content a-content hidden">
+                                <ul class="answer-list">
+                                    <li>Yes, you can call me <strong><span class="bracket-note">[biệt danh]</span></strong>.</li>
+                                    <li>No, I don't have a nickname.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-block" style="background: rgba(255, 255, 255, 0.7); padding: 15px; border-radius: 12px; margin-bottom: 20px; border-left: 4px solid var(--primary-color);">
+                    <button class="toggle-btn example-btn" style="width: 100%; text-align: left; border: none; padding: 12px 15px; border-radius: 8px; font-weight: 800; letter-spacing: 1px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        EXAMPLE <span class="emoji">📖</span>
+                    </button>
+                    <div class="content hidden" style="padding-top: 15px;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                            <div>
+                                <span class="emoji">❓</span>
+                                <span><strong>What's your nickname?</strong></span>
+                            </div>
+                            <button class="play-audio-btn" data-text="What's your nickname?" data-gender="male" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
+                            <div>
+                                <span class="emoji">💡</span>
+                                <span>My nickname is Moon.</span>
+                            </div>
+                            <button class="play-audio-btn" data-text="My nickname is Moon." data-gender="female" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+                        
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                            <div>
+                                <span class="emoji">❓</span>
+                                <span><strong>Do you have a nickname?</strong></span>
+                            </div>
+                            <button class="play-audio-btn" data-text="Do you have a nickname?" data-gender="male" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
+                            <div>
+                                <span class="emoji">💡</span>
+                                <span>Yes, you can call me Moon.</span>
+                            </div>
+                            <button class="play-audio-btn" data-text="Yes, you can call me Moon." data-gender="female" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+                        
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                            <div>
+                                <span class="emoji">❓</span>
+                                <span><strong>Do you have a nickname?</strong></span>
+                            </div>
+                            <button class="play-audio-btn" data-text="Do you have a nickname?" data-gender="male" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <div>
+                                <span class="emoji">💡</span>
+                                <span>No, I don't have a nickname.</span>
+                            </div>
+                            <button class="play-audio-btn" data-text="No, I don't have a nickname." data-gender="female" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. AGE -->
+            <section id="age" class="lesson-section glass-panel">
+                <h2 class="section-title">2. AGE <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f382/512.webp" alt="🎂" width="35" class="inline-emoji"></h2>
+                <div class="highlight-banner">
+                    <span class="highlight-text">Hỏi & Đáp về tuổi tác:</span>
+                </div>
+                
+                <div class="interactive-list">
+                    <div class="qa-block">
+                        <div class="q-row">
+                            <button class="toggle-btn q-btn">Question <span class="emoji">❓</span></button>
+                            <div class="content q-content hidden">How old are you?</div>
+                        </div>
+                        <div class="a-row">
+                            <button class="toggle-btn a-btn">Answer <span class="emoji">💡</span></button>
+                            <div class="content a-content hidden">
+                                <ul class="answer-list">
+                                    <li>I'm <strong><span class="bracket-note">[số tuổi chính xác]</span></strong> <span class="bracket-note">[years old]</span>.</li>
+                                    <li>I'm in my <strong><span class="bracket-note">[khoảng tuổi]</span></strong>.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="qa-block">
+                        <div class="q-row">
+                            <button class="toggle-btn q-btn">Question <span class="emoji">❓</span></button>
+                            <div class="content q-content hidden">
+                                <ul class="answer-list">
+                                    <li>When's your birthday?</li>
+                                    <li>When were you born?</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="a-row">
+                            <button class="toggle-btn a-btn">Answer <span class="emoji">💡</span></button>
+                            <div class="content a-content hidden">
+                                <ul class="answer-list">
+                                    <li>My birthday is on <strong><span class="bracket-note">[ngày tháng năm sinh]</span></strong>.</li>
+                                    <li>I was born in <strong><span class="bracket-note">[năm sinh]</span></strong>.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-block" style="background: rgba(255, 255, 255, 0.7); padding: 15px; border-radius: 12px; margin-bottom: 20px; border-left: 4px solid var(--primary-color);">
+                    <button class="toggle-btn example-btn" style="width: 100%; text-align: left; border: none; padding: 12px 15px; border-radius: 8px; font-weight: 800; letter-spacing: 1px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        EXAMPLE <span class="emoji">📖</span>
+                    </button>
+                    <div class="content hidden" style="padding-top: 15px;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                            <div><span class="emoji">❓</span><span><strong>How old are you?</strong></span></div>
+                            <button class="play-audio-btn" data-text="How old are you?" data-gender="male" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                            <div><span class="emoji">💡</span><span>I'm 25 years old.</span></div>
+                            <button class="play-audio-btn" data-text="I'm 25 years old." data-gender="female" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
+                            <div><span class="emoji">💡</span><span>I'm in my mid-twenties.</span></div>
+                            <button class="play-audio-btn" data-text="I'm in my mid-twenties." data-gender="female" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+                        
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                            <div><span class="emoji">❓</span><span><strong>When's your birthday?</strong></span></div>
+                            <button class="play-audio-btn" data-text="When's your birthday?" data-gender="male" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
+                            <div><span class="emoji">💡</span><span>My birthday is on the 5th of October, 1999.</span></div>
+                            <button class="play-audio-btn" data-text="My birthday is on the 5th of October, 1999." data-gender="female" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+                        
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                            <div><span class="emoji">❓</span><span><strong>When were you born?</strong></span></div>
+                            <button class="play-audio-btn" data-text="When were you born?" data-gender="male" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <div><span class="emoji">💡</span><span>I was born in 1999.</span></div>
+                            <button class="play-audio-btn" data-text="I was born in 1999." data-gender="female" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="vocab-title">VOCABULARY: <span class="click-hint">(Click sentences to reveal meaning)</span></h3>
+                <ul class="vocab-list">
+                    <li><button class="vocab-btn">I'm in my <span class="text-blue">early twenties</span>.</button> <span class="vocab-meaning hidden">Tôi ở độ tuổi đầu 20 (20–23 tuổi).</span></li>
+                    <li><button class="vocab-btn">I'm in my <span class="text-blue">mid-twenties</span>.</button> <span class="vocab-meaning hidden">Tôi ở độ tuổi giữa 20 (24–26 tuổi).</span></li>
+                    <li><button class="vocab-btn">I'm in my <span class="text-blue">late twenties</span>.</button> <span class="vocab-meaning hidden">Tôi ở độ tuổi cuối 20 (27–29 tuổi).</span></li>
+                    <li><button class="vocab-btn">I'm in my <span class="text-blue">early thirties</span>.</button> <span class="vocab-meaning hidden">Tôi ở độ tuổi đầu 30 (30–33 tuổi).</span></li>
+                    <li><button class="vocab-btn">I'm in my <span class="text-blue">mid-thirties</span>.</button> <span class="vocab-meaning hidden">Tôi ở độ tuổi giữa 30 (34–36 tuổi).</span></li>
+                    <li><button class="vocab-btn">I'm in my <span class="text-blue">late thirties</span>.</button> <span class="vocab-meaning hidden">Tôi ở độ tuổi cuối 30 (37–39 tuổi).</span></li>
+                </ul>
+            </section>
+
+            <!-- 3. HOMETOWN -->
+            <section id="hometown" class="lesson-section glass-panel">
+                <h2 class="section-title">3. HOMETOWN <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f3e0/512.webp" alt="🏠" width="35" class="inline-emoji" onerror="this.outerHTML='<span style=\\'font-size:35px;\\'>🏠</span>'"></h2>
+                <div class="highlight-banner">
+                    <span class="highlight-text">Hỏi & Đáp về quê quán:</span>
+                </div>
+                
+                <div class="interactive-list">
+                    <div class="qa-block">
+                        <div class="q-row">
+                            <button class="toggle-btn q-btn">Question <span class="emoji">❓</span></button>
+                            <div class="content q-content hidden">
+                                <ul class="answer-list">
+                                    <li>Where are you from?</li>
+                                    <li>Where do you come from?</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="a-row">
+                            <button class="toggle-btn a-btn">Answer <span class="emoji">💡</span></button>
+                            <div class="content a-content hidden">
+                                <ul class="answer-list">
+                                    <li>I'm from <strong><span class="bracket-note">[địa danh]</span></strong> <span class="text-blue">City/Province</span>.</li>
+                                    <li>I come from <strong><span class="bracket-note">[địa danh]</span></strong> <span class="text-blue">City/Province</span>.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="qa-block">
+                        <div class="q-row">
+                            <button class="toggle-btn q-btn">Question <span class="emoji">❓</span></button>
+                            <div class="content q-content hidden">Where do you live now?</div>
+                        </div>
+                        <div class="a-row">
+                            <button class="toggle-btn a-btn">Answer <span class="emoji">💡</span></button>
+                            <div class="content a-content hidden">I live in <strong><span class="bracket-note">[địa danh]</span></strong> <span class="text-blue">City/Province</span>.</div>
+                        </div>
+                    </div>
+
+                    <div class="example-block" style="background: rgba(255, 255, 255, 0.7); padding: 15px; border-radius: 12px; margin-bottom: 20px; border-left: 4px solid var(--primary-color);">
+                        <button class="toggle-btn example-btn" style="width: 100%; text-align: left; border: none; padding: 12px 15px; border-radius: 8px; font-weight: 800; letter-spacing: 1px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                            EXAMPLE <span class="emoji">📖</span>
+                        </button>
+                        <div class="content hidden" style="padding-top: 15px;">
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                                <div><span class="emoji">❓</span><span><strong>Where are you from?</strong></span></div>
+                                <button class="play-audio-btn" data-text="Where are you from?" data-gender="male" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                            </div>
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
+                                <div><span class="emoji">💡</span><span>I'm from Hanoi City.</span></div>
+                                <button class="play-audio-btn" data-text="I'm from Hanoi City." data-gender="female" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                            </div>
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                                <div><span class="emoji">❓</span><span><strong>Where do you live now?</strong></span></div>
+                                <button class="play-audio-btn" data-text="Where do you live now?" data-gender="male" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                            </div>
+                            <div style="display: flex; align-items: center; justify-content: space-between;">
+                                <div><span class="emoji">💡</span><span>I live in Ho Chi Minh City.</span></div>
+                                <button class="play-audio-btn" data-text="I live in Ho Chi Minh City." data-gender="female" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3 class="vocab-title" style="margin-top: 1.5rem;">VOCABULARY: <span class="click-hint">(Click words to reveal meaning)</span></h3>
+                    <ul class="vocab-list grid-2">
+                        <li><button class="vocab-btn">city</button> <span class="vocab-meaning hidden">thành phố</span></li>
+                        <li><button class="vocab-btn">province</button> <span class="vocab-meaning hidden">tỉnh</span></li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- 4. HỌC VẤN - CÔNG VIỆC -->
+            <section id="studies" class="lesson-section glass-panel">
+                <h2 class="section-title">4. HỌC VẤN – CÔNG VIỆC <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f393/512.webp" alt="🎓" width="35" class="inline-emoji"></h2>
+                <div class="highlight-banner">
+                    <span class="highlight-text">Hỏi & Đáp về học vấn hoặc công việc:</span>
+                </div>
+                
+                <div class="interactive-list">
+                    <div class="qa-block">
+                        <div class="q-row">
+                            <button class="toggle-btn q-btn">Question <span class="emoji">❓</span></button>
+                            <div class="content q-content hidden">Do you work, or are you a student?</div>
+                        </div>
+                        <div class="a-row">
+                            <button class="toggle-btn a-btn">Answer <span class="emoji">💡</span></button>
+                            <div class="content a-content hidden">
+                                <ul class="answer-list">
+                                    <li>I'm still a university student.</li>
+                                    <li>I graduated from university <strong><span class="bracket-note">[thời điểm]</span></strong>.</li>
+                                    <li>I'm a postgraduate now.</li>
+                                    <li>I'm <span class="text-blue">a/an</span> <strong><span class="bracket-note">[chức danh nghề nghiệp]</span></strong>.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="qa-block">
+                        <div class="q-row">
+                            <button class="toggle-btn q-btn">Question <span class="emoji">❓</span></button>
+                            <div class="content q-content hidden">Where are you <span class="text-blue">studying/working</span> now?</div>
+                        </div>
+                        <div class="a-row">
+                            <button class="toggle-btn a-btn">Answer <span class="emoji">💡</span></button>
+                            <div class="content a-content hidden">
+                                <ul class="answer-list">
+                                    <li>I'm currently studying at <strong><span class="bracket-note">[tên trường]</span></strong> university.</li>
+                                    <li>I'm currently working at <strong><span class="bracket-note">[công ty, cơ quan, tổ chức]</span></strong>.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-block" style="background: rgba(255, 255, 255, 0.7); padding: 15px; border-radius: 12px; margin-bottom: 20px; border-left: 4px solid var(--primary-color);">
+                    <button class="toggle-btn example-btn" style="width: 100%; text-align: left; border: none; padding: 12px 15px; border-radius: 8px; font-weight: 800; letter-spacing: 1px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        EXAMPLE 1: NGƯỜI ĐI LÀM <span class="emoji">💼</span>
+                    </button>
+                    <div class="content hidden" style="padding-top: 15px;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                            <div><span class="emoji">❓</span><span><strong>Do you work, or are you a student?</strong></span></div>
+                            <button class="play-audio-btn" data-text="Do you work, or are you a student?" data-gender="male" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
+                            <div><span class="emoji">💡</span><span>I'm an accountant.</span></div>
+                            <button class="play-audio-btn" data-text="I'm an accountant." data-gender="female" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                            <div><span class="emoji">❓</span><span><strong>Where are you working now?</strong></span></div>
+                            <button class="play-audio-btn" data-text="Where are you working now?" data-gender="male" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <div><span class="emoji">💡</span><span>I'm currently working at ABC Company.</span></div>
+                            <button class="play-audio-btn" data-text="I'm currently working at ABC Company." data-gender="female" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-block" style="background: rgba(255, 255, 255, 0.7); padding: 15px; border-radius: 12px; margin-bottom: 20px; border-left: 4px solid var(--primary-color);">
+                    <button class="toggle-btn example-btn" style="width: 100%; text-align: left; border: none; padding: 12px 15px; border-radius: 8px; font-weight: 800; letter-spacing: 1px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        EXAMPLE 2: SINH VIÊN <span class="emoji">🎓</span>
+                    </button>
+                    <div class="content hidden" style="padding-top: 15px;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                            <div><span class="emoji">❓</span><span><strong>Do you work, or are you a student?</strong></span></div>
+                            <button class="play-audio-btn" data-text="Do you work, or are you a student?" data-gender="male" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
+                            <div><span class="emoji">💡</span><span>I'm still a university student.</span></div>
+                            <button class="play-audio-btn" data-text="I'm still a university student." data-gender="female" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                            <div><span class="emoji">❓</span><span><strong>Where are you studying now?</strong></span></div>
+                            <button class="play-audio-btn" data-text="Where are you studying now?" data-gender="male" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
+                            <div><span class="emoji">💡</span><span>I'm currently studying at Can Tho University.</span></div>
+                            <button class="play-audio-btn" data-text="I'm currently studying at Can Tho University." data-gender="female" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+                        
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                            <div><span class="emoji">❓</span><span><strong>What is your major?</strong></span></div>
+                            <button class="play-audio-btn" data-text="What is your major?" data-gender="male" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <div><span class="emoji">💡</span><span>My major is Vietnamese Studies.</span></div>
+                            <button class="play-audio-btn" data-text="My major is Vietnamese Studies." data-gender="female" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-block" style="background: rgba(255, 255, 255, 0.7); padding: 15px; border-radius: 12px; margin-bottom: 20px; border-left: 4px solid var(--primary-color);">
+                    <button class="toggle-btn example-btn" style="width: 100%; text-align: left; border: none; padding: 12px 15px; border-radius: 8px; font-weight: 800; letter-spacing: 1px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        EXAMPLE 3: HỌC SINH VỪA TỐT NGHIỆP <span class="emoji">🏫</span>
+                    </button>
+                    <div class="content hidden" style="padding-top: 15px;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                            <div><span class="emoji">❓</span><span><strong>Do you work, or are you a student?</strong></span></div>
+                            <button class="play-audio-btn" data-text="Do you work, or are you a student?" data-gender="male" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
+                            <div><span class="emoji">💡</span><span>I graduated from high school last month.</span></div>
+                            <button class="play-audio-btn" data-text="I graduated from high school last month." data-gender="female" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+                        
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                            <div><span class="emoji">❓</span><span><strong>Which university do you want to choose?</strong></span></div>
+                            <button class="play-audio-btn" data-text="Which university do you want to choose?" data-gender="male" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
+                            <div><span class="emoji">💡</span><span>I want to choose Can Tho University.</span></div>
+                            <button class="play-audio-btn" data-text="I want to choose Can Tho University." data-gender="female" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                            <div><span class="emoji">❓</span><span><strong>Which major did you choose?</strong></span></div>
+                            <button class="play-audio-btn" data-text="Which major did you choose?" data-gender="male" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <div><span class="emoji">💡</span><span>I chose the major of Information Technology.</span></div>
+                            <button class="play-audio-btn" data-text="I chose the major of Information Technology." data-gender="female" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="vocab-title">VOCABULARY: <span class="click-hint">(Click words to reveal meaning)</span></h3>
+                <ul class="vocab-list grid-2">
+                    <li><button class="vocab-btn">university student</button> <span class="vocab-meaning hidden">sinh viên đại học</span></li>
+                    <li><button class="vocab-btn">first-year student</button> <span class="vocab-meaning hidden">sinh viên năm nhất</span></li>
+                    <li><button class="vocab-btn">second-year student</button> <span class="vocab-meaning hidden">sinh viên năm hai</span></li>
+                    <li><button class="vocab-btn">third-year student</button> <span class="vocab-meaning hidden">sinh viên năm ba</span></li>
+                    <li><button class="vocab-btn">final-year student</button> <span class="vocab-meaning hidden">sinh viên năm cuối</span></li>
+                    <li><button class="vocab-btn">postgraduate</button> <span class="vocab-meaning hidden">học viên cao học</span></li>
+                </ul>
+            </section>
+
+            <!-- 5. GIA ĐÌNH -->
+            <section id="family" class="lesson-section glass-panel">
+                <h2 class="section-title">5. GIA ĐÌNH <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f496/512.webp" alt="💖" width="35" class="inline-emoji" onerror="this.outerHTML='<span style=\\'font-size:35px;\\'>💖</span>'"></h2>
+                <div class="highlight-banner">
+                    <span class="highlight-text">Hỏi & Đáp về gia đình:</span>
+                </div>
+                
+                <div class="interactive-list">
+                    <div class="qa-block">
+                        <div class="q-row">
+                            <button class="toggle-btn q-btn">Question <span class="emoji">❓</span></button>
+                            <div class="content q-content hidden">
+                                <ul class="answer-list">
+                                    <li>Do you have a big family?</li>
+                                    <li>Do you come from a big or a small family?</li>
+                                    <li>How many people are there in your family?</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="a-row">
+                            <button class="toggle-btn a-btn">Answer <span class="emoji">💡</span></button>
+                            <div class="content a-content hidden">
+                                <ul class="answer-list">
+                                    <li>I come from <strong>a nuclear family</strong>, including my <strong><span class="bracket-note">[lần lượt kể các thành viên khác trong gia đình]</span></strong>, and me.</li>
+                                    <li>I come from <strong>an extended family</strong>, including my <strong><span class="bracket-note">[lần lượt kể các thành viên khác trong gia đình]</span></strong>, and me.</li>
+                                    <li>There are <strong><span class="bracket-note">[số lượng]</span></strong> people in my family, including my <strong><span class="bracket-note">[lần lượt kể các thành viên khác trong gia đình]</span></strong>, and me.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="qa-block">
+                        <div class="q-row">
+                            <button class="toggle-btn q-btn">Question <span class="emoji">❓</span></button>
+                            <div class="content q-content hidden">Do you have any brothers and sisters?</div>
+                        </div>
+                        <div class="a-row">
+                            <button class="toggle-btn a-btn">Answer <span class="emoji">💡</span></button>
+                            <div class="content a-content hidden">
+                                <ul class="answer-list">
+                                    <li>No, I'm <strong>the only child</strong>.</li>
+                                    <li>Yes, I have <strong>one older brother</strong> and <strong>two younger sisters</strong>. I'm the second child.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-block" style="background: rgba(255, 255, 255, 0.7); padding: 15px; border-radius: 12px; margin-bottom: 20px; border-left: 4px solid var(--primary-color);">
+                    <button class="toggle-btn example-btn" style="width: 100%; text-align: left; border: none; padding: 12px 15px; border-radius: 8px; font-weight: 800; letter-spacing: 1px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        EXAMPLE <span class="emoji">📖</span>
+                    </button>
+                    <div class="content hidden" style="padding-top: 15px;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                            <div><span class="emoji">❓</span><span><strong>Do you have a big family?</strong></span></div>
+                            <button class="play-audio-btn" data-text="Do you have a big family?" data-gender="male" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
+                            <div><span class="emoji">💡</span><span>I come from <strong>a nuclear family</strong>, including my parents, my brother, and me.</span></div>
+                            <button class="play-audio-btn" data-text="I come from a nuclear family, including my parents, my brother, and me." data-gender="female" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                            <div><span class="emoji">❓</span><span><strong>Do you have any brothers and sisters?</strong></span></div>
+                            <button class="play-audio-btn" data-text="Do you have any brothers and sisters?" data-gender="male" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <div><span class="emoji">💡</span><span>Yes, I have one older brother. I'm the youngest child.</span></div>
+                            <button class="play-audio-btn" data-text="Yes, I have one older brother. I'm the youngest child." data-gender="female" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="vocab-title">VOCABULARY: <span class="click-hint">(Click words to reveal meaning)</span></h3>
+                <ul class="vocab-list grid-2">
+                    <li><button class="vocab-btn">nuclear family</button> <span class="vocab-meaning hidden">gia đình hạt nhân (2 thế hệ)</span></li>
+                    <li><button class="vocab-btn">extended family</button> <span class="vocab-meaning hidden">gia đình nhiều thế hệ</span></li>
+                    <li><button class="vocab-btn">the only child</button> <span class="vocab-meaning hidden">con một</span></li>
+                    <li><button class="vocab-btn">the oldest child</button> <span class="vocab-meaning hidden">con cả</span></li>
+                    <li><button class="vocab-btn">the youngest child</button> <span class="vocab-meaning hidden">con út</span></li>
+                    <li><button class="vocab-btn">the <span class="text-blue">second</span> child</button> <span class="vocab-meaning hidden">con thứ hai</span></li>
+                    <li><button class="vocab-btn">parents</button> <span class="vocab-meaning hidden">bố mẹ</span></li>
+                    <li><button class="vocab-btn">father = dad</button> <span class="vocab-meaning hidden">bố, ba</span></li>
+                    <li><button class="vocab-btn">mother = mom</button> <span class="vocab-meaning hidden">mẹ, má</span></li>
+                    <li><button class="vocab-btn">grandparents</button> <span class="vocab-meaning hidden">ông bà</span></li>
+                    <li><button class="vocab-btn">husband</button> <span class="vocab-meaning hidden">chồng</span></li>
+                    <li><button class="vocab-btn">wife</button> <span class="vocab-meaning hidden">vợ</span></li>
+                    <li><button class="vocab-btn">son</button> <span class="vocab-meaning hidden">con trai</span></li>
+                    <li><button class="vocab-btn">daughter</button> <span class="vocab-meaning hidden">con gái</span></li>
+                    <li><button class="vocab-btn">uncle</button> <span class="vocab-meaning hidden">chú, bác, cậu, dượng</span></li>
+                    <li><button class="vocab-btn">aunt</button> <span class="vocab-meaning hidden">cô, dì, thím, mợ</span></li>
+                    <li><button class="vocab-btn">cousin</button> <span class="vocab-meaning hidden">anh chị em họ</span></li>
+                    <li><button class="vocab-btn">niece</button> <span class="vocab-meaning hidden">cháu gái (con của anh/chị/em)</span></li>
+                    <li><button class="vocab-btn">nephew</button> <span class="vocab-meaning hidden">cháu trai (con của anh/chị/em)</span></li>
+                    <li><button class="vocab-btn">mother-in-law</button> <span class="vocab-meaning hidden">mẹ chồng, mẹ vợ</span></li>
+                    <li><button class="vocab-btn">father-in-law</button> <span class="vocab-meaning hidden">bố chồng, bố vợ</span></li>
+                    <li><button class="vocab-btn">sister-in-law</button> <span class="vocab-meaning hidden">chị dâu, em dâu, chị/em chồng/vợ</span></li>
+                    <li><button class="vocab-btn">brother-in-law</button> <span class="vocab-meaning hidden">anh rể, em rể, anh/em chồng/vợ</span></li>
+                    <li><button class="vocab-btn">older brother</button> <span class="vocab-meaning hidden">anh trai</span></li>
+                    <li><button class="vocab-btn">older sister</button> <span class="vocab-meaning hidden">chị gái</span></li>
+                    <li><button class="vocab-btn">younger brother</button> <span class="vocab-meaning hidden">em trai</span></li>
+                    <li><button class="vocab-btn">younger sister</button> <span class="vocab-meaning hidden">em gái</span></li>
+                </ul>
+            </section>
+
+            <!-- 6. SỞ THÍCH -->
+            <section id="hobbies" class="lesson-section glass-panel">
+                <h2 class="section-title">6. SỞ THÍCH <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f3b6/512.webp" alt="🎶" width="35" class="inline-emoji" onerror="this.src='https://media.giphy.com/media/l4pTfx2qLsExSmEdd/giphy.gif'; this.width=40;"></h2>
+                <div class="highlight-banner">
+                    <span class="highlight-text">Hỏi & Đáp về sở thích:</span>
+                </div>
+                
+                <div class="interactive-list">
+                    <div class="qa-block">
+                        <div class="q-row">
+                            <button class="toggle-btn q-btn">Question <span class="emoji">❓</span></button>
+                            <div class="content q-content hidden">
+                                <ul class="answer-list">
+                                    <li>Do you have any hobbies?</li>
+                                    <li>What's your hobby?</li>
+                                    <li>What are your hobbies?</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="a-row">
+                            <button class="toggle-btn a-btn">Answer <span class="emoji">💡</span></button>
+                            <div class="content a-content hidden">
+                                <ul class="answer-list">
+                                    <li>My hobby is <strong><span class="bracket-note">[sở thích – Ving]</span></strong>.</li>
+                                    <li>My hobbies are <strong><span class="bracket-note">[sở thích 1 – Ving]</span></strong> and <strong><span class="bracket-note">[sở thích 2 – Ving]</span></strong>.</li>
+                                    <li>I like <strong><span class="bracket-note">[sở thích – Ving]</span></strong>.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-block" style="background: rgba(255, 255, 255, 0.7); padding: 15px; border-radius: 12px; margin-bottom: 20px; border-left: 4px solid var(--primary-color);">
+                    <button class="toggle-btn example-btn" style="width: 100%; text-align: left; border: none; padding: 12px 15px; border-radius: 8px; font-weight: 800; letter-spacing: 1px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        EXAMPLE <span class="emoji">📖</span>
+                    </button>
+                    <div class="content hidden" style="padding-top: 15px;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                            <div><span class="emoji">❓</span><span><strong>What are your hobbies?</strong></span></div>
+                            <button class="play-audio-btn" data-text="What are your hobbies?" data-gender="male" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <div><span class="emoji">💡</span><span>My hobbies are reading books and listening to music.</span></div>
+                            <button class="play-audio-btn" data-text="My hobbies are reading books and listening to music." data-gender="female" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="vocab-title">VOCABULARY: <span class="click-hint">(Click words to reveal meaning)</span></h3>
+                <ul class="vocab-list grid-2">
+                    <li><button class="vocab-btn">reading books</button> <span class="vocab-meaning hidden">đọc sách</span></li>
+                    <li><button class="vocab-btn">listening to music</button> <span class="vocab-meaning hidden">nghe nhạc</span></li>
+                    <li><button class="vocab-btn">watching movies</button> <span class="vocab-meaning hidden">xem phim</span></li>
+                    <li><button class="vocab-btn">travelling</button> <span class="vocab-meaning hidden">du lịch</span></li>
+                    <li><button class="vocab-btn">cooking</button> <span class="vocab-meaning hidden">nấu ăn</span></li>
+                    <li><button class="vocab-btn">taking photos</button> <span class="vocab-meaning hidden">chụp ảnh</span></li>
+                    <li><button class="vocab-btn">playing sports</button> <span class="vocab-meaning hidden">chơi thể thao</span></li>
+                    <li><button class="vocab-btn">playing video games</button> <span class="vocab-meaning hidden">chơi game</span></li>
+                    <li><button class="vocab-btn">shopping</button> <span class="vocab-meaning hidden">mua sắm</span></li>
+                    <li><button class="vocab-btn">hanging out with friends</button> <span class="vocab-meaning hidden">đi chơi với bạn bè</span></li>
+                    <li><button class="vocab-btn">learning languages</button> <span class="vocab-meaning hidden">học ngoại ngữ</span></li>
+                    <li><button class="vocab-btn">gardening</button> <span class="vocab-meaning hidden">làm vườn</span></li>
+                    <li><button class="vocab-btn">doing yoga</button> <span class="vocab-meaning hidden">tập yoga</span></li>
+                    <li><button class="vocab-btn">drawing</button> <span class="vocab-meaning hidden">vẽ</span></li>
+                    <li><button class="vocab-btn">baking</button> <span class="vocab-meaning hidden">làm bánh</span></li>
+                    <li><button class="vocab-btn">surfing the internet</button> <span class="vocab-meaning hidden">lướt web</span></li>
+                    <li><button class="vocab-btn">singing</button> <span class="vocab-meaning hidden">ca hát</span></li>
+                    <li><button class="vocab-btn">camping</button> <span class="vocab-meaning hidden">cắm trại</span></li>
+                </ul>
+            </section>
+
+            <!-- 7. MỤC TIÊU -->
+            <section id="goals" class="lesson-section glass-panel">
+                <h2 class="section-title">7. MỤC TIÊU KHI THAM GIA KHOÁ HỌC NÀY <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f3af/512.webp" alt="🎯" width="35" class="inline-emoji"></h2>
+                <div class="highlight-banner">
+                    <span class="highlight-text">Hỏi & Đáp về mục tiêu khi học Tiếng Anh:</span>
+                </div>
+                
+                <div class="interactive-list">
+                    <div class="qa-block">
+                        <div class="q-row">
+                            <button class="toggle-btn q-btn">Question <span class="emoji">❓</span></button>
+                            <div class="content q-content hidden">What do you want to achieve after this course?</div>
+                        </div>
+                        <div class="a-row">
+                            <button class="toggle-btn a-btn">Answer <span class="emoji">💡</span></button>
+                            <div class="content a-content hidden">After this course, I hope to <strong><span class="bracket-note">[mục tiêu]</span></strong>.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-block" style="background: rgba(255, 255, 255, 0.7); padding: 15px; border-radius: 12px; margin-bottom: 20px; border-left: 4px solid var(--primary-color);">
+                    <button class="toggle-btn example-btn" style="width: 100%; text-align: left; border: none; padding: 12px 15px; border-radius: 8px; font-weight: 800; letter-spacing: 1px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
+                        EXAMPLE <span class="emoji">📖</span>
+                    </button>
+                    <div class="content hidden" style="padding-top: 15px;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                            <div><span class="emoji">❓</span><span><strong>What do you want to achieve after this course?</strong></span></div>
+                            <button class="play-audio-btn" data-text="What do you want to achieve after this course?" data-gender="male" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <div><span class="emoji">💡</span><span>After this course, I hope to communicate confidently in English.</span></div>
+                            <button class="play-audio-btn" data-text="After this course, I hope to communicate confidently in English." data-gender="female" style="background: none; border: none; cursor: pointer; font-size: 1.2rem;" title="Nghe phát âm">🔊</button>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="vocab-title">VOCABULARY: <span class="click-hint">(Click words to reveal meaning)</span></h3>
+                <ul class="vocab-list">
+                    <li><button class="vocab-btn">improve my English skills</button> <span class="vocab-meaning hidden">cải thiện kỹ năng tiếng Anh</span></li>
+                    <li><button class="vocab-btn">speak English more fluently</button> <span class="vocab-meaning hidden">nói tiếng Anh trôi chảy hơn</span></li>
+                    <li><button class="vocab-btn">pass the VSTEP exam</button> <span class="vocab-meaning hidden">vượt qua kỳ thi VSTEP</span></li>
+                    <li><button class="vocab-btn">achieve a B1/B2 certificate</button> <span class="vocab-meaning hidden">đạt chứng chỉ B1/B2</span></li>
+                    <li><button class="vocab-btn">get a better job</button> <span class="vocab-meaning hidden">có được công việc tốt hơn</span></li>
+                    <li><button class="vocab-btn">communicate confidently in English</button> <span class="vocab-meaning hidden">giao tiếp tiếng Anh tự tin</span></li>
+                    <li><button class="vocab-btn">travel abroad</button> <span class="vocab-meaning hidden">đi du lịch nước ngoài</span></li>
+                    <li><button class="vocab-btn">study abroad</button> <span class="vocab-meaning hidden">đi du học</span></li>
+                    <li><button class="vocab-btn">make foreign friends</button> <span class="vocab-meaning hidden">kết bạn người nước ngoài</span></li>
+                    <li><button class="vocab-btn">watch movies without subtitles</button> <span class="vocab-meaning hidden">xem phim không cần phụ đề</span></li>
+                </ul>
+            </section>
+
+            <!-- SELF INTRODUCTION INTERACTIVE TOOL -->
+            <section id="self-intro" class="lesson-section intro-panel tab-hidden">
+                <div style="text-align: center; margin-bottom: 1rem;">
+                    <div style="font-size: 4rem;">✨💬✨</div>
+                </div>
+                <h2 class="section-title text-center" style="justify-content: center;">SELF-INTRODUCTION BUILDER</h2>
+                
+                <!-- BÀI GIỚI THIỆU MẪU -->
+                <div class="template-block mb-3">
+                    <h3 class="vocab-title">📝 BÀI GIỚI THIỆU MẪU (SAMPLE TEMPLATE)</h3>
+                    <div class="template-content">
+                        <p><strong>Hello everyone!</strong> <span class="vi-sub">Xin chào tất cả mọi người!</span></p>
+                        <p><strong>Let me introduce myself.</strong> <span class="vi-sub">Hãy để tôi giới thiệu bản thân mình nhé.</span></p>
+                        <p><strong>Firstly, my name is <span class="bracket-note">[tên]</span>.</strong> <span class="vi-sub">Đầu tiên thì, tên của tôi là <span class="bracket-note">[...]</span>.</span></p>
+                        <p><strong>I am <span class="bracket-note">[số tuổi]</span> years old.</strong> <span class="vi-sub">Tôi <span class="bracket-note">[...]</span> tuổi rồi.</span></p>
+                        <p><strong>I come from <span class="bracket-note">[quê quán]</span> city/province.</strong> <span class="vi-sub">Tôi đến từ tỉnh/thành phố <span class="bracket-note">[...]</span>.</span></p>
+                        
+                        <div style="margin: 15px 0; padding: 10px; background: #f8f9fa; border-left: 4px solid var(--color-title); border-radius: 4px;">
+                            <p style="color: var(--color-qa); font-style: italic; font-weight: 700; margin-bottom: 5px;"><span class="bracket-note">[Nếu bạn vẫn là học sinh, sinh viên, học viên cao học]</span></p>
+                            <p><strong>→ About my studies, I am a university student at <span class="bracket-note">[tên trường ĐH]</span> university.</strong> <br><span class="vi-sub">Về học vấn của tôi, tôi là sinh viên tại trường <span class="bracket-note">[...]</span></span></p>
+                        </div>
+
+                        <div style="margin: 15px 0; padding: 10px; background: #f8f9fa; border-left: 4px solid var(--color-section); border-radius: 4px;">
+                            <p style="color: var(--color-qa); font-style: italic; font-weight: 700; margin-bottom: 5px;"><span class="bracket-note">[Nếu bạn là người đi làm]</span></p>
+                            <p><strong>→ About my work, I am a/an <span class="bracket-note">[chức danh nghề nghiệp]</span> at <span class="bracket-note">[công ty, cơ quan, tổ chức]</span>.</strong> <br><span class="vi-sub">Về công việc của tôi, tôi đang là <span class="bracket-note">[...]</span> tại <span class="bracket-note">[...]</span></span></p>
+                        </div>
+
+                        <p><strong>As for my hobbies, I like <span class="bracket-note">[sở thích]</span>.</strong> <span class="vi-sub">Về sở thích của tôi, tôi thích <span class="bracket-note">[...]</span>.</span></p>
+                        <p><strong>Finally, after this course, I hope to <span class="bracket-note">[mục tiêu]</span>.</strong> <span class="vi-sub">Cuối cùng thì, sau khoá học này, tôi mong mình có thể <span class="bracket-note">[...]</span>.</span></p>
+                        <p><strong>Thank you for listening!</strong> <span class="vi-sub">Cảm ơn các bạn đã lắng nghe!</span></p>
+                    </div>
+                </div>
+
+                <p class="text-center mb-3">
+                    <strong>Fill in the blanks to generate your own self-introduction!</strong><br>
+                    <span style="color: #6c757d; font-style: italic;">(Điền vào chỗ trống để tạo bài tự giới thiệu của riêng bạn!)</span>
+                </p>
+                
+                <form id="intro-form" class="interactive-form">
+                    <div class="form-card mb-3">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label><strong>NAME</strong> (Tên):</label>
+                                <input type="text" id="in-name" placeholder="E.g. Nguyet">
+                            </div>
+                            <div class="form-group">
+                                <label><strong>AGE</strong> (Tuổi):</label>
+                                <input type="number" id="in-age" placeholder="E.g. 25">
+                            </div>
+                            <div class="form-group">
+                                <label><strong>HOMETOWN / CITY</strong> (Quê quán / Tỉnh thành):</label>
+                                <input type="text" id="in-city" placeholder="E.g. Hanoi">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label><strong>STATUS</strong> (Tình trạng công việc / Học tập):</label>
+                                <select id="in-status">
+                                    <option value="student">Học sinh, sinh viên, học viên (Student)</option>
+                                    <option value="worker">Người đi làm (Working Professional)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group full-width" id="group-uni">
+                                <label><strong>UNIVERSITY</strong> (Trường Đại học):</label>
+                                <input type="text" id="in-uni" placeholder="E.g. National Economics">
+                            </div>
+
+                            <div class="form-group full-width hidden" id="group-job">
+                                <div class="form-grid">
+                                    <div class="form-group" style="margin-bottom: 0;">
+                                        <label><strong>JOB TITLE</strong> (Chức danh nghề nghiệp):</label>
+                                        <input type="text" id="in-job" placeholder="E.g. an English Teacher">
+                                    </div>
+                                    <div class="form-group" style="margin-bottom: 0;">
+                                        <label><strong>COMPANY / ORGANIZATION</strong> (Công ty / Tổ chức):</label>
+                                        <input type="text" id="in-company" placeholder="E.g. River English Center">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group full-width">
+                                <label><strong>HOBBIES / V-ING</strong> (Sở thích):</label>
+                                <input type="text" id="in-hobbies" placeholder="E.g. reading books and travelling">
+                            </div>
+
+                            <div class="form-group full-width">
+                                <label><strong>GOAL AFTER THIS COURSE</strong> (Mục tiêu sau khoá học này):</label>
+                                <input type="text" id="in-goal" placeholder="E.g. improve my English skills">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn-generate" onclick="generateIntro()">Generate Introduction ✨</button>
+                </form>
+
+                <div id="result-box" class="result-box hidden">
+                    <div class="result-content" id="intro-result"></div>
+                    <button class="btn-copy" onclick="copyText()">Copy Text 📋</button>
+                </div>
+            </section>
+
+        </main>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
