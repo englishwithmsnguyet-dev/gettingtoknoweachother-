@@ -403,10 +403,6 @@ h1, h2, h3, h4, .brand {
     box-shadow: 0 4px 12px rgba(217, 119, 6, 0.25) !important;
 }
 
-.example-btn {
-    background-color: var(--color-title) !important;
-    color: white !important;
-}
 
 .content {
     font-size: 1.12rem;
@@ -866,14 +862,50 @@ h1, h2, h3, h4, .brand {
     }
 }
 
-/* --- Example Block Styles --- */
+/* --- Example Block Styles (Nền sáng dịu, Chữ đậm rõ nét) --- */
+.example-block {
+    background: #ffffff !important;
+    border: 1.5px solid #e2e8f0 !important;
+    border-left: 5px solid #0284c7 !important;
+    border-radius: 14px !important;
+    padding: 16px !important;
+    margin-bottom: 22px !important;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05) !important;
+}
+
 .example-btn {
-    font-family: 'Playfair Display', serif;
-    font-weight: 700;
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%) !important;
+    border: 1.5px solid #7dd3fc !important;
+    border-left: 5px solid #0284c7 !important;
+    color: #0369a1 !important; /* Chữ xanh dương đậm sắc nét */
+    font-family: 'Roboto Serif', serif !important;
+    font-weight: 800 !important;
+    font-size: 1.05rem !important;
+    padding: 12px 18px !important;
+    border-radius: 10px !important;
+    transition: all 0.25s ease !important;
+    box-shadow: 0 2px 6px rgba(2, 132, 199, 0.08) !important;
+    letter-spacing: 0.5px;
+    width: 100%;
+}
+
+.example-btn:hover {
+    background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%) !important;
+    border-color: #38bdf8 !important;
+    color: #0c4a6e !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.15) !important;
+}
+
+.example-btn.active-toggle {
+    background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%) !important;
+    border-color: #0284c7 !important;
+    color: #0c4a6e !important;
+    box-shadow: 0 3px 10px rgba(2, 132, 199, 0.15) !important;
 }
 
 .example-block strong {
-    color: #c62828; /* Đỏ đậm cho câu hỏi */
+    color: #b91c1c; /* Đỏ đậm cho câu hỏi */
     font-weight: 700;
 }
 
