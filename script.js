@@ -118,15 +118,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Change emoji icon slightly when open
                 const emoji = btn.querySelector('.emoji');
                 if (!content.classList.contains('hidden')) {
-                    if (btn.classList.contains('q-btn')) emoji.textContent = '👇';
-                    if (btn.classList.contains('a-btn')) emoji.textContent = '✨';
-                    btn.style.background = '#e0fbfc';
-                    btn.style.color = '#333'; // Ensure text is visible on light blue background
+                    if (btn.classList.contains('q-btn') && emoji) emoji.textContent = '👇';
+                    if (btn.classList.contains('a-btn') && emoji) emoji.textContent = '✨';
+                    btn.classList.add('active-toggle');
                 } else {
-                    if (btn.classList.contains('q-btn')) emoji.textContent = '❓';
-                    if (btn.classList.contains('a-btn')) emoji.textContent = '💡';
-                    btn.style.background = '';
-                    btn.style.color = ''; // Revert to original inline text color
+                    if (btn.classList.contains('q-btn') && emoji) emoji.textContent = '❓';
+                    if (btn.classList.contains('a-btn') && emoji) emoji.textContent = '💡';
+                    btn.classList.remove('active-toggle');
                 }
             }
         });
