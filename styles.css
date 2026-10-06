@@ -408,8 +408,10 @@ h1, h2, h3, h4, .brand {
     font-size: 1.12rem;
     font-weight: 500;
     color: #0f172a;
-    line-height: 1.65;
-    padding: 14px 20px;
+    line-height: 1.85; /* Dãn dòng rộng thoáng */
+    text-align: justify; /* Canh đều 2 bên */
+    text-justify: inter-word;
+    padding: 16px 24px;
     flex: 1;
     opacity: 1;
     transition: opacity 0.3s ease, transform 0.3s ease;
@@ -457,18 +459,20 @@ h1, h2, h3, h4, .brand {
     list-style-type: none;
     padding-left: 0;
     margin: 0;
-    text-align: left;
+    text-align: justify;
+    text-justify: inter-word;
 }
 
 .answer-list li {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.95rem; /* Dãn khoảng cách giữa các câu rộng rãi */
     position: relative;
-    padding-left: 20px;
+    padding-left: 22px;
     font-weight: 500;
     color: #0f172a;
-    font-size: 1.05rem;
-    line-height: 1.6;
-    text-align: left;
+    font-size: 1.06rem;
+    line-height: 1.85; /* Dãn khoảng cách dòng rộng rãi */
+    text-align: justify; /* Canh đều 2 bên */
+    text-justify: inter-word;
 }
 
 .answer-list li:last-child {
@@ -479,10 +483,10 @@ h1, h2, h3, h4, .brand {
     content: '•';
     position: absolute;
     left: 2px;
-    top: 0;
-    font-size: 1.1rem;
+    top: -1px;
+    font-size: 1.25rem;
     color: #3b82f6;
-    line-height: 1.6;
+    line-height: 1.85;
 }
 
 /* Vocabulary */
