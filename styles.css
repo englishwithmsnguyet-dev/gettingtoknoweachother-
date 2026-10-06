@@ -456,25 +456,33 @@ h1, h2, h3, h4, .brand {
 .answer-list {
     list-style-type: none;
     padding-left: 0;
+    margin: 0;
+    text-align: left;
 }
 
 .answer-list li {
-    margin-bottom: 0.45rem;
+    margin-bottom: 0.5rem;
     position: relative;
-    padding-left: 22px;
+    padding-left: 20px;
     font-weight: 500;
     color: #0f172a;
     font-size: 1.05rem;
-    line-height: 1.65;
+    line-height: 1.6;
+    text-align: left;
+}
+
+.answer-list li:last-child {
+    margin-bottom: 0;
 }
 
 .answer-list li::before {
-    content: '●';
+    content: '•';
     position: absolute;
-    left: 0;
-    top: 5px;
-    font-size: 0.65rem;
-    color: #4361ee;
+    left: 2px;
+    top: 0;
+    font-size: 1.1rem;
+    color: #3b82f6;
+    line-height: 1.6;
 }
 
 /* Vocabulary */
@@ -915,15 +923,19 @@ h1, h2, h3, h4, .brand {
     font-size: 1.05rem;
 }
 
-/* --- Bracket Notes --- */
+/* --- Bracket Notes (Hiển thị inline tự nhiên, không ngắt dòng cụt lủn) --- */
 .bracket-note {
     font-weight: 700 !important;
-    color: #9d174d !important; /* Đỏ hồng đậm nét */
-    background-color: #fce7f3 !important; /* Nền hồng nhẹ rõ ràng */
+    color: #be185d !important; /* Đỏ hồng đậm rõ nét */
+    background-color: #fdf2f8 !important; /* Nền hồng phấn nhẹ tự nhiên */
     border: 1px solid #fbcfe8 !important;
-    padding: 1px 7px !important;
-    border-radius: 6px !important;
-    display: inline-block;
+    padding: 1px 5px !important;
+    border-radius: 4px !important;
+    display: inline !important;
+    white-space: normal !important;
+    word-break: normal !important;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
 }
 
 /* =========================================
