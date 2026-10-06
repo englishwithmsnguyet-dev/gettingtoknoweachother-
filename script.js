@@ -132,54 +132,135 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Centralized Text-to-Speech Function
-    const playAudio = (text, gender = 'male') => {
+    // =========================================
+    // NATURAL CONVERSATIONAL SPEECH ENGINE
+    // =========================================
+    let cachedVoices = [];
+    const updateVoices = () => {
         if ('speechSynthesis' in window) {
-            window.speechSynthesis.cancel();
-            const utterance = new SpeechSynthesisUtterance(text);
-            
-            const voices = window.speechSynthesis.getVoices();
-            let selectedVoice;
-            let fallbackVoice;
+            cachedVoices = window.speechSynthesis.getVoices() || [];
+        }
+    };
+    updateVoices();
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.onvoiceschanged = updateVoices;
+    }
 
-            if (gender === 'female') {
-                selectedVoice = voices.find(v => v.name.includes('Ava') && v.name.includes('Premium')) ||
-                                voices.find(v => v.name.includes('Jenny') && v.name.includes('Natural')) ||
-                                voices.find(v => v.name.includes('Aria') && v.name.includes('Natural')) ||
-                                voices.find(v => v.name.includes('Allison')) ||
-                                voices.find(v => v.name.includes('Google UK English Female')) ||
-                                voices.find(v => v.name === 'Samantha') ||
-                                voices.find(v => v.name === 'Victoria') ||
-                                voices.find(v => v.name.includes('Female') && v.lang.includes('en')) ||
-                                voices.find(v => v.name.includes('Google US English')); 
-                fallbackVoice = voices.find(v => v.name.includes('Zira')); // Windows fallback
-            } else {
-                selectedVoice = voices.find(v => v.name.includes('Guy') && v.name.includes('Natural')) ||
-                                voices.find(v => v.name.includes('GuyNeural')) ||
-                                voices.find(v => v.name.includes('Guy'));
-                fallbackVoice = voices.find(v => v.name === 'Google US English Male') || 
-                                voices.find(v => v.name === 'Alex') || 
-                                voices.find(v => v.lang === 'en-US' && v.name.includes('Male')) ||
-                                voices.find(v => v.lang === 'en-GB' && v.name.includes('Male')) ||
-                                voices.find(v => v.lang === 'en-US'); 
-            }
-            
-            if (selectedVoice) {
-                utterance.voice = selectedVoice;
-                utterance.rate = gender === 'female' ? 1.05 : 1.0; // Slightly faster to sound energetic
-                utterance.pitch = gender === 'female' ? 1.15 : 1.0; // Higher pitch for younger voice
-            } else if (fallbackVoice) {
-                utterance.voice = fallbackVoice;
-                utterance.rate = gender === 'female' ? 1.05 : 1.0; 
-                utterance.pitch = gender === 'female' ? 1.15 : 1.05; 
+    const selectConversationalVoice = (gender = 'female') => {
+        if (!cachedVoices || cachedVoices.length === 0) {
+            updateVoices();
+        }
+        const voices = cachedVoices.filter(v => v.lang && (v.lang.startsWith('en') || v.lang.startsWith('en_')));
+        if (!voices.length) return cachedVoices[0] || null;
+
+        // Preferred ranking for conversational, human-like, warm English voices
+        const femaleRankings = [
+            'Jenny Online (Natural)',
+            'Jenny (Natural)',
+            'Aria Online (Natural)',
+            'Aria (Natural)',
+            'Ava (Premium)',
+            'Ava (Enhanced)',
+            'Samantha (Enhanced)',
+            'Zoe (Premium)',
+            'Zoe (Enhanced)',
+            'Siri',
+            'Allison (Enhanced)',
+            'Google US English',
+            'Google UK English Female',
+            'Samantha',
+            'Victoria (Enhanced)',
+            'Karen',
+            'Serena'
+        ];
+
+        const maleRankings = [
+            'Guy Online (Natural)',
+            'Guy (Natural)',
+            'Davis Online (Natural)',
+            'Davis (Natural)',
+            'Jason Online (Natural)',
+            'Christopher Online (Natural)',
+            'Eric Online (Natural)',
+            'Evan (Enhanced)',
+            'Nathan (Enhanced)',
+            'Oliver (Enhanced)',
+            'Tom (Enhanced)',
+            'Daniel (Enhanced)',
+            'Siri',
+            'Google UK English Male',
+            'Google US English Male',
+            'Google US English',
+            'Daniel'
+        ];
+
+        const ranking = gender === 'female' ? femaleRankings : maleRankings;
+
+        // 1. Check exact priority ranking
+        for (const target of ranking) {
+            const match = voices.find(v => v.name && v.name.toLowerCase().includes(target.toLowerCase()));
+            if (match) return match;
+        }
+
+        // 2. Find any voice marked Natural / Enhanced / Premium / Siri
+        const naturalMatch = voices.find(v => {
+            const n = (v.name || '').toLowerCase();
+            const isNatural = n.includes('natural') || n.includes('neural') || n.includes('enhanced') || n.includes('premium') || n.includes('siri');
+            if (!isNatural) return false;
+            return gender === 'female' 
+                ? (!n.includes('male') && !n.includes('guy') && !n.includes('david') && !n.includes('george'))
+                : (!n.includes('female') && !n.includes('jenny') && !n.includes('aria') && !n.includes('samantha'));
+        });
+        if (naturalMatch) return naturalMatch;
+
+        // 3. Fallback: filter out obsolete robotic voices (Alex, Fred, etc.)
+        const modernVoices = voices.filter(v => {
+            const n = (v.name || '').toLowerCase();
+            return !['alex', 'fred', 'junior', 'albert', 'ralph', 'zarvox', 'whisper', 'organ'].some(bad => n.includes(bad));
+        });
+
+        const pool = modernVoices.length ? modernVoices : voices;
+        return pool.find(v => v.lang.startsWith('en-US')) || pool.find(v => v.lang.startsWith('en-GB')) || pool[0];
+    };
+
+    const playAudio = (text, gender = 'female') => {
+        if (!('speechSynthesis' in window)) return;
+
+        try {
+            window.speechSynthesis.cancel();
+
+            // Preprocess text for natural conversational inflection
+            let cleanText = (text || '').trim();
+            // Create gentle pauses for dashes e.g. "M - I - N - H" -> "M, I, N, H."
+            cleanText = cleanText.replace(/\s*-\s*/g, ', ');
+            cleanText = cleanText.replace(/\bVSTEP\b/gi, 'Vee step');
+
+            const utterance = new SpeechSynthesisUtterance(cleanText);
+            const voice = selectConversationalVoice(gender);
+
+            if (voice) {
+                utterance.voice = voice;
+                utterance.lang = voice.lang || 'en-US';
             } else {
                 utterance.lang = 'en-US';
             }
-            
-            window.speechSynthesis.speak(utterance);
+
+            // Natural conversational rate and warm human pitch
+            utterance.rate = gender === 'female' ? 0.96 : 0.95; // Relaxed conversational pacing
+            utterance.pitch = gender === 'female' ? 1.02 : 0.98; // Warm, natural human pitch
+            utterance.volume = 1.0;
+
+            setTimeout(() => {
+                window.speechSynthesis.speak(utterance);
+                if (window.speechSynthesis.paused) {
+                    window.speechSynthesis.resume();
+                }
+            }, 20);
+        } catch (e) {
+            console.error('Audio playback error:', e);
         }
     };
-
+    window.playAudio = playAudio;
 
     // Toggle logic for Vocabulary
     const vocabBtns = document.querySelectorAll('.vocab-btn');
@@ -195,10 +276,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 // Add text-to-speech reading for the vocabulary word
-                // Replace '=' with a comma to create a natural pause
                 let textToSpeak = btn.innerText.replace(/=/g, ',');
                 textToSpeak = textToSpeak.replace(/VSTEP/g, 'Vee step');
-                playAudio(textToSpeak);
+                playAudio(textToSpeak, 'female');
             }
         });
     });
@@ -208,10 +288,64 @@ document.addEventListener('DOMContentLoaded', () => {
     audioBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             let textToSpeak = btn.getAttribute('data-text');
-            const gender = btn.getAttribute('data-gender') || 'male';
+            const gender = btn.getAttribute('data-gender') || 'female';
             if (textToSpeak) {
                 textToSpeak = textToSpeak.replace(/VSTEP/g, 'Vee step');
                 playAudio(textToSpeak, gender);
+            }
+        });
+    });
+
+    // Alphabet Letters click-to-speak logic
+    const letterCards = document.querySelectorAll('.letter-card');
+    letterCards.forEach(card => {
+        card.addEventListener('click', () => {
+            const speakText = card.getAttribute('data-speak') || card.getAttribute('data-letter');
+            
+            // Visual active animation
+            card.classList.add('playing');
+            setTimeout(() => card.classList.remove('playing'), 450);
+
+            if (speakText) {
+                playAudio(speakText, 'female');
+            }
+        });
+    });
+
+    // Date Tab Switcher Logic
+    window.switchDateTab = function(tab) {
+        const btnMonths = document.querySelector('.date-tab-btn:nth-child(1)');
+        const btnDays = document.querySelector('.date-tab-btn:nth-child(2)');
+        const panelMonths = document.getElementById('panel-months');
+        const panelDays = document.getElementById('panel-days');
+
+        if (!panelMonths || !panelDays) return;
+
+        if (tab === 'months') {
+            btnMonths?.classList.add('active');
+            btnDays?.classList.remove('active');
+            panelMonths.classList.remove('hidden');
+            panelDays.classList.add('hidden');
+        } else {
+            btnDays?.classList.add('active');
+            btnMonths?.classList.remove('active');
+            panelDays.classList.remove('hidden');
+            panelMonths.classList.add('hidden');
+        }
+    };
+
+    // Date & Month Cards click-to-speak logic
+    const dateCards = document.querySelectorAll('.month-card, .day-card');
+    dateCards.forEach(card => {
+        card.addEventListener('click', () => {
+            const speakText = card.getAttribute('data-speak');
+            
+            // Visual active animation
+            card.classList.add('playing');
+            setTimeout(() => card.classList.remove('playing'), 450);
+
+            if (speakText) {
+                playAudio(speakText, 'female');
             }
         });
     });
