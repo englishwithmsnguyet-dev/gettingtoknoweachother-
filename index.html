@@ -168,6 +168,69 @@
                         <span class="alphabet-hint">🔊 Nhấp vào từng chữ cái để nghe đọc mẫu</span>
                     </div>
 
+                    <!-- KHU VỰC GHÉP TÊN & ĐÁNH VẦN THÔNG MINH (SPELL YOUR NAME) -->
+                    <div class="name-speller-workbench">
+                        <div class="workbench-header">
+                            <div class="workbench-title">
+                                <span class="badge-tag">TÍNH NĂNG MỚI ✨</span>
+                                <strong>KHU VỰC GHÉP TÊN & ĐÁNH VẦN THÔNG MINH</strong>
+                                <span class="workbench-sub">(Spell Your Name)</span>
+                            </div>
+                            <button type="button" class="btn-use-my-name" id="btn-fetch-my-name" title="Tự động lấy tên bạn đã nhập khi vào lớp">
+                                <span>🎓</span> Lấy tên của tôi
+                            </button>
+                        </div>
+
+                        <!-- Ô nhập tên & gợi ý nhanh -->
+                        <div class="speller-input-row">
+                            <div class="input-wrapper">
+                                <input type="text" id="name-speller-input" placeholder="Gõ tên bạn (Ví dụ: NGUYET, MINH, QUYNH...)" maxlength="25" autocomplete="off">
+                                <button type="button" class="btn-clear-input" id="btn-clear-speller" title="Xóa tên">✕</button>
+                            </div>
+                            <div class="quick-samples">
+                                <span class="samples-label">Gợi ý mẫu:</span>
+                                <button type="button" class="sample-chip" data-name="NGUYET">NGUYET</button>
+                                <button type="button" class="sample-chip" data-name="MINH">MINH</button>
+                                <button type="button" class="sample-chip" data-name="QUYNH">QUYNH</button>
+                                <button type="button" class="sample-chip" data-name="THAO">THAO</button>
+                                <button type="button" class="sample-chip" data-name="DUYEN">DUYEN</button>
+                                <button type="button" class="sample-chip" data-name="HUYNH">HUYNH</button>
+                            </div>
+                        </div>
+
+                        <!-- Khung hiển thị các ô chữ cái lớn được ghép -->
+                        <div class="speller-tiles-container" id="speller-tiles-box">
+                            <div class="tiles-placeholder" id="tiles-empty-msg">
+                                <span>👉 Nhấp chọn các chữ cái ở bảng A - Z bên dưới hoặc gõ tên vào ô để bắt đầu ghép...</span>
+                            </div>
+                            <div class="tiles-list" id="speller-tiles-list"></div>
+                        </div>
+
+                        <!-- Các nút hành động chính -->
+                        <div class="speller-actions">
+                            <button type="button" class="speller-action-btn btn-spell" id="btn-spell-letters">
+                                <span class="action-icon">🔊</span>
+                                <div class="action-text">
+                                    <strong>Đánh vần từng chữ</strong>
+                                    <span>(Spell it out)</span>
+                                </div>
+                            </button>
+
+                            <button type="button" class="speller-action-btn btn-reset" id="btn-reset-speller">
+                                <span class="action-icon">🔄</span>
+                                <div class="action-text">
+                                    <strong>Làm mới</strong>
+                                    <span>(Reset)</span>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="alphabet-picker-headline">
+                        <span class="headline-title">BẢNG CHỮ CÁI TIẾNG ANH (A - Z)</span>
+                        <span class="headline-desc">💡 Nhấp vào từng chữ cái để vừa nghe phát âm mẫu, vừa tự động ghép chữ vào tên ở trên:</span>
+                    </div>
+
                     <div class="alphabet-grid">
                         <button class="letter-card" data-letter="A" data-speak="ay" title="Nghe chữ cái A">
                             <span class="letter-char">Aa</span>

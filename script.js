@@ -296,11 +296,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Alphabet Letters click-to-speak logic
+    // Alphabet Letters click-to-speak & append to name speller
     const letterCards = document.querySelectorAll('.letter-card');
     letterCards.forEach(card => {
         card.addEventListener('click', () => {
-            const speakText = card.getAttribute('data-speak') || card.getAttribute('data-letter');
+            const letter = card.getAttribute('data-letter');
+            const speakText = card.getAttribute('data-speak') || letter;
             
             // Visual active animation
             card.classList.add('playing');
@@ -309,8 +310,254 @@ document.addEventListener('DOMContentLoaded', () => {
             if (speakText) {
                 playAudio(speakText, 'female');
             }
+
+            // Append letter to Name Speller workbench
+            if (spellerInput && letter) {
+                if (spellerInput.value.length < 25) {
+                    spellerInput.value += letter;
+                    renderSpellerTiles();
+
+                    // Scroll tiles into view if needed
+                    const lastTile = spellerTilesList?.lastElementChild;
+                    if (lastTile) {
+                        lastTile.classList.add('speaking-active');
+                        setTimeout(() => lastTile.classList.remove('speaking-active'), 350);
+                    }
+                }
+            }
         });
     });
+
+    // =========================================
+    // SPELL YOUR NAME WORKBENCH LOGIC
+    // =========================================
+    const spellerInput = document.getElementById('name-speller-input');
+    const spellerTilesList = document.getElementById('speller-tiles-list');
+    const tilesEmptyMsg = document.getElementById('tiles-empty-msg');
+    const btnClearSpeller = document.getElementById('btn-clear-speller');
+    const btnResetSpeller = document.getElementById('btn-reset-speller');
+    const btnSpellLetters = document.getElementById('btn-spell-letters');
+    const btnFetchMyName = document.getElementById('btn-fetch-my-name');
+    const sampleChips = document.querySelectorAll('.sample-chip');
+
+    const letterPronounceMap = {
+        'A': 'ay', 'B': 'B', 'C': 'C', 'D': 'D', 'E': 'E',
+        'F': 'F', 'G': 'G', 'H': 'H', 'I': 'I', 'J': 'J',
+        'K': 'K', 'L': 'L', 'M': 'M', 'N': 'N', 'O': 'O',
+        'P': 'P', 'Q': 'Q', 'R': 'R', 'S': 'S', 'T': 'T',
+        'U': 'U', 'V': 'V', 'W': 'W', 'X': 'X', 'Y': 'Y', 'Z': 'Z'
+    };
+
+    function removeVietnameseTones(str) {
+        if (!str) return '';
+        str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
+        str = str.replace(/À|Á|Ạ|Ả|Ã|Â|Ầ|Ấ|Ậ|Ẩ|Ẫ|Ă|Ằ|Ắ|Ặ|Ẳ|Ẵ/g, "A");
+        str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
+        str = str.replace(/È|É|Ẹ|Ẻ|Ẽ|Ê|Ề|Ế|Ệ|Ể|Ễ/g, "E");
+        str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
+        str = str.replace(/Ì|Í|Ị|Ỉ|Ĩ/g, "I");
+        str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
+        str = str.replace(/Ò|Ó|Ọ|Ỏ|Õ|Ô|Ồ|Ố|Ộ|Ổ|Ỗ|Ơ|Ờ|Ớ|Ợ|Ở|Ỡ/g, "O");
+        str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
+        str = str.replace(/Ù|Ú|Ụ|Ủ|Ũ|Ư|Ừ|Ứ|Ự|Ử|Ữ/g, "U");
+        str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
+        str = str.replace(/Ỳ|Ý|Ỵ|Ỷ|Ỹ/g, "Y");
+        str = str.replace(/đ/g, "d");
+        str = str.replace(/Đ/g, "D");
+        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+
+    let isSpellingActive = false;
+
+    const renderSpellerTiles = () => {
+        if (!spellerInput || !spellerTilesList) return;
+        const raw = spellerInput.value || '';
+        const cleanLetters = removeVietnameseTones(raw).toUpperCase().replace(/[^A-Z]/g, '').split('');
+
+        spellerTilesList.innerHTML = '';
+        if (cleanLetters.length === 0) {
+            if (tilesEmptyMsg) tilesEmptyMsg.style.display = 'block';
+        } else {
+            if (tilesEmptyMsg) tilesEmptyMsg.style.display = 'none';
+            cleanLetters.forEach((char, idx) => {
+                const tile = document.createElement('div');
+                tile.className = 'speller-tile';
+                tile.setAttribute('data-letter', char);
+                tile.setAttribute('data-index', idx);
+                tile.title = `Chữ cái ${char} - Bấm để nghe phát âm`;
+
+                tile.innerHTML = `
+                    <span class="tile-index">${idx + 1}</span>
+                    <span class="tile-char">${char}</span>
+                    <button type="button" class="tile-remove-btn" title="Xóa chữ này">✕</button>
+                `;
+
+                // Click tile to hear letter
+                tile.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('tile-remove-btn')) return;
+                    tile.classList.add('speaking-active');
+                    setTimeout(() => tile.classList.remove('speaking-active'), 450);
+                    playAudio(letterPronounceMap[char] || char, 'female');
+                });
+
+                // Remove single letter
+                const removeBtn = tile.querySelector('.tile-remove-btn');
+                if (removeBtn) {
+                    removeBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        cleanLetters.splice(idx, 1);
+                        spellerInput.value = cleanLetters.join('');
+                        renderSpellerTiles();
+                    });
+                }
+
+                spellerTilesList.appendChild(tile);
+            });
+        }
+    };
+
+    if (spellerInput) {
+        spellerInput.addEventListener('input', (e) => {
+            e.target.value = removeVietnameseTones(e.target.value).toUpperCase().replace(/[^A-Z]/g, '');
+            renderSpellerTiles();
+        });
+    }
+
+    if (btnClearSpeller) {
+        btnClearSpeller.addEventListener('click', () => {
+            if (spellerInput) spellerInput.value = '';
+            renderSpellerTiles();
+            spellerInput?.focus();
+        });
+    }
+
+    if (btnResetSpeller) {
+        btnResetSpeller.addEventListener('click', () => {
+            if (spellerInput) spellerInput.value = '';
+            renderSpellerTiles();
+            spellerInput?.focus();
+        });
+    }
+
+    // Quick sample chips
+    sampleChips.forEach(chip => {
+        chip.addEventListener('click', () => {
+            const name = chip.getAttribute('data-name');
+            if (spellerInput && name) {
+                spellerInput.value = name;
+                renderSpellerTiles();
+            }
+        });
+    });
+
+    // Helper: Fetch Student Name from session
+    const getStudentFirstName = () => {
+        const stored = sessionStorage.getItem('studentName') || document.getElementById('display-name')?.innerText || '';
+        if (stored) {
+            // E.g. "Phạm Minh Nguyệt - ONB103" -> "Phạm Minh Nguyệt"
+            const namePart = stored.split('-')[0].trim();
+            const words = namePart.split(/\s+/).filter(Boolean);
+            if (words.length > 0) {
+                const firstName = words[words.length - 1]; // Tên gọi (last word in VN full name)
+                return removeVietnameseTones(firstName).toUpperCase().replace(/[^A-Z]/g, '');
+            }
+        }
+        return '';
+    };
+
+    if (btnFetchMyName) {
+        btnFetchMyName.addEventListener('click', () => {
+            const name = getStudentFirstName();
+            if (name) {
+                if (spellerInput) spellerInput.value = name;
+                renderSpellerTiles();
+                // Visual feedback
+                btnFetchMyName.style.background = '#22c55e';
+                btnFetchMyName.style.color = '#ffffff';
+                btnFetchMyName.style.borderColor = '#22c55e';
+                btnFetchMyName.innerHTML = `<span>✓</span> Đã lấy: ${name}`;
+                setTimeout(() => {
+                    btnFetchMyName.style.background = '';
+                    btnFetchMyName.style.color = '';
+                    btnFetchMyName.style.borderColor = '';
+                    btnFetchMyName.innerHTML = `<span>🎓</span> Lấy tên của tôi`;
+                }, 1500);
+            } else {
+                const manual = prompt('Chưa có thông tin tên trong phiên học. Vui lòng nhập tên của bạn để ghép:', 'NGUYET');
+                if (manual && spellerInput) {
+                    spellerInput.value = removeVietnameseTones(manual).toUpperCase().replace(/[^A-Z]/g, '');
+                    renderSpellerTiles();
+                }
+            }
+        });
+    }
+
+    // Auto-fetch student name on load if available
+    setTimeout(() => {
+        const autoName = getStudentFirstName();
+        if (autoName && spellerInput && !spellerInput.value) {
+            spellerInput.value = autoName;
+            renderSpellerTiles();
+        }
+    }, 350);
+
+    // Spell It Out (Đánh vần từng chữ một có highlight nhịp điệu)
+    if (btnSpellLetters) {
+        btnSpellLetters.addEventListener('click', async () => {
+            if (isSpellingActive) return;
+            const letters = (spellerInput?.value || '').replace(/[^A-Z]/g, '').split('');
+            if (letters.length === 0) {
+                const box = document.getElementById('speller-tiles-box');
+                if (box) {
+                    box.style.borderColor = '#ef4444';
+                    box.style.backgroundColor = '#fef2f2';
+                    setTimeout(() => {
+                        box.style.borderColor = '';
+                        box.style.backgroundColor = '';
+                    }, 800);
+                }
+                spellerInput?.focus();
+                return;
+            }
+
+            isSpellingActive = true;
+            btnSpellLetters.disabled = true;
+            const originalHtml = btnSpellLetters.innerHTML;
+            btnSpellLetters.innerHTML = `<span class="action-icon">⏳</span><div class="action-text"><strong>Đang đánh vần...</strong><span>(Listening)</span></div>`;
+
+            const tiles = spellerTilesList.querySelectorAll('.speller-tile');
+
+            for (let i = 0; i < letters.length; i++) {
+                const char = letters[i];
+                const tile = tiles[i];
+
+                if (tile) {
+                    tile.classList.add('speaking-active');
+                    tile.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
+
+                playAudio(letterPronounceMap[char] || char, 'female');
+
+                // Wait for speech rhythm
+                await new Promise(r => setTimeout(r, 760));
+
+                if (tile) {
+                    tile.classList.remove('speaking-active');
+                }
+                await new Promise(r => setTimeout(r, 120));
+            }
+
+            // Highlight all tiles on finish
+            tiles.forEach(t => t.classList.add('spell-finished'));
+
+            setTimeout(() => {
+                tiles.forEach(t => t.classList.remove('spell-finished'));
+                btnSpellLetters.disabled = false;
+                btnSpellLetters.innerHTML = originalHtml;
+                isSpellingActive = false;
+            }, 1000);
+        });
+    }
 
     // Date Tab Switcher Logic
     window.switchDateTab = function(tab) {
