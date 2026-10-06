@@ -425,6 +425,51 @@ h1, h2, h3, h4, .brand {
     margin-left: 6px; /* space for bubble pointer */
 }
 
+.q-item-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+}
+
+.q-list-item {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.play-audio-btn {
+    background: rgba(59, 130, 246, 0.08);
+    border: 1px solid rgba(59, 130, 246, 0.22);
+    border-radius: 8px;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    font-size: 1.05rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
+    color: #2563eb;
+    padding: 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.play-audio-btn:hover {
+    background: #2563eb;
+    color: #ffffff;
+    border-color: #2563eb;
+    transform: scale(1.1);
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
+}
+
+.play-audio-btn:active {
+    transform: scale(0.95);
+}
+
 /* Chat bubble pointer */
 .qa-block .content::before {
     content: '';
