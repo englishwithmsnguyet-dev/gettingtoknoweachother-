@@ -9,7 +9,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const nameDisplay = document.getElementById('student-name-display');
     const displayName = document.getElementById('display-name');
 
-    const allowedClasses = ['ONB103', 'CB211', 'CB213', 'B212', 'CB210', 'CB206'];
+    const validStudentsCB219 = [
+        "Lưu Thị Vân Anh",
+        "Nguyễn Tuấn Anh",
+        "Trần Thị Huỳnh Duy",
+        "Duy Thị Huỳnh Hân",
+        "Trần Thị Xuân Hoa",
+        "Nguyễn Phạm Khang",
+        "Đặng Văn Khánh",
+        "Chim Nhật Luân",
+        "Lư Vĩnh Phúc",
+        "Nguyễn Chí Thiện",
+        "Trần Thị Ngọc Thơ",
+        "Huỳnh Yến Trang",
+        "Thị Thu Trinh",
+        "Nguyễn Thị Mỹ Xuyên",
+        "Nguyễn Như Ý"
+    ];
+
+    const allowedClasses = ['CB219', 'ONB103', 'CB211', 'CB213', 'B212', 'CB210', 'CB206', '2026', 'GV', 'GV2026', 'ADMIN', 'TEACHER'];
+
+    const normalizeStr = (str) => {
+        return (str || '')
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/[đĐ]/g, 'd')
+            .toLowerCase()
+            .replace(/\s+/g, ' ')
+            .trim();
+    };
 
     // Check if name is already stored in sessionStorage
     const storedName = sessionStorage.getItem('studentName');
@@ -22,42 +50,97 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const startLesson = () => {
-        const name = nameInput.value.trim();
-        const studentClass = classInput ? classInput.value.trim().toUpperCase() : '';
+        const rawName = nameInput.value.trim();
+        const rawClass = classInput ? classInput.value.trim() : '';
         
-        if (name && studentClass) {
-            if (!allowedClasses.includes(studentClass)) {
-                classError.style.display = 'block';
+        // Reset styles and error
+        nameInput.style.borderColor = '';
+        if (classInput) classInput.style.borderColor = '';
+        classError.style.display = 'none';
+
+        if (!rawName && !rawClass) {
+            nameInput.style.borderColor = 'red';
+            if (classInput) classInput.style.borderColor = 'red';
+            classError.textContent = 'Vui lòng nhập đầy đủ Họ tên và Mã lớp!';
+            classError.style.display = 'block';
+            nameInput.focus();
+            return;
+        }
+
+        if (!rawName) {
+            nameInput.style.borderColor = 'red';
+            classError.textContent = 'Vui lòng nhập Họ và tên!';
+            classError.style.display = 'block';
+            nameInput.focus();
+            return;
+        }
+
+        if (!rawClass) {
+            if (classInput) {
+                classInput.style.borderColor = 'red';
                 classInput.focus();
+            }
+            classError.textContent = 'Vui lòng nhập Mã lớp!';
+            classError.style.display = 'block';
+            return;
+        }
+
+        const studentClass = rawClass.toUpperCase().replace(/\s+/g, '');
+        const normName = normalizeStr(rawName);
+
+        // Check Teacher access
+        const isTeacher = (['GV', 'GV2026', '2026', 'ADMIN', 'TEACHER'].includes(studentClass)) ||
+                          normName.includes('ptmn') || 
+                          normName.includes('co nguyet') || 
+                          normName.includes('minh nguyet') || 
+                          normName.includes('ms nguyet') || 
+                          normName.includes('pham thi minh nguyet') ||
+                          normName === 'nguyet';
+
+        let finalName = rawName;
+
+        if (isTeacher) {
+            finalName = 'Cô Nguyệt';
+        } else if (studentClass === 'CB219') {
+            // Strict check against CB219 student list
+            const matchedStudent = validStudentsCB219.find(s => normalizeStr(s) === normName);
+            if (!matchedStudent) {
+                classError.textContent = 'Họ và tên không thuộc danh sách học viên lớp CB219. Vui lòng kiểm tra lại!';
+                classError.style.display = 'block';
+                nameInput.style.borderColor = 'red';
+                nameInput.focus();
                 return;
             }
-            classError.style.display = 'none';
-            const fullNameClass = name + ' - ' + studentClass;
-            sessionStorage.setItem('studentName', fullNameClass);
-            displayName.textContent = fullNameClass;
-            nameModal.classList.add('hidden');
-            nameDisplay.classList.remove('hidden');
-
-            // Send data to Google Form quietly in the background
-            const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSd9g4rE9j1urSd8CrJ6hRcigrpklwxgzO8KgGJy8zXYAifGeA/formResponse";
-            const formData = new FormData();
-            formData.append("entry.388968236", fullNameClass); // "What's your full name?" field
-            
-            fetch(formUrl, {
-                method: "POST",
-                mode: "no-cors",
-                body: formData
-            }).catch(err => console.error("Error logging student:", err));
-
-        } else if (!name) {
-            nameInput.style.borderColor = 'red';
-            nameInput.placeholder = 'Chưa nhập họ tên...';
-            nameInput.focus();
-        } else if (!studentClass) {
-            classInput.style.borderColor = 'red';
-            classInput.placeholder = 'Chưa nhập mã lớp...';
-            classInput.focus();
+            finalName = matchedStudent;
+        } else if (allowedClasses.includes(studentClass)) {
+            finalName = rawName;
+        } else {
+            classError.textContent = 'Mã lớp không hợp lệ. Vui lòng kiểm tra lại!';
+            classError.style.display = 'block';
+            if (classInput) {
+                classInput.style.borderColor = 'red';
+                classInput.focus();
+            }
+            return;
         }
+
+        classError.style.display = 'none';
+        const fullNameClass = finalName + ' - ' + studentClass;
+        sessionStorage.setItem('studentName', fullNameClass);
+        displayName.textContent = fullNameClass;
+        nameModal.classList.add('hidden');
+        nameDisplay.classList.remove('hidden');
+
+        // Send data to Google Form quietly in the background
+        const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSd9g4rE9j1urSd8CrJ6hRcigrpklwxgzO8KgGJy8zXYAifGeA/formResponse";
+        const formData = new FormData();
+        formData.append("entry.388968236", fullNameClass); // "What's your full name?" field
+        
+        fetch(formUrl, {
+            method: "POST",
+            mode: "no-cors",
+            body: formData
+        }).catch(err => console.error("Error logging student:", err));
     };
 
     if (startBtn) startBtn.addEventListener('click', startLesson);
