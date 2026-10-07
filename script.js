@@ -27,7 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
         "Nguyễn Như Ý"
     ];
 
-    const allowedClasses = ['CB219', 'ONB103', 'CB211', 'CB213', 'B212', 'CB210', 'CB206', '2026', 'GV', 'GV2026', 'ADMIN', 'TEACHER'];
+    const allowedClasses = ['CB211', 'CB213', 'ONB103', 'B212', 'CB219', 'CB210'];
+    const teacherClasses = ['2026', 'GV', 'GV2026', 'ADMIN', 'TEACHER'];
 
     const normalizeStr = (str) => {
         return (str || '')
