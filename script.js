@@ -869,23 +869,25 @@ const PRACTICE_CONFIGS = {
                 hints: ["My full name is [Họ và tên]", "My name is [Tên]", "You can call me [Tên thường gọi]"],
                 modelAnswer: "My full name is Nguyen Van An. You can call me An.",
                 modelAnswerVi: "Tên đầy đủ của tôi là Nguyễn Văn An. Bạn có thể gọi tôi là An.",
-                checkCriteria: (transcript) => {
-                    const lower = (transcript || '').toLowerCase();
+                checkCriteria: (transcript, alts = []) => {
+                    const texts = [transcript, ...alts].map(t => (t || '').toLowerCase());
+                    const combined = texts.join(' ');
                     const checks = [];
-                    const hasIntro = /(my name|my full name|i am|i'm|call me|you can call me|is)/i.test(lower);
+                    const hasIntro = /(my (full\s+)?name|my phone name|i am|i'm|call me|you can call me|name's|is\s+[a-z]+)/i.test(combined);
                     checks.push({
                         label: "Mẫu câu giới thiệu tên (My full name is... / I'm... / You can call me...)",
                         passed: hasIntro,
                         tip: "Hãy dùng mẫu câu: 'My full name is [Họ và tên]' hoặc 'My name is [Tên]'"
                     });
-                    const hasWords = transcript.trim().split(/\s+/).filter(Boolean).length >= 3;
+                    const wordsCount = transcript.trim().split(/\s+/).filter(Boolean).length;
                     checks.push({
-                        label: "Nói trọn vẹn cả câu (đầy đủ chủ ngữ và vị ngữ)",
-                        passed: hasWords,
+                        label: "Nói trọn vẹn cả câu (đầy đủ chủ ngữ và tên gọi)",
+                        passed: wordsCount >= 2,
                         tip: "Nên nói cả câu hoàn chỉnh thay vì chỉ đọc mỗi tên riêng"
                     });
                     return checks;
-                }
+                },
+                keyPatterns: [/my (full\s+)?name is/i, /i am|i'm/i, /you can call me/i, /my name/i]
             },
             {
                 id: "q_name_spell",
@@ -895,10 +897,11 @@ const PRACTICE_CONFIGS = {
                 hints: ["It is spelled [Các chữ cái]", "It's [Từng chữ cái]", "M - I - N - H"],
                 modelAnswer: "It is spelled A - N.",
                 modelAnswerVi: "Tên tôi được đánh vần là A - N.",
-                checkCriteria: (transcript) => {
-                    const lower = (transcript || '').toLowerCase();
+                checkCriteria: (transcript, alts = []) => {
+                    const texts = [transcript, ...alts].map(t => (t || '').toLowerCase());
+                    const combined = texts.join(' ');
                     const checks = [];
-                    const hasSpellKeyword = /(spell|spelled|it's|is|that's)/i.test(lower) || /[a-z]\s+[a-z]/i.test(lower);
+                    const hasSpellKeyword = /(spell|spelled|spelling|it's|it is|that's|is)/i.test(combined) || /[a-z]\s+[a-z]/i.test(transcript) || /[a-z]-[a-z]/i.test(transcript);
                     checks.push({
                         label: "Đánh vần từng chữ cái (It is spelled [Letters])",
                         passed: hasSpellKeyword,
@@ -911,7 +914,8 @@ const PRACTICE_CONFIGS = {
                         tip: "Hãy phát âm to và dứt khoát từng chữ cái tiếng Anh"
                     });
                     return checks;
-                }
+                },
+                keyPatterns: [/it is spelled/i, /it's spelled/i, /spelled/i, /[a-z]\s+[a-z]/i]
             },
             {
                 id: "q_name_nick",
@@ -921,23 +925,25 @@ const PRACTICE_CONFIGS = {
                 hints: ["Yes, you can call me [Nickname]", "My nickname is [Nickname]", "No, I don't have a nickname"],
                 modelAnswer: "Yes, you can call me Moon. My nickname is Moon.",
                 modelAnswerVi: "Vâng, bạn có thể gọi tôi là Moon. Biệt danh của tôi là Moon.",
-                checkCriteria: (transcript) => {
-                    const lower = (transcript || '').toLowerCase();
+                checkCriteria: (transcript, alts = []) => {
+                    const texts = [transcript, ...alts].map(t => (t || '').toLowerCase());
+                    const combined = texts.join(' ');
                     const checks = [];
-                    const hasAnswer = /(yes|no|nickname|call me|don't have|do not have)/i.test(lower);
+                    const hasAnswer = /(yes|no|nickname|call me|don't have|do not have|haven't|my nickname)/i.test(combined);
                     checks.push({
                         label: "Trả lời rõ ràng có hoặc không có nickname",
                         passed: hasAnswer,
                         tip: "Dùng: 'Yes, my nickname is...' hoặc 'No, I don't have a nickname'"
                     });
-                    const hasCompleteSentence = transcript.trim().split(/\s+/).filter(Boolean).length >= 3;
+                    const hasComplete = transcript.trim().split(/\s+/).filter(Boolean).length >= 1;
                     checks.push({
-                        label: "Diễn đạt câu tự nhiên, trọn vẹn",
-                        passed: hasCompleteSentence,
+                        label: "Diễn đạt câu tự nhiên, rõ ý",
+                        passed: hasComplete,
                         tip: "Ví dụ: 'Yes, you can call me Moon' hoặc 'No, I don't have a nickname'"
                     });
                     return checks;
-                }
+                },
+                keyPatterns: [/my nickname is/i, /you can call me/i, /i don't have/i, /no/i, /yes/i]
             }
         ]
     },
@@ -952,23 +958,25 @@ const PRACTICE_CONFIGS = {
                 hints: ["I'm [Số tuổi] years old", "I am 22 years old", "I'm in my early twenties"],
                 modelAnswer: "I'm 22 years old. I'm in my early twenties.",
                 modelAnswerVi: "Tôi 22 tuổi. Tôi ở độ tuổi đầu 20.",
-                checkCriteria: (transcript) => {
-                    const lower = (transcript || '').toLowerCase();
+                checkCriteria: (transcript, alts = []) => {
+                    const texts = [transcript, ...alts].map(t => (t || '').toLowerCase());
+                    const combined = texts.join(' ');
                     const checks = [];
-                    const hasAgeNumber = /(\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|twenties|thirties|forties)/i.test(lower);
+                    const hasAgeNumber = /(\b\d{1,2}\b|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|twenties|thirties|forties)/i.test(combined);
                     checks.push({
                         label: "Nêu rõ số tuổi chính xác hoặc khoảng tuổi",
                         passed: hasAgeNumber,
                         tip: "Hãy nói số tuổi (ví dụ: '22', 'twenty-two', hoặc 'in my early twenties')"
                     });
-                    const hasAgeStructure = /(i am|i'm|years old|in my)/i.test(lower);
+                    const hasAgeStructure = /(i am|i'm|years old|year old|in my|my age|\b\d{2}\b)/i.test(combined);
                     checks.push({
                         label: "Mẫu câu đúng cấu trúc (I'm ... years old / I'm in my...)",
                         passed: hasAgeStructure,
                         tip: "Hãy bắt đầu bằng: 'I am [Số tuổi] years old' hoặc 'I'm in my...'"
                     });
                     return checks;
-                }
+                },
+                keyPatterns: [/i am|i'm/i, /\b\d{1,2}\b/i, /twenty|thirty|forty/i, /years old/i, /in my (early|mid|late)?\s*(twenties|thirties)/i]
             },
             {
                 id: "q_age_birthday",
@@ -978,23 +986,25 @@ const PRACTICE_CONFIGS = {
                 hints: ["My birthday is on the [Ngày] of [Tháng]", "It's on [Tháng] [Ngày]"],
                 modelAnswer: "My birthday is on the fifth of October.",
                 modelAnswerVi: "Sinh nhật của tôi là vào ngày 5 tháng 10.",
-                checkCriteria: (transcript) => {
-                    const lower = (transcript || '').toLowerCase();
+                checkCriteria: (transcript, alts = []) => {
+                    const texts = [transcript, ...alts].map(t => (t || '').toLowerCase());
+                    const combined = texts.join(' ');
                     const checks = [];
-                    const hasMonthOrDate = /(january|february|march|april|may|june|july|august|september|october|november|december|\b1st\b|\b2nd\b|\b3rd\b|\b\d{1,2}(th)?\b)/i.test(lower);
+                    const hasMonthOrDate = /(january|february|march|april|may|june|july|august|september|october|november|december|\b1st\b|\b2nd\b|\b3rd\b|\b\d{1,2}(th)?\b|first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth)/i.test(combined);
                     checks.push({
                         label: "Nêu tháng sinh hoặc ngày sinh nhật",
                         passed: hasMonthOrDate,
                         tip: "Nhớ dùng tên tháng tiếng Anh: January, February, March... October..."
                     });
-                    const hasBirthdayPhrase = /(birthday|on the|it's on|is on|on)/i.test(lower);
+                    const hasBirthdayPhrase = /(birthday|on the|it's on|is on|on|in)/i.test(combined);
                     checks.push({
                         label: "Cấu trúc giới từ ngày sinh (on the [Ngày] of [Tháng])",
                         passed: hasBirthdayPhrase,
                         tip: "Dùng: 'My birthday is on the 5th of October' hoặc 'It's on October 5th'"
                     });
                     return checks;
-                }
+                },
+                keyPatterns: [/my birthday is on/i, /it's on/i, /on the/i, /january|february|march|april|may|june|july|august|september|october|november|december/i]
             },
             {
                 id: "q_age_born",
@@ -1004,23 +1014,25 @@ const PRACTICE_CONFIGS = {
                 hints: ["I was born in [Năm sinh]", "I was born in 2002", "I was born on [Ngày tháng năm]"],
                 modelAnswer: "I was born in 2002.",
                 modelAnswerVi: "Tôi sinh năm 2002.",
-                checkCriteria: (transcript) => {
-                    const lower = (transcript || '').toLowerCase();
+                checkCriteria: (transcript, alts = []) => {
+                    const texts = [transcript, ...alts].map(t => (t || '').toLowerCase());
+                    const combined = texts.join(' ');
                     const checks = [];
-                    const hasBorn = /(born|was born|born in|born on)/i.test(lower);
+                    const hasBorn = /(born|was born|born in|born on|i was)/i.test(combined);
                     checks.push({
-                        label: "Cấu trúc bị động về nơi/năm sinh (I was born in...)",
+                        label: "Cấu trúc bị động về năm sinh (I was born in...)",
                         passed: hasBorn,
                         tip: "Hãy dùng mẫu câu: 'I was born in [năm]'"
                     });
-                    const hasYear = /(\b19\d{2}\b|\b20\d{2}\b|nineteen|two thousand|\d{4})/i.test(lower);
+                    const hasYear = /(\b19\d{2}\b|\b20\d{2}\b|nineteen|two thousand|\d{4})/i.test(combined);
                     checks.push({
                         label: "Nêu rõ năm sinh",
                         passed: hasYear,
                         tip: "Ví dụ: 'in 2002' (two thousand and two) hoặc 'in 1999'"
                     });
                     return checks;
-                }
+                },
+                keyPatterns: [/i was born in/i, /born in/i, /born on/i, /\b19\d{2}\b|\b20\d{2}\b/i]
             }
         ]
     },
@@ -1035,23 +1047,25 @@ const PRACTICE_CONFIGS = {
                 hints: ["I'm from [Tỉnh/Thành phố] City/Province", "I come from [Tỉnh/Thành phố]"],
                 modelAnswer: "I'm from Can Tho City.",
                 modelAnswerVi: "Tôi đến từ thành phố Cần Thơ.",
-                checkCriteria: (transcript) => {
-                    const lower = (transcript || '').toLowerCase();
+                checkCriteria: (transcript, alts = []) => {
+                    const texts = [transcript, ...alts].map(t => (t || '').toLowerCase());
+                    const combined = texts.join(' ');
                     const checks = [];
-                    const hasFrom = /(i am from|i'm from|come from|originally from|born and raised)/i.test(lower);
+                    const hasFrom = /(i am from|i'm from|come from|originally from|born and raised|from)/i.test(combined);
                     checks.push({
                         label: "Mẫu câu quê quán (I'm from / I come from...)",
                         passed: hasFrom,
                         tip: "Dùng mẫu câu: 'I'm from [địa danh] City/Province'"
                     });
-                    const hasPlace = transcript.trim().split(/\s+/).filter(Boolean).length >= 3;
+                    const hasPlace = transcript.trim().split(/\s+/).filter(Boolean).length >= 2;
                     checks.push({
                         label: "Nêu tên thành phố / tỉnh quê hương",
                         passed: hasPlace,
                         tip: "Nêu rõ tên tỉnh thành: ví dụ 'Can Tho City', 'Ben Tre Province'"
                     });
                     return checks;
-                }
+                },
+                keyPatterns: [/i'm from|i am from/i, /come from/i, /city|province/i]
             },
             {
                 id: "q_home_live",
@@ -1061,23 +1075,25 @@ const PRACTICE_CONFIGS = {
                 hints: ["I live in [Tỉnh/Thành phố]", "Currently, I live in [Nơi ở hiện tại]"],
                 modelAnswer: "Currently, I live in Ho Chi Minh City.",
                 modelAnswerVi: "Hiện tại, tôi đang sống ở Thành phố Hồ Chí Minh.",
-                checkCriteria: (transcript) => {
-                    const lower = (transcript || '').toLowerCase();
+                checkCriteria: (transcript, alts = []) => {
+                    const texts = [transcript, ...alts].map(t => (t || '').toLowerCase());
+                    const combined = texts.join(' ');
                     const checks = [];
-                    const hasLive = /(live in|living in|stay in|staying in|currently)/i.test(lower);
+                    const hasLive = /(live in|living in|stay in|staying in|currently|reside)/i.test(combined);
                     checks.push({
                         label: "Mẫu câu nơi ở hiện tại (I live in... / Currently living in...)",
                         passed: hasLive,
                         tip: "Dùng mẫu câu: 'I live in [nơi ở]' hoặc 'Currently, I live in...'"
                     });
-                    const hasCompleteSentence = transcript.trim().split(/\s+/).filter(Boolean).length >= 3;
+                    const hasCompleteSentence = transcript.trim().split(/\s+/).filter(Boolean).length >= 2;
                     checks.push({
                         label: "Diễn đạt câu trọn vẹn",
                         passed: hasCompleteSentence,
                         tip: "Ví dụ: 'I live in Ho Chi Minh City'"
                     });
                     return checks;
-                }
+                },
+                keyPatterns: [/live in/i, /living in/i, /currently/i, /city|province|district/i]
             }
         ]
     },
@@ -1092,23 +1108,25 @@ const PRACTICE_CONFIGS = {
                 hints: ["I'm still a university student", "I work as an accountant", "I graduated from university"],
                 modelAnswer: "I'm still a university student.",
                 modelAnswerVi: "Tôi hiện vẫn là một sinh viên đại học.",
-                checkCriteria: (transcript) => {
-                    const lower = (transcript || '').toLowerCase();
+                checkCriteria: (transcript, alts = []) => {
+                    const texts = [transcript, ...alts].map(t => (t || '').toLowerCase());
+                    const combined = texts.join(' ');
                     const checks = [];
-                    const hasStatus = /(student|university|college|work|working|job|graduated|accountant|engineer|officer|teacher|nurse|worker|employee|freelance)/i.test(lower);
+                    const hasStatus = /(student|university|college|school|work|working|job|graduated|graduate|accountant|engineer|officer|teacher|nurse|worker|employee|freelance|businessman|businesswoman|staff|assistant|developer|designer|doctor)/i.test(combined);
                     checks.push({
                         label: "Nêu rõ tình trạng (student / working as...)",
                         passed: hasStatus,
                         tip: "Dùng: 'I'm still a student' hoặc 'I'm working as an accountant'"
                     });
-                    const hasSentence = /(i am|i'm|i work|graduated)/i.test(lower);
+                    const hasSentence = /(i am|i'm|i work|i graduated|currently|still)/i.test(combined);
                     checks.push({
                         label: "Mẫu câu đúng cấu trúc",
                         passed: hasSentence,
                         tip: "Bắt đầu bằng 'I am...' hoặc 'I work as...'"
                     });
                     return checks;
-                }
+                },
+                keyPatterns: [/i'm a student|i am a student/i, /i work as/i, /graduated/i, /university|company/i]
             },
             {
                 id: "q_where_study_work",
@@ -1118,23 +1136,25 @@ const PRACTICE_CONFIGS = {
                 hints: ["I'm studying at [Tên trường] University", "I'm currently working at [Tên công ty]"],
                 modelAnswer: "I'm currently studying at Can Tho University.",
                 modelAnswerVi: "Hiện tôi đang học tại trường Đại học Cần Thơ.",
-                checkCriteria: (transcript) => {
-                    const lower = (transcript || '').toLowerCase();
+                checkCriteria: (transcript, alts = []) => {
+                    const texts = [transcript, ...alts].map(t => (t || '').toLowerCase());
+                    const combined = texts.join(' ');
                     const checks = [];
-                    const hasAction = /(studying at|working at|study at|work at|at|university|college|company|office|school|hospital)/i.test(lower);
+                    const hasAction = /(studying|working|study|work|at|university|college|company|office|school|hospital|bank|agency)/i.test(combined);
                     checks.push({
                         label: "Nêu cơ quan/trường học (studying at / working at...)",
                         passed: hasAction,
                         tip: "Dùng: 'I am studying at [tên trường]' hoặc 'I work at [tên công ty]'"
                     });
-                    const hasLength = transcript.trim().split(/\s+/).filter(Boolean).length >= 4;
+                    const hasLength = transcript.trim().split(/\s+/).filter(Boolean).length >= 3;
                     checks.push({
                         label: "Nêu tên cụ thể của trường hoặc cơ quan",
                         passed: hasLength,
                         tip: "Ví dụ: 'Can Tho University', 'ABC Company'"
                     });
                     return checks;
-                }
+                },
+                keyPatterns: [/studying at/i, /working at/i, /university|company|hospital|school/i]
             },
             {
                 id: "q_major",
@@ -1144,23 +1164,25 @@ const PRACTICE_CONFIGS = {
                 hints: ["My major is [Tên chuyên ngành]", "I'm majoring in [Chuyên ngành]"],
                 modelAnswer: "My major is English Language.",
                 modelAnswerVi: "Chuyên ngành của tôi là Ngôn ngữ Anh.",
-                checkCriteria: (transcript) => {
-                    const lower = (transcript || '').toLowerCase();
+                checkCriteria: (transcript, alts = []) => {
+                    const texts = [transcript, ...alts].map(t => (t || '').toLowerCase());
+                    const combined = texts.join(' ');
                     const checks = [];
-                    const hasMajor = /(major is|majoring in|major|study|studies|finance|accounting|business|it|english|law|medicine)/i.test(lower);
+                    const hasMajor = /(major|majoring|study|studies|finance|accounting|business|it|english|law|medicine|marketing|economics|engineering|management)/i.test(combined);
                     checks.push({
                         label: "Mẫu câu chuyên ngành (My major is... / I major in...)",
                         passed: hasMajor,
                         tip: "Dùng: 'My major is [tên chuyên ngành]' hoặc 'I'm majoring in...'"
                     });
-                    const hasCompleteSentence = transcript.trim().split(/\s+/).filter(Boolean).length >= 3;
+                    const hasCompleteSentence = transcript.trim().split(/\s+/).filter(Boolean).length >= 2;
                     checks.push({
                         label: "Diễn đạt câu hoàn chỉnh",
                         passed: hasCompleteSentence,
                         tip: "Ví dụ: 'My major is Finance' hoặc 'My major is English'"
                     });
                     return checks;
-                }
+                },
+                keyPatterns: [/my major is/i, /majoring in/i, /i major in/i]
             }
         ]
     },
@@ -1175,23 +1197,25 @@ const PRACTICE_CONFIGS = {
                 hints: ["There are [Số người] people in my family", "including my parents, my brother, and me"],
                 modelAnswer: "There are four people in my family: my parents, my older brother, and me.",
                 modelAnswerVi: "Có bốn người trong gia đình tôi: bố mẹ tôi, anh trai tôi và tôi.",
-                checkCriteria: (transcript) => {
-                    const lower = (transcript || '').toLowerCase();
+                checkCriteria: (transcript, alts = []) => {
+                    const texts = [transcript, ...alts].map(t => (t || '').toLowerCase());
+                    const combined = texts.join(' ');
                     const checks = [];
-                    const hasCount = /(there are|\d+|people|members|two|three|four|five|six|seven)/i.test(lower);
+                    const hasCount = /(there are|\b\d+\b|people|members|two|three|four|five|six|seven|eight|nuclear|extended|small|big)/i.test(combined);
                     checks.push({
                         label: "Nêu số lượng thành viên (There are ... people)",
                         passed: hasCount,
                         tip: "Dùng: 'There are [số lượng] people in my family'"
                     });
-                    const hasListing = /(parent|parents|father|mother|dad|mom|brother|sister|only child|me)/i.test(lower);
+                    const hasListing = /(parent|parents|father|mother|dad|mom|brother|sister|only child|me|family)/i.test(combined);
                     checks.push({
                         label: "Kể tên các thành viên (my parents, my brother, and me)",
                         passed: hasListing,
                         tip: "Liệt kê thêm: 'including my parents, my brother, and me'"
                     });
                     return checks;
-                }
+                },
+                keyPatterns: [/there are \w+ people/i, /in my family/i, /parents|brother|sister/i]
             },
             {
                 id: "q_family_siblings",
@@ -1201,23 +1225,25 @@ const PRACTICE_CONFIGS = {
                 hints: ["Yes, I have [số lượng] older/younger brother/sister", "No, I'm the only child"],
                 modelAnswer: "Yes, I have one older brother. I'm the second child.",
                 modelAnswerVi: "Vâng, tôi có một anh trai. Tôi là con thứ hai.",
-                checkCriteria: (transcript) => {
-                    const lower = (transcript || '').toLowerCase();
+                checkCriteria: (transcript, alts = []) => {
+                    const texts = [transcript, ...alts].map(t => (t || '').toLowerCase());
+                    const combined = texts.join(' ');
                     const checks = [];
-                    const hasSiblings = /(yes|no|brother|sister|only child|have|don't have|older|younger)/i.test(lower);
+                    const hasSiblings = /(yes|no|brother|sister|only child|have|don't have|do not have|older|younger)/i.test(combined);
                     checks.push({
                         label: "Trả lời rõ ràng về anh chị em (Yes/No, brother/sister/only child)",
                         passed: hasSiblings,
                         tip: "Ví dụ: 'Yes, I have one older brother' hoặc 'No, I'm the only child'"
                     });
-                    const hasSentence = transcript.trim().split(/\s+/).filter(Boolean).length >= 3;
+                    const hasSentence = transcript.trim().split(/\s+/).filter(Boolean).length >= 2;
                     checks.push({
                         label: "Nói thành câu hoàn chỉnh",
                         passed: hasSentence,
                         tip: "Diễn đạt trọn vẹn: 'I have one older brother and one younger sister'"
                     });
                     return checks;
-                }
+                },
+                keyPatterns: [/i have \w+ brother/i, /i have \w+ sister/i, /the only child/i, /older brother/i, /younger sister/i]
             }
         ]
     },
@@ -1232,23 +1258,25 @@ const PRACTICE_CONFIGS = {
                 hints: ["My hobbies are [V-ing] and [V-ing]", "My hobby is [V-ing]", "I like [V-ing]"],
                 modelAnswer: "My hobbies are reading books and listening to music.",
                 modelAnswerVi: "Sở thích của tôi là đọc sách và nghe nhạc.",
-                checkCriteria: (transcript) => {
-                    const lower = (transcript || '').toLowerCase();
+                checkCriteria: (transcript, alts = []) => {
+                    const texts = [transcript, ...alts].map(t => (t || '').toLowerCase());
+                    const combined = texts.join(' ');
                     const checks = [];
-                    const hasHobbyIntro = /(my hobbies are|my hobby is|i like|i love|i enjoy)/i.test(lower);
+                    const hasHobbyIntro = /(my hobbies are|my hobby is|i like|i love|i enjoy|favorite|interested in)/i.test(combined);
                     checks.push({
                         label: "Mẫu câu sở thích (My hobbies are... / I like...)",
                         passed: hasHobbyIntro,
                         tip: "Bắt đầu bằng: 'My hobbies are...' hoặc 'I like/love...'"
                     });
-                    const hasActivities = /(reading|listening|music|books|movies|watching|cooking|travelling|traveling|sports|playing|games|singing|shopping|swimming|yoga)/i.test(lower);
+                    const hasActivities = /(reading|listening|music|books|movies|watching|cooking|travelling|traveling|sports|playing|games|singing|shopping|swimming|yoga|running|football|badminton)/i.test(combined);
                     checks.push({
                         label: "Nêu hoạt động sở thích ở dạng V-ing",
                         passed: hasActivities,
                         tip: "Nhớ dùng dạng V-ing: reading books, listening to music, cooking..."
                     });
                     return checks;
-                }
+                },
+                keyPatterns: [/my hobbies are/i, /my hobby is/i, /i like/i, /i love/i, /reading|listening|cooking|watching/i]
             },
             {
                 id: "q_hobbies_freetime",
@@ -1258,23 +1286,25 @@ const PRACTICE_CONFIGS = {
                 hints: ["In my free time, I like/love [V-ing]", "I usually [V] in my free time"],
                 modelAnswer: "In my free time, I love cooking and hanging out with my friends.",
                 modelAnswerVi: "Vào thời gian rảnh, tôi thích nấu ăn và đi chơi với bạn bè.",
-                checkCriteria: (transcript) => {
-                    const lower = (transcript || '').toLowerCase();
+                checkCriteria: (transcript, alts = []) => {
+                    const texts = [transcript, ...alts].map(t => (t || '').toLowerCase());
+                    const combined = texts.join(' ');
                     const checks = [];
-                    const hasFreeTime = /(in my free time|free time|spare time|usually|often)/i.test(lower);
+                    const hasFreeTime = /(free time|in my free time|spare time|usually|often|sometimes|when i have time)/i.test(combined);
                     checks.push({
                         label: "Cụm từ thời gian rảnh (In my free time...)",
                         passed: hasFreeTime,
                         tip: "Bắt đầu bằng: 'In my free time, I love...'"
                     });
-                    const hasAction = /(like|love|enjoy|cooking|reading|music|walking|friends|hanging out|relax|movie|sleep)/i.test(lower);
+                    const hasAction = /(like|love|enjoy|cooking|reading|music|walking|friends|hanging out|relax|movie|sleep|games|sports)/i.test(combined);
                     checks.push({
                         label: "Nêu hoạt động thư giãn cụ thể",
                         passed: hasAction,
                         tip: "Kể hoạt động bạn thích làm khi rảnh rỗi"
                     });
                     return checks;
-                }
+                },
+                keyPatterns: [/in my free time/i, /free time/i, /i usually/i, /relax/i]
             }
         ]
     },
@@ -1289,23 +1319,25 @@ const PRACTICE_CONFIGS = {
                 hints: ["After this course, I hope to [Mục tiêu]", "improve my English speaking skills", "pass the VSTEP exam and get a B1 certificate"],
                 modelAnswer: "After this course, I hope to communicate confidently in English and pass the VSTEP exam.",
                 modelAnswerVi: "Sau khóa học này, tôi hy vọng sẽ giao tiếp tiếng Anh tự tin và vượt qua kỳ thi VSTEP.",
-                checkCriteria: (transcript) => {
-                    const lower = (transcript || '').toLowerCase();
+                checkCriteria: (transcript, alts = []) => {
+                    const texts = [transcript, ...alts].map(t => (t || '').toLowerCase());
+                    const combined = texts.join(' ');
                     const checks = [];
-                    const hasGoalIntro = /(hope to|want to|plan to|aim to|after this course)/i.test(lower);
+                    const hasGoalIntro = /(hope to|want to|plan to|aim to|wish to|after this course|my goal is)/i.test(combined);
                     checks.push({
                         label: "Mẫu câu mục tiêu (After this course, I hope to... / I want to...)",
                         passed: hasGoalIntro,
                         tip: "Dùng: 'After this course, I hope to [mục tiêu]'"
                     });
-                    const hasGoalTarget = /(improve|speak|fluently|confident|confidently|pass|vstep|b1|b2|certificate|skills|exam|job|better)/i.test(lower);
+                    const hasGoalTarget = /(improve|speak|fluently|fluent|confident|confidently|pass|vstep|b1|b2|certificate|skills|exam|job|better|communicate)/i.test(combined);
                     checks.push({
                         label: "Mục tiêu cụ thể (speak fluently, pass VSTEP B1, improve skills...)",
                         passed: hasGoalTarget,
                         tip: "Ví dụ: 'speak English fluently' hoặc 'pass the VSTEP B1 exam'"
                     });
                     return checks;
-                }
+                },
+                keyPatterns: [/after this course/i, /i hope to/i, /i want to/i, /speak english fluently/i, /b1 certificate|vstep/i]
             }
         ]
     }
@@ -1322,6 +1354,7 @@ function initInteractivePractice() {
     let activePanel = null;
     let secondsElapsed = 0;
     let currentTranscript = '';
+    let candidateAlternatives = [];
     let isStoppingProcess = false;
 
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -1403,6 +1436,7 @@ function initInteractivePractice() {
             if (transcriptEditWrap) transcriptEditWrap.classList.add('hidden');
             if (editInputRow) editInputRow.classList.add('hidden');
             currentTranscript = '';
+            candidateAlternatives = [];
         }
 
         // Initialize with Question 0
@@ -1436,6 +1470,7 @@ function initInteractivePractice() {
                 const newText = editInput.value.trim();
                 if (!newText) return;
                 currentTranscript = newText;
+                candidateAlternatives = [newText];
                 const transcriptContent = panel.querySelector('.transcript-content');
                 const wordCountBadge = panel.querySelector('.word-count-badge');
                 if (transcriptContent) {
@@ -1446,7 +1481,7 @@ function initInteractivePractice() {
                 if (wordCountBadge) wordCountBadge.textContent = `${words.length} từ`;
 
                 const currentQ = sectionConfig.questions[currentQIndex];
-                renderFeedbackResult(panel, currentQ, newText, secondsElapsed);
+                renderFeedbackResult(panel, currentQ, newText, [newText], secondsElapsed);
             });
         }
 
@@ -1498,6 +1533,7 @@ function initInteractivePractice() {
 
         let audioChunks = [];
         currentTranscript = '';
+        candidateAlternatives = [];
         isStoppingProcess = false;
 
         try {
@@ -1550,19 +1586,26 @@ function initInteractivePractice() {
                     recognition.continuous = true;
                     recognition.interimResults = true;
                     recognition.lang = 'en-US';
-
-                    let finalTrans = '';
+                    recognition.maxAlternatives = 5;
 
                     recognition.onresult = (event) => {
+                        let finalTrans = '';
                         let interimTrans = '';
-                        for (let i = event.resultIndex; i < event.results.length; i++) {
-                            const result = event.results[i];
-                            if (result.isFinal) {
-                                finalTrans += result[0].transcript + ' ';
+                        let alts = [];
+
+                        for (let i = 0; i < event.results.length; i++) {
+                            const res = event.results[i];
+                            if (res.isFinal) {
+                                finalTrans += res[0].transcript + ' ';
                             } else {
-                                interimTrans += result[0].transcript;
+                                interimTrans += res[0].transcript;
+                            }
+                            for (let a = 0; a < res.length; a++) {
+                                alts.push(res[a].transcript);
                             }
                         }
+
+                        candidateAlternatives = alts;
                         const combined = (finalTrans + interimTrans).trim();
                         if (combined) {
                             currentTranscript = combined;
@@ -1579,6 +1622,11 @@ function initInteractivePractice() {
                     recognition.onend = () => {
                         if (isStoppingProcess) {
                             finalizeEvaluation(panel, currentQ);
+                        } else if (recordBtn.classList.contains('recording')) {
+                            // Automatically resume listening if Chrome stopped due to pause
+                            try {
+                                recognition.start();
+                            } catch (e) {}
                         }
                     };
 
@@ -1618,15 +1666,13 @@ function initInteractivePractice() {
         const currentQ = sectionConfig ? sectionConfig.questions[qIdx] : null;
 
         const recordBtn = panel.querySelector('.practice-record-btn');
-        const recordIcon = recordBtn.querySelector('.record-icon');
         const recordText = recordBtn.querySelector('.record-text');
         const recordIndicator = panel.querySelector('.recording-indicator');
-        const transcriptBox = panel.querySelector('.practice-transcript-box');
 
         isStoppingProcess = true;
         recordBtn.disabled = true;
         recordText.textContent = 'Đang phân tích...';
-        recordIndicator.querySelector('.record-status-text').textContent = 'Đang phân tích câu trả lời...';
+        recordIndicator.querySelector('.record-status-text').textContent = 'Đang hoàn tất phân tích giọng nói...';
 
         if (activeTimer) {
             clearInterval(activeTimer);
@@ -1694,52 +1740,81 @@ function initInteractivePractice() {
 
         // Render feedback
         if (currentQ) {
-            renderFeedbackResult(panel, currentQ, finalText, secondsElapsed);
+            renderFeedbackResult(panel, currentQ, finalText, candidateAlternatives, secondsElapsed);
         }
     }
 
-    function renderFeedbackResult(panel, qConfig, transcript, duration) {
+    function renderFeedbackResult(panel, qConfig, transcript, alts = [], duration = 0) {
         const feedbackCard = panel.querySelector('.practice-feedback-card');
         const cleanText = (transcript || '').trim();
         const words = cleanText ? cleanText.split(/\s+/).filter(Boolean) : [];
         const wordCount = words.length;
 
-        const criteriaList = qConfig.checkCriteria(cleanText);
+        // Fluency calculation: estimated Words Per Minute (WPM)
+        const durSeconds = Math.max(duration, 1);
+        const wpm = Math.round((wordCount / durSeconds) * 60);
+
+        let fluencyText = "Tự nhiên";
+        if (wordCount === 0) fluencyText = "Chưa có";
+        else if (wpm < 50) fluencyText = "Chậm rãi";
+        else if (wpm <= 140) fluencyText = "Lưu loát chuẩn (~" + wpm + " wpm)";
+        else fluencyText = "Nhanh (~" + wpm + " wpm)";
+
+        const criteriaList = qConfig.checkCriteria(cleanText, alts);
         const passedCount = criteriaList.filter(c => c.passed).length;
         const totalCriteria = criteriaList.length;
 
+        // Detect keywords
+        const detectedKeywords = [];
+        if (qConfig.keyPatterns) {
+            const allToCheck = [cleanText, ...(alts || [])].join(' ');
+            qConfig.keyPatterns.forEach(pattern => {
+                const match = allToCheck.match(pattern);
+                if (match && !detectedKeywords.includes(match[0].toLowerCase())) {
+                    detectedKeywords.push(match[0]);
+                }
+            });
+        }
+
+        // Scoring & Pedagogical Feedback
         let stars = 3;
         let scoreBadge = "Khá Tốt 👍";
         let scoreColor = "#2563eb";
-        let mainAdvice = "";
+        let strengthAdvice = "";
+        let improvementAdvice = "";
 
         if (wordCount === 0) {
             stars = 1;
-            scoreBadge = "Chưa nhận được lời nói 🎙️";
+            scoreBadge = "Chưa nhận diện được giọng nói 🎙️";
             scoreColor = "#dc2626";
-            mainAdvice = "Hệ thống chưa ghi nhận được câu trả lời của em. Em hãy ghé sát micro, nói to rõ ràng hơn, hoặc bấm nút 'Chỉnh sửa' bên trên để gõ lại câu trả lời nhé!";
+            strengthAdvice = "Hệ thống chưa ghi nhận được âm thanh từ micro.";
+            improvementAdvice = "Em hãy kiểm tra micro, ghé sát và nói to rõ ràng hơn nhé. Nếu micro gặp sự cố, em có thể bấm nút 'Chỉnh sửa / Gõ câu trả lời' ở trên để kiểm tra ngữ pháp ngay!";
         } else if (passedCount === totalCriteria && wordCount >= 3) {
             stars = 5;
             scoreBadge = "Xuất Sắc! ⭐⭐⭐⭐⭐";
             scoreColor = "#16a34a";
-            mainAdvice = "Xuất sắc! 🎉 Câu trả lời rất chuẩn xác, đúng trọng tâm câu hỏi và ngữ pháp rất tốt. Cô rất khen ngợi!";
+            strengthAdvice = "Rất tuyệt vời! Phát âm rõ ràng, đúng trọng tâm câu hỏi và ngữ pháp rất chuẩn xác. Câu trả lời đạt chuẩn điểm tối đa của giám khảo VSTEP.";
+            improvementAdvice = "💡 Mẹo nâng cao: Để trả lời ấn tượng hơn nữa, em có thể kết hợp thêm 1 câu mở rộng lý do hoặc cảm xúc nhé!";
         } else if (passedCount >= 1) {
-            if (wordCount >= 4) {
+            if (wordCount >= 3) {
                 stars = 4;
                 scoreBadge = "Rất Tốt ⭐⭐⭐⭐";
                 scoreColor = "#059669";
-                mainAdvice = "Rất tốt! Em đã trả lời đúng thông tin chính. Hãy tham khảo thêm câu trả lời mẫu bên dưới để hoàn thiện câu nói tự nhiên hơn nhé!";
+                strengthAdvice = "Rất tốt! Em đã trả lời đúng trọng tâm câu hỏi và diễn đạt được thông tin cốt lõi.";
+                improvementAdvice = "💡 Gợi ý cải thiện: Em hãy xem thêm câu trả lời mẫu bên dưới để hoàn thiện câu nói tự nhiên và trọn vẹn hơn nhé!";
             } else {
                 stars = 3;
                 scoreBadge = "Khá Tốt ⭐⭐⭐";
                 scoreColor = "#2563eb";
-                mainAdvice = "Khá tốt! Em đã nêu được thông tin, nhưng trong bài thi Nói hãy diễn đạt thành một câu hoàn chỉnh (gồm cả chủ ngữ và vị ngữ) nhé!";
+                strengthAdvice = "Em đã nêu được thông tin chính xác.";
+                improvementAdvice = "💡 Lời khuyên: Trong bài thi Nói, hãy tránh trả lời cộc lốc chỉ 1 từ. Em nên nói thành câu hoàn chỉnh gồm cả chủ ngữ và vị ngữ (Ví dụ thay vì nói mỗi số tuổi '22', hãy nói 'I am 22 years old') nhé!";
             }
         } else {
             stars = 2;
             scoreBadge = "Cần bổ sung ý 📝";
             scoreColor = "#d97706";
-            mainAdvice = "Câu trả lời của em dường như chưa đúng trọng tâm của câu hỏi này. Hãy xem các cấu trúc gợi ý và câu trả lời mẫu bên dưới để thử lại nhé!";
+            strengthAdvice = "Em đã tự tin cất giọng nói bằng tiếng Anh, đây là bước khởi đầu rất đáng khen!";
+            improvementAdvice = "💡 Câu trả lời dường như chưa trúng từ khóa của câu hỏi này. Em hãy xem các cấu trúc gợi ý và câu trả lời mẫu bên dưới rồi thử bấm ghi âm lại nhé!";
         }
 
         const starIcons = '⭐'.repeat(stars);
@@ -1749,17 +1824,21 @@ function initInteractivePractice() {
                 <span>${c.passed ? '✅' : '⚠️'}</span>
                 <div>
                     <div>${c.label}</div>
-                    ${!c.passed ? `<div style="font-size:0.82rem; color:#b45309; margin-top:2px;">💡 <em>Gợi ý: ${c.tip}</em></div>` : ''}
+                    ${!c.passed ? `<div style="font-size:0.83rem; color:#b45309; margin-top:2px;">💡 <em>Gợi ý: ${c.tip}</em></div>` : ''}
                 </div>
             </li>
         `).join('');
+
+        const keywordPillsHtml = detectedKeywords.length > 0 
+            ? detectedKeywords.map(kw => `<span class="hint-pill" style="background:#dcfce7; border-color:#86efac; color:#15803d; font-weight:700;">✓ ${kw}</span>`).join(' ')
+            : `<span style="font-size:0.85rem; color:#94a3b8; font-style:italic;">(Chưa phát hiện từ khóa trọng tâm)</span>`;
 
         feedbackCard.innerHTML = `
             <div class="feedback-header-row">
                 <div class="feedback-headline">
                     <span class="feedback-icon">${stars >= 4 ? '🎉' : '💡'}</span>
                     <div>
-                        <div class="feedback-title-text">ĐÁNH GIÁ & NHẬN XÉT CỦA HỆ THỐNG</div>
+                        <div class="feedback-title-text">KẾT QUẢ ĐÁNH GIÁ & NHẬN XÉT CHI TIẾT</div>
                         <div style="font-size: 0.88rem; color: #166534; font-weight: 600;">${starIcons} (${stars}/5 sao)</div>
                     </div>
                 </div>
@@ -1771,11 +1850,15 @@ function initInteractivePractice() {
             <div class="feedback-stats-grid">
                 <div class="feedback-stat-box">
                     <div class="stat-label">Thời lượng</div>
-                    <div class="stat-val">${duration}s</div>
+                    <div class="stat-val">${durSeconds}s</div>
                 </div>
                 <div class="feedback-stat-box">
                     <div class="stat-label">Số từ nói</div>
                     <div class="stat-val">${wordCount} từ</div>
+                </div>
+                <div class="feedback-stat-box">
+                    <div class="stat-label">Độ lưu loát</div>
+                    <div class="stat-val" style="font-size: 0.95rem;">${fluencyText}</div>
                 </div>
                 <div class="feedback-stat-box">
                     <div class="stat-label">Tiêu chí đạt</div>
@@ -1783,9 +1866,23 @@ function initInteractivePractice() {
                 </div>
             </div>
 
+            <div style="background: #ffffff; border: 1px dashed #cbd5e1; border-radius: 12px; padding: 12px 16px; margin-bottom: 14px;">
+                <div style="font-size: 0.82rem; font-weight: 800; color: #475569; margin-bottom: 6px; text-transform: uppercase;">
+                    🔍 Cụm từ khóa được hệ thống ghi nhận:
+                </div>
+                <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                    ${keywordPillsHtml}
+                </div>
+            </div>
+
             <div class="feedback-eval-box">
-                <div class="eval-comment-title">👩‍🏫 Nhận xét từ cô giáo:</div>
-                <div class="eval-comment-body">${mainAdvice}</div>
+                <div class="eval-comment-title">👩‍🏫 Nhận xét sư phạm từ cô giáo:</div>
+                <div class="eval-comment-body" style="margin-bottom: 8px;">
+                    <strong>✨ Ưu điểm:</strong> ${strengthAdvice}
+                </div>
+                <div class="eval-comment-body" style="color: #0369a1; margin-bottom: 12px;">
+                    <strong>🎯 Lời khuyên nâng band điểm:</strong> ${improvementAdvice}
+                </div>
                 <ul class="eval-checklist">
                     ${checklistHtml}
                 </ul>
