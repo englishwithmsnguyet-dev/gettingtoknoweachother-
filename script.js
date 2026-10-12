@@ -860,171 +860,454 @@ function copyText() {
 const PRACTICE_CONFIGS = {
     name: {
         sectionTitle: "1. NAME",
-        question: "What is your full name, and how do you spell your first name?",
-        modelAnswer: "My full name is Nguyen Van An. You can call me An. It is spelled A - N.",
-        modelAnswerVi: "Tên đầy đủ của tôi là Nguyễn Văn An. Bạn có thể gọi tôi là An. Tên tôi được đánh vần là A - N.",
-        checkCriteria: (transcript) => {
-            const lower = (transcript || '').toLowerCase();
-            const checks = [];
-            const hasNameIntro = /(my name|i am|i'm|call me|full name)/i.test(lower);
-            checks.push({
-                label: "Giới thiệu tên (My name is / I am / You can call me...)",
-                passed: hasNameIntro,
-                tip: "Dùng 'My full name is [Tên]' hoặc 'You can call me [Tên thường gọi]'"
-            });
-
-            const hasSpelling = /(spell|spelled|it's|is)\s+[a-z\s\-]+/i.test(lower) || /[a-z]\s+[a-z]\s+[a-z]/i.test(lower);
-            checks.push({
-                label: "Đánh vần tên (It is spelled [Letters])",
-                passed: hasSpelling,
-                tip: "Đừng quên đánh vần từng chữ cái: ví dụ 'It is spelled A - N'"
-            });
-            return checks;
-        }
+        questions: [
+            {
+                id: "q_name_full",
+                shortLabel: "1. Tên đầy đủ",
+                question: "What's your full name?",
+                questionVi: "Tên đầy đủ của bạn là gì?",
+                hints: ["My full name is [Họ và tên]", "My name is [Tên]", "You can call me [Tên thường gọi]"],
+                modelAnswer: "My full name is Nguyen Van An. You can call me An.",
+                modelAnswerVi: "Tên đầy đủ của tôi là Nguyễn Văn An. Bạn có thể gọi tôi là An.",
+                checkCriteria: (transcript) => {
+                    const lower = (transcript || '').toLowerCase();
+                    const checks = [];
+                    const hasIntro = /(my name|my full name|i am|i'm|call me|you can call me|is)/i.test(lower);
+                    checks.push({
+                        label: "Mẫu câu giới thiệu tên (My full name is... / I'm... / You can call me...)",
+                        passed: hasIntro,
+                        tip: "Hãy dùng mẫu câu: 'My full name is [Họ và tên]' hoặc 'My name is [Tên]'"
+                    });
+                    const hasWords = transcript.trim().split(/\s+/).filter(Boolean).length >= 3;
+                    checks.push({
+                        label: "Nói trọn vẹn cả câu (đầy đủ chủ ngữ và vị ngữ)",
+                        passed: hasWords,
+                        tip: "Nên nói cả câu hoàn chỉnh thay vì chỉ đọc mỗi tên riêng"
+                    });
+                    return checks;
+                }
+            },
+            {
+                id: "q_name_spell",
+                shortLabel: "2. Đánh vần tên",
+                question: "How do you spell your first name?",
+                questionVi: "Bạn đánh vần tên như thế nào?",
+                hints: ["It is spelled [Các chữ cái]", "It's [Từng chữ cái]", "M - I - N - H"],
+                modelAnswer: "It is spelled A - N.",
+                modelAnswerVi: "Tên tôi được đánh vần là A - N.",
+                checkCriteria: (transcript) => {
+                    const lower = (transcript || '').toLowerCase();
+                    const checks = [];
+                    const hasSpellKeyword = /(spell|spelled|it's|is|that's)/i.test(lower) || /[a-z]\s+[a-z]/i.test(lower);
+                    checks.push({
+                        label: "Đánh vần từng chữ cái (It is spelled [Letters])",
+                        passed: hasSpellKeyword,
+                        tip: "Ví dụ: 'It is spelled A - N' hoặc phát âm từng chữ cái cách nhau"
+                    });
+                    const lettersCount = (transcript.match(/[a-zA-Z]/g) || []).length;
+                    checks.push({
+                        label: "Phát âm rõ ràng các chữ cái trong tên",
+                        passed: lettersCount >= 2,
+                        tip: "Hãy phát âm to và dứt khoát từng chữ cái tiếng Anh"
+                    });
+                    return checks;
+                }
+            },
+            {
+                id: "q_name_nick",
+                shortLabel: "3. Biệt danh (Nickname)",
+                question: "Do you have a nickname?",
+                questionVi: "Bạn có biệt danh / tên gọi ở nhà không?",
+                hints: ["Yes, you can call me [Nickname]", "My nickname is [Nickname]", "No, I don't have a nickname"],
+                modelAnswer: "Yes, you can call me Moon. My nickname is Moon.",
+                modelAnswerVi: "Vâng, bạn có thể gọi tôi là Moon. Biệt danh của tôi là Moon.",
+                checkCriteria: (transcript) => {
+                    const lower = (transcript || '').toLowerCase();
+                    const checks = [];
+                    const hasAnswer = /(yes|no|nickname|call me|don't have|do not have)/i.test(lower);
+                    checks.push({
+                        label: "Trả lời rõ ràng có hoặc không có nickname",
+                        passed: hasAnswer,
+                        tip: "Dùng: 'Yes, my nickname is...' hoặc 'No, I don't have a nickname'"
+                    });
+                    const hasCompleteSentence = transcript.trim().split(/\s+/).filter(Boolean).length >= 3;
+                    checks.push({
+                        label: "Diễn đạt câu tự nhiên, trọn vẹn",
+                        passed: hasCompleteSentence,
+                        tip: "Ví dụ: 'Yes, you can call me Moon' hoặc 'No, I don't have a nickname'"
+                    });
+                    return checks;
+                }
+            }
+        ]
     },
     age: {
         sectionTitle: "2. AGE & BIRTHDAY",
-        question: "How old are you, and when was your birthday?",
-        modelAnswer: "I am 22 years old. I was born on the fifteenth of October, 2004.",
-        modelAnswerVi: "Tôi 22 tuổi. Tôi sinh vào ngày 15 tháng 10 năm 2004.",
-        checkCriteria: (transcript) => {
-            const lower = (transcript || '').toLowerCase();
-            const checks = [];
-            const hasAge = /(\d+|years old|in my (early|mid|late)?\s*(twenties|thirties|forties))/i.test(lower);
-            checks.push({
-                label: "Nêu số tuổi hoặc giai đoạn tuổi (years old / in my twenties...)",
-                passed: hasAge,
-                tip: "Hãy nói rõ số tuổi: 'I am 20 years old' hoặc 'I am in my early twenties'"
-            });
-
-            const hasBirthday = /(born|birthday|january|february|march|april|may|june|july|august|september|october|november|december|\b19\d\d\b|\b20\d\d\b)/i.test(lower);
-            checks.push({
-                label: "Nêu ngày sinh, tháng sinh hoặc năm sinh",
-                passed: hasBirthday,
-                tip: "Ví dụ: 'My birthday is on the 15th of October' hoặc 'I was born in 2004'"
-            });
-            return checks;
-        }
+        questions: [
+            {
+                id: "q_age_howold",
+                shortLabel: "1. Hỏi tuổi (How old?)",
+                question: "How old are you?",
+                questionVi: "Bạn bao nhiêu tuổi?",
+                hints: ["I'm [Số tuổi] years old", "I am 22 years old", "I'm in my early twenties"],
+                modelAnswer: "I'm 22 years old. I'm in my early twenties.",
+                modelAnswerVi: "Tôi 22 tuổi. Tôi ở độ tuổi đầu 20.",
+                checkCriteria: (transcript) => {
+                    const lower = (transcript || '').toLowerCase();
+                    const checks = [];
+                    const hasAgeNumber = /(\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|twenties|thirties|forties)/i.test(lower);
+                    checks.push({
+                        label: "Nêu rõ số tuổi chính xác hoặc khoảng tuổi",
+                        passed: hasAgeNumber,
+                        tip: "Hãy nói số tuổi (ví dụ: '22', 'twenty-two', hoặc 'in my early twenties')"
+                    });
+                    const hasAgeStructure = /(i am|i'm|years old|in my)/i.test(lower);
+                    checks.push({
+                        label: "Mẫu câu đúng cấu trúc (I'm ... years old / I'm in my...)",
+                        passed: hasAgeStructure,
+                        tip: "Hãy bắt đầu bằng: 'I am [Số tuổi] years old' hoặc 'I'm in my...'"
+                    });
+                    return checks;
+                }
+            },
+            {
+                id: "q_age_birthday",
+                shortLabel: "2. Ngày sinh nhật",
+                question: "When's your birthday?",
+                questionVi: "Ngày sinh nhật của bạn là khi nào?",
+                hints: ["My birthday is on the [Ngày] of [Tháng]", "It's on [Tháng] [Ngày]"],
+                modelAnswer: "My birthday is on the fifth of October.",
+                modelAnswerVi: "Sinh nhật của tôi là vào ngày 5 tháng 10.",
+                checkCriteria: (transcript) => {
+                    const lower = (transcript || '').toLowerCase();
+                    const checks = [];
+                    const hasMonthOrDate = /(january|february|march|april|may|june|july|august|september|october|november|december|\b1st\b|\b2nd\b|\b3rd\b|\b\d{1,2}(th)?\b)/i.test(lower);
+                    checks.push({
+                        label: "Nêu tháng sinh hoặc ngày sinh nhật",
+                        passed: hasMonthOrDate,
+                        tip: "Nhớ dùng tên tháng tiếng Anh: January, February, March... October..."
+                    });
+                    const hasBirthdayPhrase = /(birthday|on the|it's on|is on|on)/i.test(lower);
+                    checks.push({
+                        label: "Cấu trúc giới từ ngày sinh (on the [Ngày] of [Tháng])",
+                        passed: hasBirthdayPhrase,
+                        tip: "Dùng: 'My birthday is on the 5th of October' hoặc 'It's on October 5th'"
+                    });
+                    return checks;
+                }
+            },
+            {
+                id: "q_age_born",
+                shortLabel: "3. Năm sinh (When born?)",
+                question: "When were you born?",
+                questionVi: "Bạn sinh năm nào (hoặc sinh khi nào)?",
+                hints: ["I was born in [Năm sinh]", "I was born in 2002", "I was born on [Ngày tháng năm]"],
+                modelAnswer: "I was born in 2002.",
+                modelAnswerVi: "Tôi sinh năm 2002.",
+                checkCriteria: (transcript) => {
+                    const lower = (transcript || '').toLowerCase();
+                    const checks = [];
+                    const hasBorn = /(born|was born|born in|born on)/i.test(lower);
+                    checks.push({
+                        label: "Cấu trúc bị động về nơi/năm sinh (I was born in...)",
+                        passed: hasBorn,
+                        tip: "Hãy dùng mẫu câu: 'I was born in [năm]'"
+                    });
+                    const hasYear = /(\b19\d{2}\b|\b20\d{2}\b|nineteen|two thousand|\d{4})/i.test(lower);
+                    checks.push({
+                        label: "Nêu rõ năm sinh",
+                        passed: hasYear,
+                        tip: "Ví dụ: 'in 2002' (two thousand and two) hoặc 'in 1999'"
+                    });
+                    return checks;
+                }
+            }
+        ]
     },
     hometown: {
         sectionTitle: "3. HOMETOWN",
-        question: "Where are you from, and where are you currently living?",
-        modelAnswer: "I am from Can Tho Province, but currently I live and work in Ho Chi Minh City.",
-        modelAnswerVi: "Tôi đến từ tỉnh Cần Thơ, nhưng hiện tại tôi đang sinh sống và làm việc tại TP. Hồ Chí Minh.",
-        checkCriteria: (transcript) => {
-            const lower = (transcript || '').toLowerCase();
-            const checks = [];
-            const hasOrigin = /(from|come from|born and raised|hometown|originally)/i.test(lower);
-            checks.push({
-                label: "Nêu quê quán / nơi sinh ra (I'm from / I come from...)",
-                passed: hasOrigin,
-                tip: "Hãy dùng mẫu câu: 'I am from [tỉnh/thành phố]'"
-            });
-
-            const hasLiving = /(live|living|stay|staying|currently|city|province)/i.test(lower);
-            checks.push({
-                label: "Nêu nơi ở hiện tại (Currently, I live in...)",
-                passed: hasLiving,
-                tip: "Nêu nơi bạn đang ở: 'Currently, I live in Ho Chi Minh City'"
-            });
-            return checks;
-        }
+        questions: [
+            {
+                id: "q_home_from",
+                shortLabel: "1. Quê quán (Where from?)",
+                question: "Where are you from?",
+                questionVi: "Quê bạn ở đâu?",
+                hints: ["I'm from [Tỉnh/Thành phố] City/Province", "I come from [Tỉnh/Thành phố]"],
+                modelAnswer: "I'm from Can Tho City.",
+                modelAnswerVi: "Tôi đến từ thành phố Cần Thơ.",
+                checkCriteria: (transcript) => {
+                    const lower = (transcript || '').toLowerCase();
+                    const checks = [];
+                    const hasFrom = /(i am from|i'm from|come from|originally from|born and raised)/i.test(lower);
+                    checks.push({
+                        label: "Mẫu câu quê quán (I'm from / I come from...)",
+                        passed: hasFrom,
+                        tip: "Dùng mẫu câu: 'I'm from [địa danh] City/Province'"
+                    });
+                    const hasPlace = transcript.trim().split(/\s+/).filter(Boolean).length >= 3;
+                    checks.push({
+                        label: "Nêu tên thành phố / tỉnh quê hương",
+                        passed: hasPlace,
+                        tip: "Nêu rõ tên tỉnh thành: ví dụ 'Can Tho City', 'Ben Tre Province'"
+                    });
+                    return checks;
+                }
+            },
+            {
+                id: "q_home_live",
+                shortLabel: "2. Nơi ở hiện tại",
+                question: "Where do you live now?",
+                questionVi: "Hiện tại bạn đang sống ở đâu?",
+                hints: ["I live in [Tỉnh/Thành phố]", "Currently, I live in [Nơi ở hiện tại]"],
+                modelAnswer: "Currently, I live in Ho Chi Minh City.",
+                modelAnswerVi: "Hiện tại, tôi đang sống ở Thành phố Hồ Chí Minh.",
+                checkCriteria: (transcript) => {
+                    const lower = (transcript || '').toLowerCase();
+                    const checks = [];
+                    const hasLive = /(live in|living in|stay in|staying in|currently)/i.test(lower);
+                    checks.push({
+                        label: "Mẫu câu nơi ở hiện tại (I live in... / Currently living in...)",
+                        passed: hasLive,
+                        tip: "Dùng mẫu câu: 'I live in [nơi ở]' hoặc 'Currently, I live in...'"
+                    });
+                    const hasCompleteSentence = transcript.trim().split(/\s+/).filter(Boolean).length >= 3;
+                    checks.push({
+                        label: "Diễn đạt câu trọn vẹn",
+                        passed: hasCompleteSentence,
+                        tip: "Ví dụ: 'I live in Ho Chi Minh City'"
+                    });
+                    return checks;
+                }
+            }
+        ]
     },
     studies: {
         sectionTitle: "4. STUDIES & JOB",
-        question: "Are you a student or do you work? Tell me about your studies or job.",
-        modelAnswer: "I am a final-year student at university, majoring in Finance. I also work part-time as an assistant.",
-        modelAnswerVi: "Tôi là sinh viên năm cuối đại học, chuyên ngành Tài chính. Tôi cũng làm thêm bán thời gian với vị trí trợ lý.",
-        checkCriteria: (transcript) => {
-            const lower = (transcript || '').toLowerCase();
-            const checks = [];
-            const hasStatus = /(student|university|college|study|studying|major|majoring|freshman|sophomore|junior|senior|graduate|work|job|working|company|office|staff|assistant|engineer|teacher|freelance)/i.test(lower);
-            checks.push({
-                label: "Nêu rõ tình trạng học tập hoặc công việc hiện tại",
-                passed: hasStatus,
-                tip: "Ví dụ: 'I am a student at...' hoặc 'I work as a... at...'"
-            });
-
-            const hasDetails = /(major|majoring|year|faculty|company|role|department|part-time|full-time)/i.test(lower) || (transcript || '').trim().split(/\s+/).length >= 8;
-            checks.push({
-                label: "Bổ sung chi tiết về ngành học / vị trí làm việc",
-                passed: hasDetails,
-                tip: "Mở rộng câu với: 'My major is...' hoặc 'I work as a...'"
-            });
-            return checks;
-        }
+        questions: [
+            {
+                id: "q_work_or_student",
+                shortLabel: "1. Học hay đi làm?",
+                question: "Do you work, or are you a student?",
+                questionVi: "Bạn đang đi làm hay là sinh viên?",
+                hints: ["I'm still a university student", "I work as an accountant", "I graduated from university"],
+                modelAnswer: "I'm still a university student.",
+                modelAnswerVi: "Tôi hiện vẫn là một sinh viên đại học.",
+                checkCriteria: (transcript) => {
+                    const lower = (transcript || '').toLowerCase();
+                    const checks = [];
+                    const hasStatus = /(student|university|college|work|working|job|graduated|accountant|engineer|officer|teacher|nurse|worker|employee|freelance)/i.test(lower);
+                    checks.push({
+                        label: "Nêu rõ tình trạng (student / working as...)",
+                        passed: hasStatus,
+                        tip: "Dùng: 'I'm still a student' hoặc 'I'm working as an accountant'"
+                    });
+                    const hasSentence = /(i am|i'm|i work|graduated)/i.test(lower);
+                    checks.push({
+                        label: "Mẫu câu đúng cấu trúc",
+                        passed: hasSentence,
+                        tip: "Bắt đầu bằng 'I am...' hoặc 'I work as...'"
+                    });
+                    return checks;
+                }
+            },
+            {
+                id: "q_where_study_work",
+                shortLabel: "2. Nơi học / làm việc",
+                question: "Where are you studying or working now?",
+                questionVi: "Bạn đang học tập hoặc làm việc ở đâu?",
+                hints: ["I'm studying at [Tên trường] University", "I'm currently working at [Tên công ty]"],
+                modelAnswer: "I'm currently studying at Can Tho University.",
+                modelAnswerVi: "Hiện tôi đang học tại trường Đại học Cần Thơ.",
+                checkCriteria: (transcript) => {
+                    const lower = (transcript || '').toLowerCase();
+                    const checks = [];
+                    const hasAction = /(studying at|working at|study at|work at|at|university|college|company|office|school|hospital)/i.test(lower);
+                    checks.push({
+                        label: "Nêu cơ quan/trường học (studying at / working at...)",
+                        passed: hasAction,
+                        tip: "Dùng: 'I am studying at [tên trường]' hoặc 'I work at [tên công ty]'"
+                    });
+                    const hasLength = transcript.trim().split(/\s+/).filter(Boolean).length >= 4;
+                    checks.push({
+                        label: "Nêu tên cụ thể của trường hoặc cơ quan",
+                        passed: hasLength,
+                        tip: "Ví dụ: 'Can Tho University', 'ABC Company'"
+                    });
+                    return checks;
+                }
+            },
+            {
+                id: "q_major",
+                shortLabel: "3. Chuyên ngành (Major)",
+                question: "What is your major?",
+                questionVi: "Chuyên ngành học của bạn là gì?",
+                hints: ["My major is [Tên chuyên ngành]", "I'm majoring in [Chuyên ngành]"],
+                modelAnswer: "My major is English Language.",
+                modelAnswerVi: "Chuyên ngành của tôi là Ngôn ngữ Anh.",
+                checkCriteria: (transcript) => {
+                    const lower = (transcript || '').toLowerCase();
+                    const checks = [];
+                    const hasMajor = /(major is|majoring in|major|study|studies|finance|accounting|business|it|english|law|medicine)/i.test(lower);
+                    checks.push({
+                        label: "Mẫu câu chuyên ngành (My major is... / I major in...)",
+                        passed: hasMajor,
+                        tip: "Dùng: 'My major is [tên chuyên ngành]' hoặc 'I'm majoring in...'"
+                    });
+                    const hasCompleteSentence = transcript.trim().split(/\s+/).filter(Boolean).length >= 3;
+                    checks.push({
+                        label: "Diễn đạt câu hoàn chỉnh",
+                        passed: hasCompleteSentence,
+                        tip: "Ví dụ: 'My major is Finance' hoặc 'My major is English'"
+                    });
+                    return checks;
+                }
+            }
+        ]
     },
     family: {
         sectionTitle: "5. FAMILY",
-        question: "Tell me about your family. How many people are there and who are they?",
-        modelAnswer: "There are four people in my family: my parents, my older brother, and me. We are very close.",
-        modelAnswerVi: "Có bốn người trong gia đình tôi: bố mẹ tôi, anh trai tôi và tôi. Chúng tôi rất thân thiết.",
-        checkCriteria: (transcript) => {
-            const lower = (transcript || '').toLowerCase();
-            const checks = [];
-            const hasCount = /(\d+|two|three|four|five|six|seven|people|members|nuclear|extended)/i.test(lower);
-            checks.push({
-                label: "Nêu số lượng thành viên (There are ... people in my family)",
-                passed: hasCount,
-                tip: "Dùng cấu trúc: 'There are [số lượng] people in my family...'"
-            });
-
-            const hasMembers = /(parent|parents|father|mother|dad|mom|brother|sister|only child|grandparent|husband|wife|son|daughter)/i.test(lower);
-            checks.push({
-                label: "Liệt kê các thành viên trong gia đình (parents, brother, sister...)",
-                passed: hasMembers,
-                tip: "Kể tên các thành viên: 'including my parents, my older brother, and me'"
-            });
-            return checks;
-        }
+        questions: [
+            {
+                id: "q_family_members",
+                shortLabel: "1. Số lượng thành viên",
+                question: "How many people are there in your family?",
+                questionVi: "Gia đình bạn có bao nhiêu người?",
+                hints: ["There are [Số người] people in my family", "including my parents, my brother, and me"],
+                modelAnswer: "There are four people in my family: my parents, my older brother, and me.",
+                modelAnswerVi: "Có bốn người trong gia đình tôi: bố mẹ tôi, anh trai tôi và tôi.",
+                checkCriteria: (transcript) => {
+                    const lower = (transcript || '').toLowerCase();
+                    const checks = [];
+                    const hasCount = /(there are|\d+|people|members|two|three|four|five|six|seven)/i.test(lower);
+                    checks.push({
+                        label: "Nêu số lượng thành viên (There are ... people)",
+                        passed: hasCount,
+                        tip: "Dùng: 'There are [số lượng] people in my family'"
+                    });
+                    const hasListing = /(parent|parents|father|mother|dad|mom|brother|sister|only child|me)/i.test(lower);
+                    checks.push({
+                        label: "Kể tên các thành viên (my parents, my brother, and me)",
+                        passed: hasListing,
+                        tip: "Liệt kê thêm: 'including my parents, my brother, and me'"
+                    });
+                    return checks;
+                }
+            },
+            {
+                id: "q_family_siblings",
+                shortLabel: "2. Anh chị em",
+                question: "Do you have any brothers and sisters?",
+                questionVi: "Bạn có anh chị em nào không?",
+                hints: ["Yes, I have [số lượng] older/younger brother/sister", "No, I'm the only child"],
+                modelAnswer: "Yes, I have one older brother. I'm the second child.",
+                modelAnswerVi: "Vâng, tôi có một anh trai. Tôi là con thứ hai.",
+                checkCriteria: (transcript) => {
+                    const lower = (transcript || '').toLowerCase();
+                    const checks = [];
+                    const hasSiblings = /(yes|no|brother|sister|only child|have|don't have|older|younger)/i.test(lower);
+                    checks.push({
+                        label: "Trả lời rõ ràng về anh chị em (Yes/No, brother/sister/only child)",
+                        passed: hasSiblings,
+                        tip: "Ví dụ: 'Yes, I have one older brother' hoặc 'No, I'm the only child'"
+                    });
+                    const hasSentence = transcript.trim().split(/\s+/).filter(Boolean).length >= 3;
+                    checks.push({
+                        label: "Nói thành câu hoàn chỉnh",
+                        passed: hasSentence,
+                        tip: "Diễn đạt trọn vẹn: 'I have one older brother and one younger sister'"
+                    });
+                    return checks;
+                }
+            }
+        ]
     },
     hobbies: {
         sectionTitle: "6. HOBBIES",
-        question: "What are your hobbies, and what do you like doing in your free time?",
-        modelAnswer: "My hobbies are listening to music and reading books. In my free time, I also love cooking with my family.",
-        modelAnswerVi: "Sở thích của tôi là nghe nhạc và đọc sách. Vào thời gian rảnh rỗi, tôi cũng rất thích nấu ăn cùng gia đình.",
-        checkCriteria: (transcript) => {
-            const lower = (transcript || '').toLowerCase();
-            const checks = [];
-            const hasHobbyIntro = /(hobby|hobbies|like|love|enjoy|interested in|fond of|free time)/i.test(lower);
-            checks.push({
-                label: "Dùng từ/cụm từ diễn tả sở thích (My hobbies are / I like / I love...)",
-                passed: hasHobbyIntro,
-                tip: "Dùng cấu trúc: 'My hobbies are...' hoặc 'In my free time, I love...'"
-            });
-
-            const hasActivities = /(reading|listening|music|books|movies|watching|cooking|travelling|traveling|sports|playing|games|singing|shopping|swimming|yoga)/i.test(lower);
-            checks.push({
-                label: "Nêu cụ thể ít nhất 1-2 hoạt động sở thích (dạng V-ing)",
-                passed: hasActivities,
-                tip: "Nhớ dùng dạng V-ing cho hoạt động: reading books, listening to music, cooking..."
-            });
-            return checks;
-        }
+        questions: [
+            {
+                id: "q_hobbies_what",
+                shortLabel: "1. Sở thích (Hobbies)",
+                question: "What are your hobbies?",
+                questionVi: "Sở thích của bạn là gì?",
+                hints: ["My hobbies are [V-ing] and [V-ing]", "My hobby is [V-ing]", "I like [V-ing]"],
+                modelAnswer: "My hobbies are reading books and listening to music.",
+                modelAnswerVi: "Sở thích của tôi là đọc sách và nghe nhạc.",
+                checkCriteria: (transcript) => {
+                    const lower = (transcript || '').toLowerCase();
+                    const checks = [];
+                    const hasHobbyIntro = /(my hobbies are|my hobby is|i like|i love|i enjoy)/i.test(lower);
+                    checks.push({
+                        label: "Mẫu câu sở thích (My hobbies are... / I like...)",
+                        passed: hasHobbyIntro,
+                        tip: "Bắt đầu bằng: 'My hobbies are...' hoặc 'I like/love...'"
+                    });
+                    const hasActivities = /(reading|listening|music|books|movies|watching|cooking|travelling|traveling|sports|playing|games|singing|shopping|swimming|yoga)/i.test(lower);
+                    checks.push({
+                        label: "Nêu hoạt động sở thích ở dạng V-ing",
+                        passed: hasActivities,
+                        tip: "Nhớ dùng dạng V-ing: reading books, listening to music, cooking..."
+                    });
+                    return checks;
+                }
+            },
+            {
+                id: "q_hobbies_freetime",
+                shortLabel: "2. Thời gian rảnh (Free time)",
+                question: "What do you like doing in your free time?",
+                questionVi: "Bạn thích làm gì vào thời gian rảnh rỗi?",
+                hints: ["In my free time, I like/love [V-ing]", "I usually [V] in my free time"],
+                modelAnswer: "In my free time, I love cooking and hanging out with my friends.",
+                modelAnswerVi: "Vào thời gian rảnh, tôi thích nấu ăn và đi chơi với bạn bè.",
+                checkCriteria: (transcript) => {
+                    const lower = (transcript || '').toLowerCase();
+                    const checks = [];
+                    const hasFreeTime = /(in my free time|free time|spare time|usually|often)/i.test(lower);
+                    checks.push({
+                        label: "Cụm từ thời gian rảnh (In my free time...)",
+                        passed: hasFreeTime,
+                        tip: "Bắt đầu bằng: 'In my free time, I love...'"
+                    });
+                    const hasAction = /(like|love|enjoy|cooking|reading|music|walking|friends|hanging out|relax|movie|sleep)/i.test(lower);
+                    checks.push({
+                        label: "Nêu hoạt động thư giãn cụ thể",
+                        passed: hasAction,
+                        tip: "Kể hoạt động bạn thích làm khi rảnh rỗi"
+                    });
+                    return checks;
+                }
+            }
+        ]
     },
     goals: {
         sectionTitle: "7. GOALS",
-        question: "What do you hope to achieve after finishing this English course?",
-        modelAnswer: "After this course, I hope to speak English fluently, communicate with confidence, and achieve a B1 certificate.",
-        modelAnswerVi: "Sau khoá học này, tôi hy vọng sẽ nói tiếng Anh trôi chảy, giao tiếp tự tin và đạt được chứng chỉ B1.",
-        checkCriteria: (transcript) => {
-            const lower = (transcript || '').toLowerCase();
-            const checks = [];
-            const hasGoalIntro = /(hope|want|aim|goal|wish|plan|after this course)/i.test(lower);
-            checks.push({
-                label: "Mẫu câu thể hiện mục tiêu (After this course, I hope to / I want to...)",
-                passed: hasGoalIntro,
-                tip: "Dùng cấu trúc: 'After this course, I hope to [mục tiêu]'"
-            });
-
-            const hasTarget = /(speak|fluently|confident|confidently|improve|skills|exam|pass|vstep|b1|b2|certificate|job|abroad|communicate)/i.test(lower);
-            checks.push({
-                label: "Mục tiêu cụ thể (speak fluently, pass VSTEP B1, communicate confidently...)",
-                passed: hasTarget,
-                tip: "Đưa ra mục tiêu rõ ràng như: 'speak English fluently' hoặc 'achieve a B1 certificate'"
-            });
-            return checks;
-        }
+        questions: [
+            {
+                id: "q_goals_achieve",
+                shortLabel: "1. Mục tiêu khóa học",
+                question: "What do you want to achieve after this course?",
+                questionVi: "Bạn muốn đạt được điều gì sau khóa học này?",
+                hints: ["After this course, I hope to [Mục tiêu]", "improve my English speaking skills", "pass the VSTEP exam and get a B1 certificate"],
+                modelAnswer: "After this course, I hope to communicate confidently in English and pass the VSTEP exam.",
+                modelAnswerVi: "Sau khóa học này, tôi hy vọng sẽ giao tiếp tiếng Anh tự tin và vượt qua kỳ thi VSTEP.",
+                checkCriteria: (transcript) => {
+                    const lower = (transcript || '').toLowerCase();
+                    const checks = [];
+                    const hasGoalIntro = /(hope to|want to|plan to|aim to|after this course)/i.test(lower);
+                    checks.push({
+                        label: "Mẫu câu mục tiêu (After this course, I hope to... / I want to...)",
+                        passed: hasGoalIntro,
+                        tip: "Dùng: 'After this course, I hope to [mục tiêu]'"
+                    });
+                    const hasGoalTarget = /(improve|speak|fluently|confident|confidently|pass|vstep|b1|b2|certificate|skills|exam|job|better)/i.test(lower);
+                    checks.push({
+                        label: "Mục tiêu cụ thể (speak fluently, pass VSTEP B1, improve skills...)",
+                        passed: hasGoalTarget,
+                        tip: "Ví dụ: 'speak English fluently' hoặc 'pass the VSTEP B1 exam'"
+                    });
+                    return checks;
+                }
+            }
+        ]
     }
 };
 
@@ -1038,46 +1321,156 @@ function initInteractivePractice() {
     let activeTimer = null;
     let activePanel = null;
     let secondsElapsed = 0;
+    let currentTranscript = '';
+    let isStoppingProcess = false;
 
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
     panels.forEach(panel => {
         const sectionId = panel.dataset.section;
-        const config = PRACTICE_CONFIGS[sectionId];
-        if (!config) return;
+        const sectionConfig = PRACTICE_CONFIGS[sectionId];
+        if (!sectionConfig || !sectionConfig.questions || sectionConfig.questions.length === 0) return;
 
-        const recordBtn = panel.querySelector('.practice-record-btn');
-        const playbackBox = panel.querySelector('.practice-audio-playback');
+        let currentQIndex = 0;
+
+        const selectorContainer = panel.querySelector('.practice-q-selector');
+        const qBox = panel.querySelector('.practice-q-box');
+        const qTextEl = panel.querySelector('.practice-q-text');
+        const qViEl = panel.querySelector('.practice-q-vi');
+        const qHintsEl = panel.querySelector('.practice-hints');
         const qAudioBtn = panel.querySelector('.practice-q-audio');
+        const recordBtn = panel.querySelector('.practice-record-btn');
+        const transcriptEditWrap = panel.querySelector('.transcript-edit-wrap');
+        const editToggleBtn = panel.querySelector('.transcript-edit-toggle');
+        const editInputRow = panel.querySelector('.transcript-input-row');
+        const editInput = panel.querySelector('.transcript-edit-input');
+        const reEvalBtn = panel.querySelector('.btn-re-eval');
 
-        // Question audio button
+        // Render Question Selector Chips
+        if (selectorContainer) {
+            selectorContainer.innerHTML = `
+                <span class="selector-label">🎯 Chọn câu hỏi muốn luyện tập:</span>
+                <div class="selector-chips"></div>
+            `;
+            const chipsWrap = selectorContainer.querySelector('.selector-chips');
+            sectionConfig.questions.forEach((q, idx) => {
+                const chip = document.createElement('button');
+                chip.type = 'button';
+                chip.className = `q-chip ${idx === 0 ? 'active' : ''}`;
+                chip.innerHTML = `${q.shortLabel} <span style="font-size: 0.85rem;">🔊</span>`;
+                chip.addEventListener('click', () => {
+                    if (recordBtn.classList.contains('recording')) {
+                        stopRecordingSession(panel, sectionId, currentQIndex);
+                    }
+                    currentQIndex = idx;
+                    panel.querySelectorAll('.q-chip').forEach((c, i) => {
+                        c.classList.toggle('active', i === idx);
+                    });
+                    loadQuestionData(panel, sectionConfig.questions[currentQIndex]);
+                });
+                chipsWrap.appendChild(chip);
+            });
+        }
+
+        // Load Question Data into DOM
+        function loadQuestionData(panelEl, qConfig) {
+            if (!qConfig) return;
+            if (qTextEl) qTextEl.textContent = `"${qConfig.question}"`;
+            if (qViEl) qViEl.innerHTML = `💡 <em>${qConfig.questionVi}</em>`;
+            if (qAudioBtn) qAudioBtn.dataset.speak = qConfig.question;
+
+            if (qHintsEl) {
+                const hintPills = (qConfig.hints || []).map(h => `<span class="hint-pill">${h}</span>`).join('');
+                qHintsEl.innerHTML = `<span class="hint-label">Cấu trúc gợi ý:</span> ${hintPills}`;
+            }
+
+            // Reset recording UI
+            const transcriptContent = panelEl.querySelector('.transcript-content');
+            const wordCountBadge = panelEl.querySelector('.word-count-badge');
+            const feedbackCard = panelEl.querySelector('.practice-feedback-card');
+            const playbackBox = panelEl.querySelector('.practice-audio-playback');
+
+            if (transcriptContent) {
+                transcriptContent.className = 'transcript-content placeholder';
+                transcriptContent.textContent = 'Bấm "Bắt đầu ghi âm" và nói câu trả lời của bạn vào micro...';
+            }
+            if (wordCountBadge) wordCountBadge.textContent = '0 từ';
+            if (feedbackCard) {
+                feedbackCard.classList.add('hidden');
+                feedbackCard.innerHTML = '';
+            }
+            if (playbackBox) playbackBox.classList.add('hidden');
+            if (transcriptEditWrap) transcriptEditWrap.classList.add('hidden');
+            if (editInputRow) editInputRow.classList.add('hidden');
+            currentTranscript = '';
+        }
+
+        // Initialize with Question 0
+        loadQuestionData(panel, sectionConfig.questions[0]);
+
+        // Question Audio Button Listener
         if (qAudioBtn) {
             qAudioBtn.addEventListener('click', () => {
-                const text = qAudioBtn.dataset.speak || config.question;
-                if (window.playAudio) {
+                const currentQ = sectionConfig.questions[currentQIndex];
+                const text = currentQ ? currentQ.question : (qAudioBtn.dataset.speak || '');
+                if (window.playAudio && text) {
                     window.playAudio(text, 'male');
                 }
             });
         }
 
-        // Toggle record button
+        // Toggle Manual Edit Input
+        if (editToggleBtn && editInputRow) {
+            editToggleBtn.addEventListener('click', () => {
+                editInputRow.classList.toggle('hidden');
+                if (!editInputRow.classList.contains('hidden') && editInput) {
+                    editInput.value = currentTranscript;
+                    editInput.focus();
+                }
+            });
+        }
+
+        // Re-eval button listener
+        if (reEvalBtn && editInput) {
+            reEvalBtn.addEventListener('click', () => {
+                const newText = editInput.value.trim();
+                if (!newText) return;
+                currentTranscript = newText;
+                const transcriptContent = panel.querySelector('.transcript-content');
+                const wordCountBadge = panel.querySelector('.word-count-badge');
+                if (transcriptContent) {
+                    transcriptContent.className = 'transcript-content';
+                    transcriptContent.textContent = newText;
+                }
+                const words = newText.split(/\s+/).filter(Boolean);
+                if (wordCountBadge) wordCountBadge.textContent = `${words.length} từ`;
+
+                const currentQ = sectionConfig.questions[currentQIndex];
+                renderFeedbackResult(panel, currentQ, newText, secondsElapsed);
+            });
+        }
+
+        // Record Button Listener
         if (recordBtn) {
             recordBtn.addEventListener('click', async () => {
                 if (recordBtn.classList.contains('recording')) {
-                    stopRecording(panel, sectionId, config);
+                    stopRecordingSession(panel, sectionId, currentQIndex);
                 } else {
                     if (activePanel && activePanel !== panel) {
                         const prevSection = activePanel.dataset.section;
-                        const prevConfig = PRACTICE_CONFIGS[prevSection];
-                        stopRecording(activePanel, prevSection, prevConfig);
+                        stopRecordingSession(activePanel, prevSection, 0);
                     }
-                    await startRecording(panel, sectionId, config);
+                    await startRecordingSession(panel, sectionId, currentQIndex);
                 }
             });
         }
     });
 
-    async function startRecording(panel, sectionId, config) {
+    async function startRecordingSession(panel, sectionId, qIdx) {
+        const sectionConfig = PRACTICE_CONFIGS[sectionId];
+        const currentQ = sectionConfig.questions[qIdx];
+        if (!currentQ) return;
+
         const recordBtn = panel.querySelector('.practice-record-btn');
         const recordIcon = recordBtn.querySelector('.record-icon');
         const recordText = recordBtn.querySelector('.record-text');
@@ -1088,22 +1481,28 @@ function initInteractivePractice() {
         const wordCountBadge = panel.querySelector('.word-count-badge');
         const playbackBox = panel.querySelector('.practice-audio-playback');
         const feedbackCard = panel.querySelector('.practice-feedback-card');
+        const transcriptEditWrap = panel.querySelector('.transcript-edit-wrap');
+        const editInputRow = panel.querySelector('.transcript-input-row');
 
         // Reset UI
         feedbackCard.classList.add('hidden');
         feedbackCard.innerHTML = '';
         playbackBox.classList.add('hidden');
-        transcriptContent.classList.remove('placeholder');
-        transcriptContent.textContent = 'Đang lắng nghe... Hãy nói to và rõ ràng câu trả lời của bạn.';
+        if (transcriptEditWrap) transcriptEditWrap.classList.add('hidden');
+        if (editInputRow) editInputRow.classList.add('hidden');
+
+        transcriptContent.className = 'transcript-content';
+        transcriptContent.textContent = 'Đang lắng nghe... Hãy nói to và rõ câu trả lời vào micro.';
         transcriptBox.classList.add('recording-active');
         wordCountBadge.textContent = '0 từ';
 
         let audioChunks = [];
-        let recognizedText = '';
+        currentTranscript = '';
+        isStoppingProcess = false;
 
         try {
             if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                alert('Trình duyệt của bạn không hỗ trợ ghi âm trực tiếp. Vui lòng thử dùng Google Chrome hoặc Microsoft Edge.');
+                alert('Trình duyệt của bạn chưa hỗ trợ ghi âm trực tiếp. Hãy dùng Google Chrome hoặc Microsoft Edge nhé!');
                 return;
             }
 
@@ -1139,14 +1538,11 @@ function initInteractivePractice() {
                     audioPlayer.src = audioUrl;
                     playbackBox.classList.remove('hidden');
                 }
-
-                // Analyze transcript and render feedback
-                renderFeedback(panel, sectionId, config, recognizedText.trim(), secondsElapsed);
             };
 
-            mediaRecorder.start(250);
+            mediaRecorder.start(200);
 
-            // Speech Recognition
+            // Web Speech Recognition
             if (SpeechRecognition) {
                 try {
                     const recognition = new SpeechRecognition();
@@ -1155,36 +1551,44 @@ function initInteractivePractice() {
                     recognition.interimResults = true;
                     recognition.lang = 'en-US';
 
+                    let finalTrans = '';
+
                     recognition.onresult = (event) => {
-                        let finalTranscript = '';
-                        let interimTranscript = '';
-                        for (let i = 0; i < event.results.length; i++) {
+                        let interimTrans = '';
+                        for (let i = event.resultIndex; i < event.results.length; i++) {
                             const result = event.results[i];
                             if (result.isFinal) {
-                                finalTranscript += result[0].transcript + ' ';
+                                finalTrans += result[0].transcript + ' ';
                             } else {
-                                interimTranscript += result[0].transcript;
+                                interimTrans += result[0].transcript;
                             }
                         }
-                        const currentTranscript = (finalTranscript + interimTranscript).trim();
-                        recognizedText = currentTranscript;
-                        transcriptContent.textContent = currentTranscript || 'Đang lắng nghe...';
-
-                        const words = currentTranscript.split(/\s+/).filter(Boolean);
-                        wordCountBadge.textContent = `${words.length} từ`;
+                        const combined = (finalTrans + interimTrans).trim();
+                        if (combined) {
+                            currentTranscript = combined;
+                            transcriptContent.textContent = combined;
+                            const words = combined.split(/\s+/).filter(Boolean);
+                            wordCountBadge.textContent = `${words.length} từ`;
+                        }
                     };
 
                     recognition.onerror = (err) => {
-                        console.warn('Speech recognition notice:', err.error);
+                        console.warn('SpeechRecognition notice:', err.error);
+                    };
+
+                    recognition.onend = () => {
+                        if (isStoppingProcess) {
+                            finalizeEvaluation(panel, currentQ);
+                        }
                     };
 
                     recognition.start();
                 } catch (e) {
-                    console.warn('Speech recognition setup error:', e);
+                    console.warn('Speech recognition init error:', e);
                 }
             }
 
-            // Update UI state to recording
+            // Update Recording State
             recordBtn.classList.add('recording');
             recordIcon.textContent = '⏹️';
             recordText.textContent = 'Dừng ghi âm';
@@ -1202,68 +1606,108 @@ function initInteractivePractice() {
             activePanel = panel;
 
         } catch (err) {
-            console.error('Lỗi khi kích hoạt microphone:', err);
-            transcriptContent.classList.add('placeholder');
-            transcriptContent.textContent = '⚠️ Không thể truy cập Microphone. Vui lòng cho phép quyền truy cập micro trên trình duyệt để thực hiện thử thách!';
+            console.error('Không thể truy cập Microphone:', err);
+            transcriptContent.className = 'transcript-content placeholder';
+            transcriptContent.textContent = '⚠️ Trình duyệt cần cấp quyền truy cập Microphone. Vui lòng kiểm tra biểu tượng ổ khóa 🔒 trên thanh địa chỉ và bật quyền Micro!';
         }
     }
 
-    function stopRecording(panel, sectionId, config) {
+    function stopRecordingSession(panel, sectionId, qIdx) {
+        if (!panel) return;
+        const sectionConfig = PRACTICE_CONFIGS[sectionId];
+        const currentQ = sectionConfig ? sectionConfig.questions[qIdx] : null;
+
         const recordBtn = panel.querySelector('.practice-record-btn');
         const recordIcon = recordBtn.querySelector('.record-icon');
         const recordText = recordBtn.querySelector('.record-text');
         const recordIndicator = panel.querySelector('.recording-indicator');
         const transcriptBox = panel.querySelector('.practice-transcript-box');
 
-        recordBtn.classList.remove('recording');
-        recordIcon.textContent = '🎙️';
-        recordText.textContent = 'Ghi âm lại';
-        recordIndicator.classList.add('hidden');
-        transcriptBox.classList.remove('recording-active');
+        isStoppingProcess = true;
+        recordBtn.disabled = true;
+        recordText.textContent = 'Đang phân tích...';
+        recordIndicator.querySelector('.record-status-text').textContent = 'Đang phân tích câu trả lời...';
 
         if (activeTimer) {
             clearInterval(activeTimer);
             activeTimer = null;
         }
 
-        if (activeRecognition) {
-            try { activeRecognition.stop(); } catch (e) {}
-            activeRecognition = null;
-        }
-
         if (activeRecorder && activeRecorder.state !== 'inactive') {
             try { activeRecorder.stop(); } catch (e) {}
         }
 
+        if (activeRecognition) {
+            try { activeRecognition.stop(); } catch (e) {}
+        }
+
+        // Grace period fallback: if recognition.onend didn't trigger finalize within 650ms, run it
+        setTimeout(() => {
+            if (isStoppingProcess) {
+                finalizeEvaluation(panel, currentQ);
+            }
+        }, 700);
+    }
+
+    function finalizeEvaluation(panel, currentQ) {
+        if (!isStoppingProcess) return;
+        isStoppingProcess = false;
+
+        const recordBtn = panel.querySelector('.practice-record-btn');
+        const recordIcon = recordBtn.querySelector('.record-icon');
+        const recordText = recordBtn.querySelector('.record-text');
+        const recordIndicator = panel.querySelector('.recording-indicator');
+        const transcriptBox = panel.querySelector('.practice-transcript-box');
+        const transcriptContent = panel.querySelector('.transcript-content');
+        const transcriptEditWrap = panel.querySelector('.transcript-edit-wrap');
+        const editInput = panel.querySelector('.transcript-edit-input');
+
+        recordBtn.disabled = false;
+        recordBtn.classList.remove('recording');
+        recordIcon.textContent = '🎙️';
+        recordText.textContent = 'Ghi âm lại';
+        recordIndicator.classList.add('hidden');
+        transcriptBox.classList.remove('recording-active');
+
         if (activeStream) {
             try {
-                activeStream.getTracks().forEach(track => track.stop());
+                activeStream.getTracks().forEach(t => t.stop());
             } catch (e) {}
             activeStream = null;
         }
 
+        activeRecognition = null;
         activePanel = null;
-    }
 
-    function renderFeedback(panel, sectionId, config, transcript, duration) {
-        const feedbackCard = panel.querySelector('.practice-feedback-card');
-        const transcriptContent = panel.querySelector('.transcript-content');
-        const wordCountBadge = panel.querySelector('.word-count-badge');
+        const finalText = currentTranscript.trim();
 
-        const words = transcript ? transcript.split(/\s+/).filter(Boolean) : [];
-        const wordCount = words.length;
-        wordCountBadge.textContent = `${wordCount} từ`;
-
-        if (!transcript) {
-            transcriptContent.classList.add('placeholder');
-            transcriptContent.textContent = '(Chưa nhận diện được từ ngữ. Bạn có thể nói gần micro hơn hoặc kiểm tra âm lượng nhé!)';
+        if (!finalText) {
+            transcriptContent.className = 'transcript-content placeholder';
+            transcriptContent.textContent = '(Chưa nhận diện được từ ngữ. Bạn có thể nói gần micro hơn hoặc bấm nút bên dưới để gõ lại nhé!)';
         }
 
-        const criteriaList = config.checkCriteria(transcript);
+        // Show edit wrap so student can review or correct
+        if (transcriptEditWrap) {
+            transcriptEditWrap.classList.remove('hidden');
+            if (editInput) editInput.value = finalText;
+        }
+
+        // Render feedback
+        if (currentQ) {
+            renderFeedbackResult(panel, currentQ, finalText, secondsElapsed);
+        }
+    }
+
+    function renderFeedbackResult(panel, qConfig, transcript, duration) {
+        const feedbackCard = panel.querySelector('.practice-feedback-card');
+        const cleanText = (transcript || '').trim();
+        const words = cleanText ? cleanText.split(/\s+/).filter(Boolean) : [];
+        const wordCount = words.length;
+
+        const criteriaList = qConfig.checkCriteria(cleanText);
         const passedCount = criteriaList.filter(c => c.passed).length;
         const totalCriteria = criteriaList.length;
 
-        // Scoring logic (1 to 5 stars)
         let stars = 3;
         let scoreBadge = "Khá Tốt 👍";
         let scoreColor = "#2563eb";
@@ -1271,26 +1715,31 @@ function initInteractivePractice() {
 
         if (wordCount === 0) {
             stars = 1;
-            scoreBadge = "Chưa có lời nói 🎙️";
-            mainAdvice = "Hệ thống chưa ghi nhận được câu trả lời của em. Em hãy bấm 'Ghi âm lại', ghé sát micro và nói to, rõ từng từ nhé!";
-        } else if (wordCount < 4) {
-            stars = 2;
-            scoreBadge = "Cần mở rộng câu 📝";
-            mainAdvice = "Em đã bắt đầu nói nhưng câu còn hơi ngắn. Trong bài thi Nói B1, hãy cố gắng diễn đạt thành một câu trọn vẹn gồm cả chủ ngữ và vị ngữ nhé!";
-        } else if (passedCount === totalCriteria && wordCount >= 7) {
+            scoreBadge = "Chưa nhận được lời nói 🎙️";
+            scoreColor = "#dc2626";
+            mainAdvice = "Hệ thống chưa ghi nhận được câu trả lời của em. Em hãy ghé sát micro, nói to rõ ràng hơn, hoặc bấm nút 'Chỉnh sửa' bên trên để gõ lại câu trả lời nhé!";
+        } else if (passedCount === totalCriteria && wordCount >= 3) {
             stars = 5;
             scoreBadge = "Xuất Sắc! ⭐⭐⭐⭐⭐";
             scoreColor = "#16a34a";
-            mainAdvice = "Tuyệt vời! Em phát âm rõ ràng, đúng trọng tâm câu hỏi và áp dụng rất tốt các cấu trúc câu đã học trong bài. Cô rất khen ngợi!";
-        } else if (passedCount >= 1 && wordCount >= 5) {
-            stars = 4;
-            scoreBadge = "Rất Tốt ⭐⭐⭐⭐";
-            scoreColor = "#059669";
-            mainAdvice = "Em làm rất tốt! Đã trả lời được thông tin cốt lõi. Hãy tham khảo thêm câu trả lời mẫu bên dưới để bài nói thêm tự nhiên và mượt mà hơn nhé.";
+            mainAdvice = "Xuất sắc! 🎉 Câu trả lời rất chuẩn xác, đúng trọng tâm câu hỏi và ngữ pháp rất tốt. Cô rất khen ngợi!";
+        } else if (passedCount >= 1) {
+            if (wordCount >= 4) {
+                stars = 4;
+                scoreBadge = "Rất Tốt ⭐⭐⭐⭐";
+                scoreColor = "#059669";
+                mainAdvice = "Rất tốt! Em đã trả lời đúng thông tin chính. Hãy tham khảo thêm câu trả lời mẫu bên dưới để hoàn thiện câu nói tự nhiên hơn nhé!";
+            } else {
+                stars = 3;
+                scoreBadge = "Khá Tốt ⭐⭐⭐";
+                scoreColor = "#2563eb";
+                mainAdvice = "Khá tốt! Em đã nêu được thông tin, nhưng trong bài thi Nói hãy diễn đạt thành một câu hoàn chỉnh (gồm cả chủ ngữ và vị ngữ) nhé!";
+            }
         } else {
-            stars = 3;
-            scoreBadge = "Khá Tốt ⭐⭐⭐";
-            mainAdvice = "Em đã hoàn thành phần trả lời! Hãy chú ý kiểm tra danh sách tiêu chí bên dưới để bổ sung đủ các từ khóa gợi ý nhé.";
+            stars = 2;
+            scoreBadge = "Cần bổ sung ý 📝";
+            scoreColor = "#d97706";
+            mainAdvice = "Câu trả lời của em dường như chưa đúng trọng tâm của câu hỏi này. Hãy xem các cấu trúc gợi ý và câu trả lời mẫu bên dưới để thử lại nhé!";
         }
 
         const starIcons = '⭐'.repeat(stars);
@@ -1349,8 +1798,8 @@ function initInteractivePractice() {
                         🔊 Nghe câu mẫu
                     </button>
                 </div>
-                <div class="model-answer-text">"${config.modelAnswer}"</div>
-                <div class="model-answer-vi">${config.modelAnswerVi}</div>
+                <div class="model-answer-text">"${qConfig.modelAnswer}"</div>
+                <div class="model-answer-vi">${qConfig.modelAnswerVi}</div>
             </div>
 
             <div style="text-align: right;">
@@ -1367,7 +1816,7 @@ function initInteractivePractice() {
         if (modelAudioBtn) {
             modelAudioBtn.addEventListener('click', () => {
                 if (window.playAudio) {
-                    window.playAudio(config.modelAnswer, 'female');
+                    window.playAudio(qConfig.modelAnswer, 'female');
                 }
             });
         }
@@ -1381,13 +1830,18 @@ function initInteractivePractice() {
                 const recordBtn = panel.querySelector('.practice-record-btn');
                 const recordText = recordBtn.querySelector('.record-text');
                 if (recordText) recordText.textContent = 'Bắt đầu ghi âm';
-                transcriptContent.classList.add('placeholder');
-                transcriptContent.textContent = 'Bấm "Bắt đầu ghi âm" và nói bằng tiếng Anh vào micro...';
-                wordCountBadge.textContent = '0 từ';
+                const transcriptContent = panel.querySelector('.transcript-content');
+                const wordCountBadge = panel.querySelector('.word-count-badge');
+                if (transcriptContent) {
+                    transcriptContent.className = 'transcript-content placeholder';
+                    transcriptContent.textContent = 'Bấm "Bắt đầu ghi âm" và nói câu trả lời của bạn vào micro...';
+                }
+                if (wordCountBadge) wordCountBadge.textContent = '0 từ';
                 panel.querySelector('.practice-audio-playback').classList.add('hidden');
                 recordBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
             });
         }
     }
 }
+
 
