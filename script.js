@@ -465,6 +465,207 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // ========================================================
+    // INTERACTIVE NAME VOCABULARY SECTION (CẤU TRÚC TÊN SINH ĐỘNG)
+    // ========================================================
+    function initNameVocabInteractive() {
+        const triggerBtn = document.getElementById('btn-reveal-name-parts');
+        const showAllBtn = document.getElementById('btn-show-all-parts');
+        const resetBtn = document.getElementById('btn-reset-name-parts');
+        const statusText = document.getElementById('name-hub-status');
+        const counterBadge = document.getElementById('name-parts-counter');
+        const congratsBox = document.getElementById('vocab-congrats-box');
+        const partCards = document.querySelectorAll('.name-part-card');
+        const totalParts = partCards.length;
+        let currentStep = 0;
+
+        const updateDisplay = () => {
+            if (counterBadge) counterBadge.textContent = `${currentStep} / ${totalParts}`;
+            
+            if (statusText && triggerBtn) {
+                if (currentStep === 0) {
+                    statusText.textContent = 'Nhấp để mở thành phần (0/6) 👉';
+                    triggerBtn.classList.remove('all-completed');
+                    if (congratsBox) congratsBox.classList.add('hidden');
+                } else if (currentStep < totalParts) {
+                    statusText.textContent = `Bấm tiếp để mở thành phần ${currentStep + 1} 👉`;
+                    triggerBtn.classList.remove('all-completed');
+                    if (congratsBox) congratsBox.classList.add('hidden');
+                } else {
+                    statusText.textContent = '🎉 Đã mở trọn bộ 6 thành phần!';
+                    triggerBtn.classList.add('all-completed');
+                    if (congratsBox) congratsBox.classList.remove('hidden');
+                }
+            }
+
+            partCards.forEach(card => {
+                const step = parseInt(card.getAttribute('data-step'), 10);
+                if (step <= currentStep) {
+                    if (card.classList.contains('hidden-part')) {
+                        card.classList.remove('hidden-part');
+                        card.classList.add('pop-in');
+                    }
+                } else {
+                    card.classList.add('hidden-part');
+                    card.classList.remove('pop-in');
+                }
+            });
+        };
+
+        // When clicking the main NAME button
+        if (triggerBtn) {
+            triggerBtn.addEventListener('click', () => {
+                if (currentStep < totalParts) {
+                    currentStep++;
+                    updateDisplay();
+                    
+                    // Speak the newly revealed card's term!
+                    const activeCard = document.querySelector(`.name-part-card[data-step="${currentStep}"]`);
+                    if (activeCard) {
+                        const audioText = activeCard.getAttribute('data-audio');
+                        if (audioText && window.playAudio) {
+                            window.playAudio(audioText, 'female');
+                        }
+                        activeCard.classList.add('active-highlight');
+                        setTimeout(() => activeCard.classList.remove('active-highlight'), 1200);
+                        activeCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }
+                } else {
+                    if (window.playAudio) window.playAudio("Name! All components revealed.", "female");
+                }
+            });
+        }
+
+        // Show All Button
+        if (showAllBtn) {
+            showAllBtn.addEventListener('click', () => {
+                currentStep = totalParts;
+                updateDisplay();
+                if (window.playAudio) window.playAudio("first name, middle name, last name, full name, nickname, spell", "female");
+            });
+        }
+
+        // Reset Button
+        if (resetBtn) {
+            resetBtn.addEventListener('click', () => {
+                currentStep = 0;
+                updateDisplay();
+            });
+        }
+
+        // Individual card click -> audio & highlight
+        partCards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                if (e.target.closest('.part-audio-btn')) return;
+                const audioText = card.getAttribute('data-audio');
+                if (audioText && window.playAudio) {
+                    window.playAudio(audioText, 'female');
+                }
+                partCards.forEach(c => c.classList.remove('active-highlight'));
+                card.classList.add('active-highlight');
+                setTimeout(() => card.classList.remove('active-highlight'), 1200);
+            });
+
+            const audioBtn = card.querySelector('.part-audio-btn');
+            if (audioBtn) {
+                audioBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const audioText = card.getAttribute('data-audio');
+                    if (audioText && window.playAudio) {
+                        window.playAudio(audioText, 'female');
+                    }
+                    card.classList.add('active-highlight');
+                    setTimeout(() => card.classList.remove('active-highlight'), 1200);
+                });
+            }
+        });
+
+        // Anatomy pills interaction
+        const anatomyPills = document.querySelectorAll('.anatomy-pill');
+        anatomyPills.forEach(pill => {
+            pill.addEventListener('click', () => {
+                const targetStep = pill.getAttribute('data-target-step');
+                if (targetStep) {
+                    const stepNum = parseInt(targetStep, 10);
+                    if (currentStep < stepNum) {
+                        currentStep = stepNum;
+                        updateDisplay();
+                    }
+                    const targetCard = document.querySelector(`.name-part-card[data-step="${targetStep}"]`);
+                    if (targetCard) {
+                        targetCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                        targetCard.classList.add('active-highlight');
+                        setTimeout(() => targetCard.classList.remove('active-highlight'), 1500);
+                        const audioText = targetCard.getAttribute('data-audio');
+                        if (audioText && window.playAudio) {
+                            window.playAudio(audioText, 'female');
+                        }
+                    }
+                }
+            });
+        });
+
+        // Dynamic "Phân tích tên của tôi"
+        const myNameAnatomyBtn = document.getElementById('btn-my-name-anatomy');
+        if (myNameAnatomyBtn) {
+            let isMyNameShown = false;
+            myNameAnatomyBtn.addEventListener('click', () => {
+                const rawStored = sessionStorage.getItem('studentName') || '';
+                const cleanName = rawStored.split('-')[0].trim();
+                if (!cleanName || cleanName === 'Khách' || cleanName === 'Cô Nguyệt') {
+                    const promptName = prompt("Nhập họ và tên đầy đủ của bạn để phân tích nhé:", "Lưu Thị Vân Anh");
+                    if (promptName && promptName.trim()) {
+                        applyCustomNameAnatomy(promptName.trim());
+                    }
+                    return;
+                }
+
+                if (!isMyNameShown) {
+                    applyCustomNameAnatomy(cleanName);
+                    myNameAnatomyBtn.innerHTML = '<span>🔄</span> Đổi lại tên mẫu (Nguyễn Văn An)';
+                    isMyNameShown = true;
+                } else {
+                    applyCustomNameAnatomy('Nguyễn Văn An');
+                    myNameAnatomyBtn.innerHTML = '<span>🎓</span> Phân tích tên của tôi';
+                    isMyNameShown = false;
+                }
+            });
+        }
+
+        function applyCustomNameAnatomy(fullNameStr) {
+            const parts = fullNameStr.trim().split(/\s+/);
+            const demoLast = document.getElementById('demo-last-name');
+            const demoMid = document.getElementById('demo-mid-name');
+            const demoFirst = document.getElementById('demo-first-name');
+            const demoFull = document.getElementById('demo-full-name');
+
+            if (!demoLast || !demoMid || !demoFirst || !demoFull) return;
+
+            if (parts.length === 1) {
+                demoLast.textContent = '(Chưa rõ họ)';
+                demoMid.textContent = '(Không có)';
+                demoFirst.textContent = parts[0].toUpperCase();
+            } else if (parts.length === 2) {
+                demoLast.textContent = parts[0].toUpperCase();
+                demoMid.textContent = '(Không có)';
+                demoFirst.textContent = parts[1].toUpperCase();
+            } else {
+                demoLast.textContent = parts[0].toUpperCase();
+                demoMid.textContent = parts.slice(1, -1).join(' ').toUpperCase();
+                demoFirst.textContent = parts[parts.length - 1].toUpperCase();
+            }
+            demoFull.textContent = fullNameStr.toUpperCase();
+            
+            // Auto reveal full components
+            currentStep = totalParts;
+            updateDisplay();
+        }
+
+        // Initialize state
+        updateDisplay();
+    }
+    initNameVocabInteractive();
+
     // Logic for new standalone Audio Buttons
     const audioBtns = document.querySelectorAll('.play-audio-btn');
     audioBtns.forEach(btn => {
