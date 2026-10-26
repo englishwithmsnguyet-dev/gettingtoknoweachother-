@@ -2734,421 +2734,189 @@ h1, h2, h3, h4, .brand {
 }
 
 /* ========================================================
-   INTERACTIVE NAME VOCABULARY SECTION (CẤU TRÚC TÊN SINH ĐỘNG)
+   MODERN INTERACTIVE VOCABULARY: NAME & COMPONENTS
    ======================================================== */
-.name-vocab-container {
-    margin: 10px 0 25px 0;
+.name-vocab-wrapper {
+    margin: 12px 0 28px 0;
 }
 
-.vocab-interactive-card {
-    background: linear-gradient(135deg, #ffffff 0%, #f5f3ff 50%, #eef2ff 100%);
-    border: 2px solid #c7d2fe;
-    border-radius: 20px;
-    padding: 24px;
-    box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.12), 0 8px 10px -6px rgba(99, 102, 241, 0.05);
-    position: relative;
-    overflow: hidden;
-}
-
-.vocab-interactive-card::before {
-    content: '';
-    position: absolute;
-    top: -50px;
-    right: -50px;
-    width: 150px;
-    height: 150px;
-    background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, transparent 70%);
-    border-radius: 50%;
-    pointer-events: none;
-}
-
-.vocab-hero-header {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.vocab-badge-row {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 8px;
-}
-
-.vocab-chip-tag {
-    background: #e0e7ff;
-    color: #4338ca;
-    font-size: 0.8rem;
-    font-weight: 800;
-    padding: 4px 12px;
-    border-radius: 20px;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-}
-
-.vocab-sparkle-pill {
-    background: #fef3c7;
-    color: #b45309;
-    font-size: 0.78rem;
-    font-weight: 700;
-    padding: 4px 10px;
-    border-radius: 20px;
-}
-
-.vocab-section-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.4rem;
-    font-weight: 800;
-    color: #312e81;
-    margin: 6px 0 8px 0;
-    letter-spacing: 0.5px;
-}
-
-.vocab-intro-text {
-    font-size: 0.95rem;
-    color: #475569;
-    margin: 0;
-}
-
-/* Master Pulse Button: "NAME" */
-.name-hub-action-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    margin-bottom: 24px;
-}
-
-.btn-name-pulse {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: 14px;
-    padding: 14px 28px;
-    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 50%, #4338ca 100%);
-    color: #ffffff;
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    box-shadow: 0 10px 25px -3px rgba(79, 70, 229, 0.4), 0 4px 6px -2px rgba(79, 70, 229, 0.2);
-    transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    font-family: inherit;
-    outline: none;
-}
-
-.btn-name-pulse:hover {
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 15px 30px -3px rgba(79, 70, 229, 0.5);
-    background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
-}
-
-.btn-name-pulse:active {
-    transform: translateY(1px) scale(0.98);
-}
-
-.btn-name-pulse.all-completed {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-    box-shadow: 0 10px 25px -3px rgba(16, 185, 129, 0.4);
-}
-
-.pulse-icon {
-    font-size: 1.8rem;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
-    animation: bounceSlow 2s infinite ease-in-out;
-}
-
-@keyframes bounceSlow {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-3px); }
-}
-
-.pulse-body {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    text-align: left;
-}
-
-.pulse-title {
-    font-size: 1.35rem;
-    font-weight: 900;
-    letter-spacing: 2px;
-    line-height: 1.1;
-}
-
-.pulse-subtitle {
-    font-size: 0.82rem;
-    font-weight: 600;
-    opacity: 0.9;
-    letter-spacing: 0.3px;
-}
-
-.pulse-badge-count {
-    background: rgba(255, 255, 255, 0.25);
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 0.95rem;
-    font-weight: 800;
-    backdrop-filter: blur(4px);
-    border: 1px solid rgba(255, 255, 255, 0.35);
-}
-
-.name-hub-toolbar {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-.hub-tool-btn {
+.vocab-main-card {
     background: #ffffff;
-    border: 1.5px solid #cbd5e1;
-    color: #475569;
-    padding: 6px 14px;
+    border: 1.5px solid #e0e7ff;
     border-radius: 20px;
-    font-size: 0.82rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-family: inherit;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.hub-tool-btn:hover {
-    border-color: #6366f1;
-    color: #4f46e5;
-    background: #f5f3ff;
-    transform: translateY(-1px);
-}
-
-/* Name Parts Grid */
-.name-parts-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 16px;
-    margin-bottom: 20px;
-}
-
-.name-part-card {
-    background: #ffffff;
-    border: 2px solid #e2e8f0;
-    border-radius: 16px;
-    padding: 16px 18px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-    transition: all 0.25s ease;
-    cursor: pointer;
+    padding: 24px 26px;
+    box-shadow: 0 10px 30px -5px rgba(67, 97, 238, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
     position: relative;
-    overflow: hidden;
+    transition: all 0.3s ease;
 }
 
-.name-part-card:hover {
-    border-color: #818cf8;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.12);
-}
-
-.name-part-card.active-highlight {
-    border-color: #4f46e5;
-    background: #fdf4ff;
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
-}
-
-.name-part-card.hidden-part {
-    display: none !important;
-}
-
-.name-part-card.pop-in {
-    animation: partPopIn 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-}
-
-@keyframes partPopIn {
-    0% {
-        opacity: 0;
-        transform: translateY(20px) scale(0.92);
-    }
-    60% {
-        opacity: 1;
-        transform: translateY(-4px) scale(1.02);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-.part-card-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 10px;
-    padding-bottom: 10px;
-    border-bottom: 1px dashed #e2e8f0;
-}
-
-.part-number-badge {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #6366f1, #4f46e5);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 800;
-    font-size: 0.95rem;
-    flex-shrink: 0;
-    box-shadow: 0 3px 8px rgba(79, 70, 229, 0.3);
-}
-
-.part-titles {
-    flex: 1;
-    min-width: 0;
-}
-
-.part-en-title {
-    font-size: 1.05rem;
-    font-weight: 800;
-    color: #1e1b4b;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 4px;
-    line-height: 1.3;
-}
-
-.highlight-term {
-    color: #4338ca;
-    background: #eef2ff;
-    padding: 2px 6px;
-    border-radius: 6px;
-}
-
-.equals-sign {
-    color: #94a3b8;
-    font-weight: 700;
-}
-
-.part-vi-title {
-    font-size: 0.9rem;
-    font-weight: 700;
-    color: #dc2626; /* Signature Miss Nguyet red for Vietnamese */
-    margin-top: 2px;
-}
-
-.part-audio-btn {
-    background: #f1f5f9;
-    border: none;
-    border-radius: 50%;
-    width: 34px;
-    height: 34px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 1.05rem;
-    transition: all 0.2s;
-    flex-shrink: 0;
-}
-
-.part-audio-btn:hover {
-    background: #e0e7ff;
-    color: #4338ca;
-    transform: scale(1.1);
-}
-
-.part-card-body {
-    font-size: 0.88rem;
-    line-height: 1.5;
-    color: #334155;
-}
-
-.part-note {
-    margin-bottom: 6px;
-    color: #475569;
-}
-
-.part-example {
-    background: #f8fafc;
-    border-left: 3px solid #818cf8;
-    padding: 6px 10px;
-    border-radius: 0 6px 6px 0;
-    font-size: 0.86rem;
-}
-
-mark.name-highlight {
-    background: #fef08a;
-    color: #854d0e;
-    padding: 1px 4px;
-    border-radius: 4px;
-    font-weight: 800;
-}
-
-/* Completion Congrats Box */
-.vocab-congrats-banner {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
-    border: 2px solid #6ee7b7;
-    border-radius: 14px;
-    padding: 14px 18px;
-    margin-bottom: 20px;
-    color: #065f46;
-    animation: fadeIn 0.4s ease;
-}
-
-.congrats-icon {
-    font-size: 2rem;
-}
-
-.congrats-text {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    font-size: 0.92rem;
-}
-
-.congrats-text strong {
-    font-size: 1rem;
-    color: #047857;
-}
-
-/* Interactive Name Anatomy */
-.name-anatomy-box {
-    background: #ffffff;
-    border: 1.5px solid #c7d2fe;
-    border-radius: 16px;
-    padding: 18px;
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.06);
-}
-
-.anatomy-header {
+.vocab-card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 14px;
+    gap: 16px;
+    padding-bottom: 20px;
+    border-bottom: 1.5px solid #f1f5f9;
+    margin-bottom: 20px;
 }
 
-.anatomy-title {
-    font-size: 0.95rem;
+.vocab-title-group {
+    max-width: 480px;
+}
+
+.vocab-category-badge {
+    display: inline-block;
+    background: #eef2ff;
+    color: #4338ca;
+    font-size: 0.78rem;
     font-weight: 800;
-    color: #312e81;
+    padding: 4px 10px;
+    border-radius: 6px;
+    letter-spacing: 0.8px;
+    margin-bottom: 6px;
+}
+
+.vocab-title-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0 0 6px 0;
+    letter-spacing: 0.3px;
+    line-height: 1.3;
+}
+
+.vocab-subtitle-text {
+    font-size: 0.9rem;
+    color: #64748b;
+    margin: 0;
+    line-height: 1.45;
+}
+
+/* Master Trigger Button: "NAME" */
+.vocab-trigger-area {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.btn-name-master {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 18px;
+    background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    box-shadow: 0 8px 20px -3px rgba(79, 70, 229, 0.35);
+    transition: all 0.22s ease;
+    font-family: inherit;
+    outline: none;
+}
+
+.btn-name-master:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px -3px rgba(79, 70, 229, 0.45);
+    background: linear-gradient(135deg, #4338ca 0%, #3730a3 100%);
+}
+
+.btn-name-master:active {
+    transform: translateY(0);
+}
+
+.btn-name-left {
     display: flex;
     align-items: center;
     gap: 6px;
 }
 
-.btn-toggle-my-name-anatomy {
-    background: #eff6ff;
-    border: 1.5px solid #bfdbfe;
-    color: #1d4ed8;
-    padding: 6px 14px;
-    border-radius: 20px;
+.btn-name-icon {
+    font-size: 1.25rem;
+}
+
+.btn-name-label {
+    font-size: 1.15rem;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+}
+
+.btn-name-step {
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: #e0e7ff;
+    padding: 0 4px;
+}
+
+.btn-name-badge {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 3px 8px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 800;
+}
+
+.vocab-quick-toolbar {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-tool-pill {
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    color: #475569;
+    padding: 5px 12px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-family: inherit;
+}
+
+.btn-tool-pill:hover {
+    background: #eef2ff;
+    color: #4338ca;
+    border-color: #818cf8;
+}
+
+/* Visual Name Anatomy Bar */
+.name-visual-bar {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+}
+
+.visual-bar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.visual-bar-caption {
     font-size: 0.82rem;
+    font-weight: 800;
+    color: #475569;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.btn-switch-personal-name {
+    background: #ffffff;
+    border: 1.5px solid #c7d2fe;
+    color: #4338ca;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.2s;
@@ -3158,116 +2926,354 @@ mark.name-highlight {
     gap: 5px;
 }
 
-.btn-toggle-my-name-anatomy:hover {
-    background: #dbeafe;
-    border-color: #3b82f6;
-    transform: translateY(-1px);
+.btn-switch-personal-name:hover {
+    background: #eef2ff;
+    border-color: #6366f1;
 }
 
-.anatomy-visual-row {
+/* Interactive Chips Display */
+.name-chips-display {
     display: flex;
-    align-items: center;
+    align-items: stretch;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 10px;
-    margin: 12px 0;
+    gap: 8px;
+    margin-bottom: 14px;
 }
 
-.anatomy-pill {
-    padding: 10px 16px;
+.chip-item {
+    background: #ffffff;
+    border: 2px solid #e2e8f0;
     border-radius: 12px;
+    padding: 10px 14px;
+    text-align: center;
     cursor: pointer;
     transition: all 0.2s ease;
-    text-align: center;
+    min-width: 140px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    border: 2px solid transparent;
+    justify-content: center;
 }
 
-.anatomy-pill:hover {
+.chip-item:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
 }
 
-.anatomy-pill:active {
-    transform: scale(0.97);
+.chip-item.active {
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.25);
+    transform: translateY(-2px);
 }
 
-.pill-last {
-    background: #fef2f2;
-    border-color: #fca5a5;
-}
-.pill-last .pill-type { color: #dc2626; }
-.pill-last .pill-word { color: #991b1b; }
+.chip-last.active { border-color: #ef4444; background: #fef2f2; }
+.chip-mid.active { border-color: #f59e0b; background: #fffbeb; }
+.chip-first.active { border-color: #10b981; background: #ecfdf5; }
+.chip-full.active { border-color: #4f46e5; background: #eef2ff; }
 
-.pill-mid {
-    background: #fefce8;
-    border-color: #fde047;
-}
-.pill-mid .pill-type { color: #ca8a04; }
-.pill-mid .pill-word { color: #854d0e; }
-
-.pill-first {
-    background: #f0fdf4;
-    border-color: #86efac;
-}
-.pill-first .pill-type { color: #16a34a; }
-.pill-first .pill-word { color: #166534; }
-
-.pill-full {
-    background: #eef2ff;
-    border-color: #a5b4fc;
-}
-.pill-full .pill-type { color: #4f46e5; }
-.pill-full .pill-word { color: #3730a3; }
-
-.pill-type {
+.chip-tag {
     font-size: 0.72rem;
     font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.4px;
-    margin-bottom: 2px;
+    color: #64748b;
+    margin-bottom: 4px;
 }
 
-.pill-word {
+.chip-val {
     font-size: 1.15rem;
     font-weight: 900;
-    letter-spacing: 1px;
+    color: #0f172a;
+    letter-spacing: 0.5px;
 }
 
-.anatomy-plus, .anatomy-equals {
-    font-size: 1.4rem;
-    font-weight: 900;
+.chip-alias {
+    font-size: 0.72rem;
+    font-weight: 600;
     color: #94a3b8;
+    margin-top: 2px;
 }
 
-.anatomy-hint {
+.chip-separator {
+    display: flex;
+    align-items: center;
+    font-size: 1.3rem;
+    font-weight: 900;
+    color: #cbd5e1;
+    padding: 0 2px;
+}
+
+/* Related Terms Row */
+.related-terms-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed #cbd5e1;
+}
+
+.related-label {
     font-size: 0.82rem;
+    font-weight: 700;
     color: #64748b;
-    text-align: center;
-    font-style: italic;
-    margin-top: 6px;
+}
+
+.related-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.chip-extra {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 10px;
+    min-width: auto;
+    flex-direction: row;
+    font-size: 0.88rem;
+    border: 1.5px solid #cbd5e1;
+    background: #ffffff;
+}
+
+.chip-extra-badge {
+    width: 20px;
+    height: 20px;
+    background: #e2e8f0;
+    color: #475569;
+    border-radius: 50%;
+    font-size: 0.72rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chip-extra.active .chip-extra-badge {
+    background: #4f46e5;
+    color: #ffffff;
+}
+
+.chip-extra-desc {
+    color: #64748b;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.chip-extra.active {
+    border-color: #6366f1;
+    background: #f5f3ff;
+    box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+.verb-tag {
+    color: #2563eb;
+    font-weight: 700;
+    font-style: normal;
+}
+
+/* Active Spotlight Card */
+.vocab-spotlight-card {
+    background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%);
+    border: 2px solid #818cf8;
+    border-radius: 16px;
+    padding: 18px 22px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 20px -4px rgba(99, 102, 241, 0.1);
+    animation: spotlightFadeIn 0.3s ease;
+}
+
+@keyframes spotlightFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.spotlight-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #dbeafe;
+    margin-bottom: 14px;
+}
+
+.spotlight-title-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.spotlight-step-tag {
+    font-size: 0.74rem;
+    font-weight: 800;
+    color: #4f46e5;
+    background: #e0e7ff;
+    padding: 2px 8px;
+    border-radius: 6px;
+    width: fit-content;
+    letter-spacing: 0.5px;
+}
+
+.spotlight-word {
+    font-size: 1.35rem;
+    font-weight: 900;
+    color: #1e1b4b;
+    margin: 2px 0 0 0;
+    letter-spacing: 0.3px;
+}
+
+.spotlight-vi {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #b91c1c; /* Miss Nguyet Vietnamese accent color */
+}
+
+.spotlight-audio-btn {
+    background: #4f46e5;
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    padding: 8px 14px;
+    font-size: 0.86rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+    font-family: inherit;
+    box-shadow: 0 4px 10px rgba(79, 70, 229, 0.25);
+}
+
+.spotlight-audio-btn:hover {
+    background: #4338ca;
+    transform: translateY(-1px);
+}
+
+.spotlight-content-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 14px;
+}
+
+.spotlight-desc-box,
+.spotlight-example-box {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 12px 16px;
+}
+
+.desc-label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: #64748b;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+}
+
+.desc-text {
+    font-size: 0.92rem;
+    color: #334155;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.example-text {
+    font-size: 0.92rem;
+    color: #1e293b;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Quick Pill Navigation */
+.vocab-nav-pills {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-top: 14px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.nav-pills-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #64748b;
+}
+
+.pills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.nav-vocab-pill {
+    background: #ffffff;
+    border: 1.5px solid #cbd5e1;
+    color: #334155;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.nav-vocab-pill:hover {
+    border-color: #6366f1;
+    color: #4f46e5;
+    background: #f5f3ff;
+}
+
+.nav-vocab-pill.active {
+    background: #4f46e5;
+    border-color: #4f46e5;
+    color: #ffffff;
+}
+
+.nav-vocab-pill.active .pill-status {
+    color: #a7f3d0;
 }
 
 @media (max-width: 640px) {
-    .vocab-interactive-card {
+    .vocab-main-card {
         padding: 18px 14px;
         border-radius: 16px;
     }
-    .btn-name-pulse {
-        width: 100%;
-        justify-content: center;
-        padding: 12px 18px;
-    }
-    .anatomy-visual-row {
+    .vocab-card-header {
         flex-direction: column;
         align-items: stretch;
     }
-    .anatomy-plus, .anatomy-equals {
+    .vocab-trigger-area {
+        align-items: stretch;
+    }
+    .btn-name-master {
+        justify-content: center;
+    }
+    .name-chips-display {
+        flex-direction: column;
+    }
+    .chip-separator {
         display: none;
     }
-    .name-parts-grid {
+    .chip-item {
+        min-width: 100%;
+    }
+    .spotlight-content-grid {
         grid-template-columns: 1fr;
     }
 }

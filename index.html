@@ -102,229 +102,147 @@
                 <h2 class="section-title">1. NAME <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f4db/512.webp" alt="🏷️" width="35" class="inline-emoji" onerror="this.src='https://media.giphy.com/media/l1J9I5KFN8zwGG4k8/giphy.gif'; this.width=40;"></h2>
 
                 <!-- ==============================================
-                     VOCABULARY: PARTS OF A NAME (INTERACTIVE HUB)
+                     VOCABULARY: NAME & COMPONENTS (INTERACTIVE EXPLORER)
                      ============================================== -->
-                <div class="name-vocab-container" id="name-vocab-section">
-                    <div class="vocab-interactive-card">
-                        <!-- Header -->
-                        <div class="vocab-hero-header">
-                            <div class="vocab-badge-row">
-                                <span class="vocab-chip-tag">📚 VOCABULARY</span>
-                                <span class="vocab-sparkle-pill">✨ Tương tác trực quan</span>
+                <div class="name-vocab-wrapper" id="name-vocab-section">
+                    <div class="vocab-main-card">
+                        <!-- Top Bar: Title & Controller -->
+                        <div class="vocab-card-header">
+                            <div class="vocab-title-group">
+                                <span class="vocab-category-badge">📚 VOCABULARY</span>
+                                <h3 class="vocab-title-text">CẤU TRÚC HỌ VÀ TÊN & TỪ VỰNG LIÊN QUAN</h3>
+                                <p class="vocab-subtitle-text">Nhấp vào nút <strong>"NAME"</strong> bên dưới để khám phá lần lượt từng thành phần và từ vựng mở rộng</p>
                             </div>
-                            <h3 class="vocab-section-title">CÁC THÀNH PHẦN TRONG TÊN (PARTS OF A NAME)</h3>
-                            <p class="vocab-intro-text">
-                                👉 Nhấp vào nút <strong>"NAME"</strong> bên dưới để các thành phần lần lượt bung mở sinh động nhé!
-                            </p>
-                        </div>
-
-                        <!-- Central Interactive "NAME" Button Hub -->
-                        <div class="name-hub-action-box">
-                            <button type="button" class="btn-name-pulse" id="btn-reveal-name-parts" title="Bấm vào để mở từng thành phần tên">
-                                <div class="pulse-ring"></div>
-                                <div class="pulse-icon">🏷️</div>
-                                <div class="pulse-body">
-                                    <span class="pulse-title">NAME</span>
-                                    <span class="pulse-subtitle" id="name-hub-status">Nhấp để mở thành phần (0/6) 👉</span>
-                                </div>
-                                <span class="pulse-badge-count" id="name-parts-counter">0 / 6</span>
-                            </button>
-
-                            <div class="name-hub-toolbar">
-                                <button type="button" class="hub-tool-btn" id="btn-show-all-parts" title="Mở nhanh tất cả 6 thành phần">
-                                    <span>👁️</span> Mở tất cả
+                            
+                            <!-- Master Trigger Button -->
+                            <div class="vocab-trigger-area">
+                                <button type="button" class="btn-name-master" id="btn-master-name" title="Nhấp để mở từng thành phần">
+                                    <div class="btn-name-left">
+                                        <span class="btn-name-icon">🏷️</span>
+                                        <span class="btn-name-label">NAME</span>
+                                    </div>
+                                    <span class="btn-name-step" id="master-step-indicator">Nhấp để bắt đầu (0/6) 👉</span>
+                                    <span class="btn-name-badge" id="master-counter-badge">0 / 6</span>
                                 </button>
-                                <button type="button" class="hub-tool-btn" id="btn-reset-name-parts" title="Thu gọn lại từ đầu">
-                                    <span>🔄</span> Thu gọn
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- List of Name Component Cards (revealed one by one) -->
-                        <div class="name-parts-grid" id="name-parts-grid">
-                            <!-- Part 1: first name = given name -->
-                            <div class="name-part-card hidden-part" data-step="1" data-audio="first name, given name">
-                                <div class="part-card-header">
-                                    <div class="part-number-badge">1</div>
-                                    <div class="part-titles">
-                                        <div class="part-en-title">
-                                            <span class="highlight-term">first name</span>
-                                            <span class="equals-sign">=</span>
-                                            <span class="highlight-term">given name</span>
-                                        </div>
-                                        <div class="part-vi-title">Tên gọi chính / Tên riêng</div>
-                                    </div>
-                                    <button type="button" class="part-audio-btn" title="Nghe phát âm">🔊</button>
-                                </div>
-                                <div class="part-card-body">
-                                    <div class="part-note">
-                                        💡 <strong>Vị trí:</strong> Trong tiếng Anh thường đứng trước họ, tiếng Việt đứng cuối.
-                                    </div>
-                                    <div class="part-example">
-                                        Ví dụ: Nguyễn Văn <mark class="name-highlight">An</mark> ➔ <em>first name</em> là <strong>An</strong>.
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Part 2: middle name -->
-                            <div class="name-part-card hidden-part" data-step="2" data-audio="middle name">
-                                <div class="part-card-header">
-                                    <div class="part-number-badge">2</div>
-                                    <div class="part-titles">
-                                        <div class="part-en-title">
-                                            <span class="highlight-term">middle name</span>
-                                        </div>
-                                        <div class="part-vi-title">Tên đệm / Chữ lót</div>
-                                    </div>
-                                    <button type="button" class="part-audio-btn" title="Nghe phát âm">🔊</button>
-                                </div>
-                                <div class="part-card-body">
-                                    <div class="part-note">
-                                        💡 <strong>Vị trí:</strong> Phần tên nằm ở giữa Họ và Tên chính.
-                                    </div>
-                                    <div class="part-example">
-                                        Ví dụ: Nguyễn <mark class="name-highlight">Văn</mark> An ➔ <em>middle name</em> là <strong>Văn</strong>.
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Part 3: last name = family name = surname -->
-                            <div class="name-part-card hidden-part" data-step="3" data-audio="last name, family name, surname">
-                                <div class="part-card-header">
-                                    <div class="part-number-badge">3</div>
-                                    <div class="part-titles">
-                                        <div class="part-en-title">
-                                            <span class="highlight-term">last name</span>
-                                            <span class="equals-sign">=</span>
-                                            <span class="highlight-term">family name</span>
-                                            <span class="equals-sign">=</span>
-                                            <span class="highlight-term">surname</span>
-                                        </div>
-                                        <div class="part-vi-title">Họ (Cả 3 từ đều đồng nghĩa)</div>
-                                    </div>
-                                    <button type="button" class="part-audio-btn" title="Nghe phát âm">🔊</button>
-                                </div>
-                                <div class="part-card-body">
-                                    <div class="part-note">
-                                        💡 <strong>Đặc điểm:</strong> Kế thừa từ gia đình/dòng họ; người Anh/Mỹ viết họ ở cuối cùng.
-                                    </div>
-                                    <div class="part-example">
-                                        Ví dụ: <mark class="name-highlight">Nguyễn</mark> Văn An ➔ <em>last name</em> là <strong>Nguyễn</strong>.
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Part 4: full name -->
-                            <div class="name-part-card hidden-part" data-step="4" data-audio="full name">
-                                <div class="part-card-header">
-                                    <div class="part-number-badge">4</div>
-                                    <div class="part-titles">
-                                        <div class="part-en-title">
-                                            <span class="highlight-term">full name</span>
-                                        </div>
-                                        <div class="part-vi-title">Họ và tên đầy đủ</div>
-                                    </div>
-                                    <button type="button" class="part-audio-btn" title="Nghe phát âm">🔊</button>
-                                </div>
-                                <div class="part-card-body">
-                                    <div class="part-note">
-                                        💡 <strong>Công thức:</strong> Bao gồm đầy đủ cả Họ + Tên đệm + Tên chính.
-                                    </div>
-                                    <div class="part-example">
-                                        Ví dụ: <mark class="name-highlight">Nguyễn Văn An</mark> ➔ <em>full name</em>.
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Part 5: nickname -->
-                            <div class="name-part-card hidden-part" data-step="5" data-audio="nickname">
-                                <div class="part-card-header">
-                                    <div class="part-number-badge">5</div>
-                                    <div class="part-titles">
-                                        <div class="part-en-title">
-                                            <span class="highlight-term">nickname</span>
-                                        </div>
-                                        <div class="part-vi-title">Biệt danh / Tên thân mật ở nhà</div>
-                                    </div>
-                                    <button type="button" class="part-audio-btn" title="Nghe phát âm">🔊</button>
-                                </div>
-                                <div class="part-card-body">
-                                    <div class="part-note">
-                                        💡 <strong>Đặc điểm:</strong> Tên gọi gần gũi bạn bè hoặc người thân thường dùng.
-                                    </div>
-                                    <div class="part-example">
-                                        Ví dụ: Bạn bè hay gọi An là <mark class="name-highlight">Andy</mark> hoặc <mark class="name-highlight">Bo</mark>.
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Part 6: spell -->
-                            <div class="name-part-card hidden-part" data-step="6" data-audio="spell">
-                                <div class="part-card-header">
-                                    <div class="part-number-badge">6</div>
-                                    <div class="part-titles">
-                                        <div class="part-en-title">
-                                            <span class="highlight-term">spell</span>
-                                        </div>
-                                        <div class="part-vi-title">Đánh vần từng chữ cái trong tên</div>
-                                    </div>
-                                    <button type="button" class="part-audio-btn" title="Nghe phát âm">🔊</button>
-                                </div>
-                                <div class="part-card-body">
-                                    <div class="part-note">
-                                        💡 <strong>Ứng dụng:</strong> Dùng khi giám khảo hỏi <em>"How do you spell it?"</em>.
-                                    </div>
-                                    <div class="part-example">
-                                        Ví dụ: A - N ➔ Đánh vần chữ <mark class="name-highlight">An</mark>.
-                                    </div>
+                                
+                                <div class="vocab-quick-toolbar">
+                                    <button type="button" class="btn-tool-pill" id="btn-vocab-open-all">👁️ Mở tất cả</button>
+                                    <button type="button" class="btn-tool-pill" id="btn-vocab-reset">🔄 Bắt đầu lại</button>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Completion Congrats Banner -->
-                        <div class="vocab-congrats-banner hidden" id="vocab-congrats-box">
-                            <span class="congrats-icon">🎉</span>
-                            <div class="congrats-text">
-                                <strong>Xuất sắc! Em đã khám phá trọn bộ 6 thành phần của Tên!</strong>
-                                <span>Hãy nhấp vào sơ đồ trực quan dưới đây hoặc từng thẻ để nghe luyện phát âm nhé.</span>
-                            </div>
-                        </div>
-
-                        <!-- Sơ đồ giải phẫu Tên trực quan (Interactive Name Anatomy) -->
-                        <div class="name-anatomy-box" id="name-anatomy-box">
-                            <div class="anatomy-header">
-                                <div class="anatomy-title">
-                                    <span>🧩</span> <strong>SƠ ĐỒ TÊN MẪU TRỰC QUAN (NAME ANATOMY)</strong>
-                                </div>
-                                <button type="button" class="btn-toggle-my-name-anatomy" id="btn-my-name-anatomy" title="Phân tích tên của chính bạn">
-                                    <span>🎓</span> Phân tích tên của tôi
+                        <!-- Visual Name Anatomy Bar (Sơ đồ trực quan Họ & Tên) -->
+                        <div class="name-visual-bar">
+                            <div class="visual-bar-header">
+                                <span class="visual-bar-caption">🧩 SƠ ĐỒ CẤU TRÚC HỌ & TÊN TRỰC QUAN:</span>
+                                <button type="button" class="btn-switch-personal-name" id="btn-toggle-personal-name">
+                                    <span>🎓</span> Áp dụng tên của tôi
                                 </button>
                             </div>
 
-                            <!-- Example Name Blocks -->
-                            <div class="anatomy-visual-row">
-                                <div class="anatomy-pill pill-last" data-target-step="3" title="Nhấp để xem Last name">
-                                    <span class="pill-type">HỌ (Last Name)</span>
-                                    <span class="pill-word" id="demo-last-name">NGUYỄN</span>
+                            <!-- Interactive Chips Row (4 Components of a Full Name) -->
+                            <div class="name-chips-display">
+                                <!-- Last Name Chip -->
+                                <div class="chip-item chip-last" data-term="last-name" title="Nhấp để xem Last Name">
+                                    <div class="chip-tag">1. HỌ (Last Name)</div>
+                                    <div class="chip-val" id="chip-val-last">NGUYỄN</div>
+                                    <div class="chip-alias">family name = surname</div>
                                 </div>
-                                <span class="anatomy-plus">+</span>
-                                <div class="anatomy-pill pill-mid" data-target-step="2" title="Nhấp để xem Middle name">
-                                    <span class="pill-type">TÊN ĐỆM (Middle Name)</span>
-                                    <span class="pill-word" id="demo-mid-name">VĂN</span>
+
+                                <div class="chip-separator">+</div>
+
+                                <!-- Middle Name Chip -->
+                                <div class="chip-item chip-mid" data-term="middle-name" title="Nhấp để xem Middle Name">
+                                    <div class="chip-tag">2. TÊN ĐỆM (Middle Name)</div>
+                                    <div class="chip-val" id="chip-val-mid">VĂN</div>
+                                    <div class="chip-alias">chữ lót</div>
                                 </div>
-                                <span class="anatomy-plus">+</span>
-                                <div class="anatomy-pill pill-first" data-target-step="1" title="Nhấp để xem First name">
-                                    <span class="pill-type">TÊN CHÍNH (First Name)</span>
-                                    <span class="pill-word" id="demo-first-name">AN</span>
+
+                                <div class="chip-separator">+</div>
+
+                                <!-- First Name Chip -->
+                                <div class="chip-item chip-first" data-term="first-name" title="Nhấp để xem First Name">
+                                    <div class="chip-tag">3. TÊN CHÍNH (First Name)</div>
+                                    <div class="chip-val" id="chip-val-first">AN</div>
+                                    <div class="chip-alias">given name</div>
                                 </div>
-                                <span class="anatomy-equals">=</span>
-                                <div class="anatomy-pill pill-full" data-target-step="4" title="Nhấp để xem Full name">
-                                    <span class="pill-type">HỌ VÀ TÊN (Full Name)</span>
-                                    <span class="pill-word" id="demo-full-name">NGUYỄN VĂN AN</span>
+
+                                <div class="chip-separator">=</div>
+
+                                <!-- Full Name Chip -->
+                                <div class="chip-item chip-full" data-term="full-name" title="Nhấp để xem Full Name">
+                                    <div class="chip-tag">4. HỌ & TÊN (Full Name)</div>
+                                    <div class="chip-val" id="chip-val-full">NGUYỄN VĂN AN</div>
+                                    <div class="chip-alias">họ tên đầy đủ</div>
                                 </div>
                             </div>
-                            <div class="anatomy-hint">
-                                💡 Nhấp vào từng phần ở trên để hệ thống tự động phát âm và sáng nổi bật thẻ từ vựng tương ứng!
+
+                            <!-- Additional Related Terms Row (Distinct communication terms) -->
+                            <div class="related-terms-row">
+                                <span class="related-label">📌 Từ vựng mở rộng trong giao tiếp:</span>
+                                <div class="related-chips">
+                                    <div class="chip-item chip-extra chip-nickname" data-term="nickname" title="Nhấp để xem Nickname">
+                                        <span class="chip-extra-badge">5</span>
+                                        <strong>nickname</strong>
+                                        <span class="chip-extra-desc">(Biệt danh / Tên thân mật)</span>
+                                    </div>
+                                    <div class="chip-item chip-extra chip-spell" data-term="spell" title="Nhấp để xem động từ Spell">
+                                        <span class="chip-extra-badge">6</span>
+                                        <strong>spell</strong> <em class="verb-tag">(v)</em>
+                                        <span class="chip-extra-desc">(Động từ: Đánh vần chữ cái)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Active Spotlight Detail Card (Hiển thị chi tiết từng từ) -->
+                        <div class="vocab-spotlight-card" id="vocab-spotlight-box">
+                            <div class="spotlight-header">
+                                <div class="spotlight-title-row">
+                                    <span class="spotlight-step-tag" id="spotlight-step-badge">THÀNH PHẦN 1 / 6</span>
+                                    <h4 class="spotlight-word" id="spotlight-term-en">first name = given name</h4>
+                                    <span class="spotlight-vi" id="spotlight-term-vi">Tên gọi chính / Tên riêng</span>
+                                </div>
+                                <button type="button" class="spotlight-audio-btn" id="spotlight-audio-play" title="Nghe phát âm từ vựng">
+                                    <span class="speaker-icon">🔊</span>
+                                    <span>Nghe phát âm</span>
+                                </button>
+                            </div>
+                            <div class="spotlight-content-grid">
+                                <div class="spotlight-desc-box">
+                                    <span class="desc-label">💡 Ý NGHĨA & VỊ TRÍ:</span>
+                                    <p class="desc-text" id="spotlight-desc">Tên dùng để gọi chính của một người. Trong tiếng Anh, tên gọi đứng trước Họ (Ví dụ: "John" trong John Smith). Trong tiếng Việt, tên gọi đứng ở cuối cùng.</p>
+                                </div>
+                                <div class="spotlight-example-box">
+                                    <span class="desc-label">📖 VÍ DỤ MINH HỌA:</span>
+                                    <p class="example-text" id="spotlight-example">Trong tên <strong>Nguyễn Văn An</strong> ➔ <em>first name</em> là <strong>An</strong>. (Tiếng Anh: <em>"My first name is An."</em>)</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Pill Navigation (Nhấp vào từ bất kỳ để xem nhanh) -->
+                        <div class="vocab-nav-pills" id="vocab-nav-pills">
+                            <span class="nav-pills-label">Danh mục từ vựng (Nhấp để xem nhanh):</span>
+                            <div class="pills-list">
+                                <button type="button" class="nav-vocab-pill" data-target="first-name">
+                                    <span class="pill-status">○</span> first name = given name
+                                </button>
+                                <button type="button" class="nav-vocab-pill" data-target="middle-name">
+                                    <span class="pill-status">○</span> middle name
+                                </button>
+                                <button type="button" class="nav-vocab-pill" data-target="last-name">
+                                    <span class="pill-status">○</span> last name = family name = surname
+                                </button>
+                                <button type="button" class="nav-vocab-pill" data-target="full-name">
+                                    <span class="pill-status">○</span> full name
+                                </button>
+                                <button type="button" class="nav-vocab-pill" data-target="nickname">
+                                    <span class="pill-status">○</span> nickname
+                                </button>
+                                <button type="button" class="nav-vocab-pill" data-target="spell">
+                                    <span class="pill-status">○</span> spell (động từ)
+                                </button>
                             </div>
                         </div>
                     </div>

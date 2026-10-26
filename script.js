@@ -466,203 +466,293 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ========================================================
-    // INTERACTIVE NAME VOCABULARY SECTION (CẤU TRÚC TÊN SINH ĐỘNG)
+    // MODERN INTERACTIVE VOCABULARY: NAME & COMPONENTS
     // ========================================================
     function initNameVocabInteractive() {
-        const triggerBtn = document.getElementById('btn-reveal-name-parts');
-        const showAllBtn = document.getElementById('btn-show-all-parts');
-        const resetBtn = document.getElementById('btn-reset-name-parts');
-        const statusText = document.getElementById('name-hub-status');
-        const counterBadge = document.getElementById('name-parts-counter');
-        const congratsBox = document.getElementById('vocab-congrats-box');
-        const partCards = document.querySelectorAll('.name-part-card');
-        const totalParts = partCards.length;
-        let currentStep = 0;
-
-        const updateDisplay = () => {
-            if (counterBadge) counterBadge.textContent = `${currentStep} / ${totalParts}`;
-            
-            if (statusText && triggerBtn) {
-                if (currentStep === 0) {
-                    statusText.textContent = 'Nhấp để mở thành phần (0/6) 👉';
-                    triggerBtn.classList.remove('all-completed');
-                    if (congratsBox) congratsBox.classList.add('hidden');
-                } else if (currentStep < totalParts) {
-                    statusText.textContent = `Bấm tiếp để mở thành phần ${currentStep + 1} 👉`;
-                    triggerBtn.classList.remove('all-completed');
-                    if (congratsBox) congratsBox.classList.add('hidden');
-                } else {
-                    statusText.textContent = '🎉 Đã mở trọn bộ 6 thành phần!';
-                    triggerBtn.classList.add('all-completed');
-                    if (congratsBox) congratsBox.classList.remove('hidden');
-                }
+        const VOCAB_DATA = {
+            'first-name': {
+                step: 1,
+                en: 'first name = given name',
+                vi: 'Tên gọi chính / Tên riêng',
+                audio: 'first name, given name',
+                desc: 'Tên dùng để xưng hô chính. Trong tiếng Anh, tên gọi thường đứng trước họ (Ví dụ: "John" trong John Smith). Trong tiếng Việt, tên gọi đứng ở cuối cùng.',
+                example: 'Trong tên <strong>Nguyễn Văn An</strong> ➔ <em>first name</em> là <strong>An</strong>. (Ví dụ nói: <em>"My first name is An."</em>)'
+            },
+            'middle-name': {
+                step: 2,
+                en: 'middle name',
+                vi: 'Tên đệm / Chữ lót',
+                audio: 'middle name',
+                desc: 'Phần tên nằm ở giữa Họ và Tên chính. Một số người có thể không có tên đệm, hoặc có từ 2 tên đệm trở lên.',
+                example: 'Trong tên <strong>Nguyễn Văn An</strong> ➔ <em>middle name</em> là <strong>Văn</strong>. (Ví dụ nói: <em>"My middle name is Van."</em>)'
+            },
+            'last-name': {
+                step: 3,
+                en: 'last name = family name = surname',
+                vi: 'Họ (Cả 3 từ đều đồng nghĩa)',
+                audio: 'last name, family name, surname',
+                desc: 'Họ của một người được kế thừa từ dòng họ gia đình. Người Anh/Mỹ viết họ ở cuối cùng, người Việt viết họ ở đầu tiên. Cả 3 từ "last name", "family name" và "surname" đều có nghĩa là Họ.',
+                example: 'Trong tên <strong>Nguyễn Văn An</strong> ➔ <em>last name</em> là <strong>Nguyễn</strong>. (Ví dụ nói: <em>"My last name is Nguyen."</em>)'
+            },
+            'full-name': {
+                step: 4,
+                en: 'full name',
+                vi: 'Họ và tên đầy đủ',
+                audio: 'full name',
+                desc: 'Bao gồm trọn vẹn cả Họ + Tên đệm (nếu có) + Tên chính ghép lại.',
+                example: 'Toàn bộ tên <strong>Nguyễn Văn An</strong> ➔ <em>full name</em>. (Ví dụ nói: <em>"My full name is Nguyen Van An."</em>)'
+            },
+            'nickname': {
+                step: 5,
+                en: 'nickname',
+                vi: 'Biệt danh / Tên gọi thân mật',
+                audio: 'nickname',
+                desc: 'Tên gọi gần gũi, ngắn gọn mà bạn bè, gia đình hoặc người thân quen thường dùng thay cho tên thật.',
+                example: 'Ví dụ: Bạn bè hay gọi An là <strong>Andy</strong>, <strong>Alex</strong>, hoặc <strong>Bé Bo</strong>. (Ví dụ nói: <em>"My nickname is Andy."</em>)'
+            },
+            'spell': {
+                step: 6,
+                en: 'spell (verb)',
+                vi: 'Động từ: Đánh vần từng chữ cái',
+                audio: 'spell, how do you spell it',
+                desc: 'Động từ chỉ hành động đọc tách rời từng ký tự trong tên. Thường xuất hiện trong câu hỏi thi: <em>"How do you spell your name?"</em> (Bạn đánh vần tên mình như thế nào?).',
+                example: 'Ví dụ đánh vần tên AN: <strong>A - N</strong>; đánh vần tên NGUYET: <strong>N - G - U - Y - E - T</strong>.'
             }
-
-            partCards.forEach(card => {
-                const step = parseInt(card.getAttribute('data-step'), 10);
-                if (step <= currentStep) {
-                    if (card.classList.contains('hidden-part')) {
-                        card.classList.remove('hidden-part');
-                        card.classList.add('pop-in');
-                    }
-                } else {
-                    card.classList.add('hidden-part');
-                    card.classList.remove('pop-in');
-                }
-            });
         };
 
-        // When clicking the main NAME button
-        if (triggerBtn) {
-            triggerBtn.addEventListener('click', () => {
-                if (currentStep < totalParts) {
-                    currentStep++;
-                    updateDisplay();
-                    
-                    // Speak the newly revealed card's term!
-                    const activeCard = document.querySelector(`.name-part-card[data-step="${currentStep}"]`);
-                    if (activeCard) {
-                        const audioText = activeCard.getAttribute('data-audio');
-                        if (audioText && window.playAudio) {
-                            window.playAudio(audioText, 'female');
-                        }
-                        activeCard.classList.add('active-highlight');
-                        setTimeout(() => activeCard.classList.remove('active-highlight'), 1200);
-                        activeCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                    }
+        const ORDER_KEYS = ['first-name', 'middle-name', 'last-name', 'full-name', 'nickname', 'spell'];
+        const totalSteps = ORDER_KEYS.length; // 6
+        let currentStepIndex = 0; // 0 means not started yet
+        let activeKey = 'first-name';
+
+        // DOM elements
+        const masterBtn = document.getElementById('btn-master-name');
+        const stepIndicator = document.getElementById('master-step-indicator');
+        const counterBadge = document.getElementById('master-counter-badge');
+        const openAllBtn = document.getElementById('btn-vocab-open-all');
+        const resetBtn = document.getElementById('btn-vocab-reset');
+        
+        // Spotlight elements
+        const spotlightStepBadge = document.getElementById('spotlight-step-badge');
+        const spotlightTermEn = document.getElementById('spotlight-term-en');
+        const spotlightTermVi = document.getElementById('spotlight-term-vi');
+        const spotlightAudioBtn = document.getElementById('spotlight-audio-play');
+        const spotlightDesc = document.getElementById('spotlight-desc');
+        const spotlightExample = document.getElementById('spotlight-example');
+        const spotlightCard = document.getElementById('vocab-spotlight-box');
+
+        // Chips and Nav pills
+        const chipItems = document.querySelectorAll('.chip-item');
+        const navPills = document.querySelectorAll('.nav-vocab-pill');
+
+        function renderSpotlight(key, shouldPlayAudio = false) {
+            const data = VOCAB_DATA[key];
+            if (!data) return;
+            activeKey = key;
+
+            if (spotlightStepBadge) spotlightStepBadge.textContent = `TỪ VỰNG ${data.step} / ${totalSteps}`;
+            if (spotlightTermEn) spotlightTermEn.textContent = data.en;
+            if (spotlightTermVi) spotlightTermVi.textContent = data.vi;
+            if (spotlightDesc) spotlightDesc.innerHTML = data.desc;
+            if (spotlightExample) spotlightExample.innerHTML = data.example;
+
+            // Highlight chips
+            chipItems.forEach(chip => {
+                if (chip.getAttribute('data-term') === key) {
+                    chip.classList.add('active');
                 } else {
-                    if (window.playAudio) window.playAudio("Name! All components revealed.", "female");
+                    chip.classList.remove('active');
+                }
+            });
+
+            // Highlight nav pills
+            navPills.forEach(pill => {
+                const target = pill.getAttribute('data-target');
+                if (target === key) {
+                    pill.classList.add('active');
+                } else {
+                    pill.classList.remove('active');
+                }
+            });
+
+            // Smooth subtle re-trigger animation
+            if (spotlightCard) {
+                spotlightCard.style.animation = 'none';
+                spotlightCard.offsetHeight; /* trigger reflow */
+                spotlightCard.style.animation = 'spotlightFadeIn 0.3s ease';
+            }
+
+            if (shouldPlayAudio && window.playAudio) {
+                window.playAudio(data.audio, 'female');
+            }
+        }
+
+        function updateMasterState() {
+            if (counterBadge) counterBadge.textContent = `${currentStepIndex} / ${totalSteps}`;
+            
+            if (stepIndicator && masterBtn) {
+                if (currentStepIndex === 0) {
+                    stepIndicator.textContent = 'Nhấp để bắt đầu (0/6) 👉';
+                    masterBtn.style.background = 'linear-gradient(135deg, #4f46e5 0%, #4338ca 100%)';
+                } else if (currentStepIndex < totalSteps) {
+                    stepIndicator.textContent = `Bấm tiếp để mở bước ${currentStepIndex + 1} 👉`;
+                    masterBtn.style.background = 'linear-gradient(135deg, #4f46e5 0%, #4338ca 100%)';
+                } else {
+                    stepIndicator.textContent = '🎉 Đã khám phá toàn bộ 6/6!';
+                    masterBtn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+                }
+            }
+
+            // Update pill status checkmarks for revealed items
+            navPills.forEach((pill, idx) => {
+                const statusSpan = pill.querySelector('.pill-status');
+                if (statusSpan) {
+                    if (idx < currentStepIndex) {
+                        statusSpan.textContent = '✓';
+                        statusSpan.style.color = '#10b981';
+                        statusSpan.style.fontWeight = '900';
+                    } else {
+                        statusSpan.textContent = '○';
+                        statusSpan.style.color = '';
+                        statusSpan.style.fontWeight = '';
+                    }
                 }
             });
         }
 
-        // Show All Button
-        if (showAllBtn) {
-            showAllBtn.addEventListener('click', () => {
-                currentStep = totalParts;
-                updateDisplay();
-                if (window.playAudio) window.playAudio("first name, middle name, last name, full name, nickname, spell", "female");
+        // Master Click: Steps through 1 to 6
+        if (masterBtn) {
+            masterBtn.addEventListener('click', () => {
+                if (currentStepIndex < totalSteps) {
+                    currentStepIndex++;
+                    const targetKey = ORDER_KEYS[currentStepIndex - 1];
+                    updateMasterState();
+                    renderSpotlight(targetKey, true);
+                } else {
+                    renderSpotlight(activeKey, true);
+                }
             });
         }
 
-        // Reset Button
+        // Open All
+        if (openAllBtn) {
+            openAllBtn.addEventListener('click', () => {
+                currentStepIndex = totalSteps;
+                updateMasterState();
+                renderSpotlight(ORDER_KEYS[0], false);
+                if (window.playAudio) {
+                    window.playAudio("first name, middle name, last name, full name, nickname, spell", "female");
+                }
+            });
+        }
+
+        // Reset
         if (resetBtn) {
             resetBtn.addEventListener('click', () => {
-                currentStep = 0;
-                updateDisplay();
+                currentStepIndex = 0;
+                updateMasterState();
+                renderSpotlight(ORDER_KEYS[0], false);
             });
         }
 
-        // Individual card click -> audio & highlight
-        partCards.forEach(card => {
-            card.addEventListener('click', (e) => {
-                if (e.target.closest('.part-audio-btn')) return;
-                const audioText = card.getAttribute('data-audio');
-                if (audioText && window.playAudio) {
-                    window.playAudio(audioText, 'female');
+        // Spotlight Audio Button
+        if (spotlightAudioBtn) {
+            spotlightAudioBtn.addEventListener('click', () => {
+                const data = VOCAB_DATA[activeKey];
+                if (data && window.playAudio) {
+                    window.playAudio(data.audio, 'female');
                 }
-                partCards.forEach(c => c.classList.remove('active-highlight'));
-                card.classList.add('active-highlight');
-                setTimeout(() => card.classList.remove('active-highlight'), 1200);
             });
+        }
 
-            const audioBtn = card.querySelector('.part-audio-btn');
-            if (audioBtn) {
-                audioBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const audioText = card.getAttribute('data-audio');
-                    if (audioText && window.playAudio) {
-                        window.playAudio(audioText, 'female');
+        // Clicking any Chip in the Anatomy row
+        chipItems.forEach(chip => {
+            chip.addEventListener('click', () => {
+                const termKey = chip.getAttribute('data-term');
+                if (termKey && VOCAB_DATA[termKey]) {
+                    const stepNum = VOCAB_DATA[termKey].step;
+                    if (stepNum > currentStepIndex) {
+                        currentStepIndex = stepNum;
+                        updateMasterState();
                     }
-                    card.classList.add('active-highlight');
-                    setTimeout(() => card.classList.remove('active-highlight'), 1200);
-                });
-            }
+                    renderSpotlight(termKey, true);
+                }
+            });
         });
 
-        // Anatomy pills interaction
-        const anatomyPills = document.querySelectorAll('.anatomy-pill');
-        anatomyPills.forEach(pill => {
+        // Clicking any Nav Pill
+        navPills.forEach(pill => {
             pill.addEventListener('click', () => {
-                const targetStep = pill.getAttribute('data-target-step');
-                if (targetStep) {
-                    const stepNum = parseInt(targetStep, 10);
-                    if (currentStep < stepNum) {
-                        currentStep = stepNum;
-                        updateDisplay();
+                const termKey = pill.getAttribute('data-target');
+                if (termKey && VOCAB_DATA[termKey]) {
+                    const stepNum = VOCAB_DATA[termKey].step;
+                    if (stepNum > currentStepIndex) {
+                        currentStepIndex = stepNum;
+                        updateMasterState();
                     }
-                    const targetCard = document.querySelector(`.name-part-card[data-step="${targetStep}"]`);
-                    if (targetCard) {
-                        targetCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                        targetCard.classList.add('active-highlight');
-                        setTimeout(() => targetCard.classList.remove('active-highlight'), 1500);
-                        const audioText = targetCard.getAttribute('data-audio');
-                        if (audioText && window.playAudio) {
-                            window.playAudio(audioText, 'female');
-                        }
-                    }
+                    renderSpotlight(termKey, true);
                 }
             });
         });
 
-        // Dynamic "Phân tích tên của tôi"
-        const myNameAnatomyBtn = document.getElementById('btn-my-name-anatomy');
-        if (myNameAnatomyBtn) {
-            let isMyNameShown = false;
-            myNameAnatomyBtn.addEventListener('click', () => {
+        // Dynamic "Áp dụng tên của tôi"
+        const personalNameBtn = document.getElementById('btn-toggle-personal-name');
+        if (personalNameBtn) {
+            let isCustomShown = false;
+            personalNameBtn.addEventListener('click', () => {
                 const rawStored = sessionStorage.getItem('studentName') || '';
                 const cleanName = rawStored.split('-')[0].trim();
+                
                 if (!cleanName || cleanName === 'Khách' || cleanName === 'Cô Nguyệt') {
-                    const promptName = prompt("Nhập họ và tên đầy đủ của bạn để phân tích nhé:", "Lưu Thị Vân Anh");
-                    if (promptName && promptName.trim()) {
-                        applyCustomNameAnatomy(promptName.trim());
+                    const entered = prompt("Nhập họ và tên đầy đủ của bạn để áp dụng vào sơ đồ nhé:", "Lưu Thị Vân Anh");
+                    if (entered && entered.trim()) {
+                        applyNameToVisualBar(entered.trim());
+                        personalNameBtn.innerHTML = '<span>🔄</span> Đổi lại tên mẫu';
+                        isCustomShown = true;
                     }
                     return;
                 }
 
-                if (!isMyNameShown) {
-                    applyCustomNameAnatomy(cleanName);
-                    myNameAnatomyBtn.innerHTML = '<span>🔄</span> Đổi lại tên mẫu (Nguyễn Văn An)';
-                    isMyNameShown = true;
+                if (!isCustomShown) {
+                    applyNameToVisualBar(cleanName);
+                    personalNameBtn.innerHTML = '<span>🔄</span> Đổi lại tên mẫu';
+                    isCustomShown = true;
                 } else {
-                    applyCustomNameAnatomy('Nguyễn Văn An');
-                    myNameAnatomyBtn.innerHTML = '<span>🎓</span> Phân tích tên của tôi';
-                    isMyNameShown = false;
+                    applyNameToVisualBar('Nguyễn Văn An');
+                    personalNameBtn.innerHTML = '<span>🎓</span> Áp dụng tên của tôi';
+                    isCustomShown = false;
                 }
             });
         }
 
-        function applyCustomNameAnatomy(fullNameStr) {
+        function applyNameToVisualBar(fullNameStr) {
             const parts = fullNameStr.trim().split(/\s+/);
-            const demoLast = document.getElementById('demo-last-name');
-            const demoMid = document.getElementById('demo-mid-name');
-            const demoFirst = document.getElementById('demo-first-name');
-            const demoFull = document.getElementById('demo-full-name');
+            const chipLast = document.getElementById('chip-val-last');
+            const chipMid = document.getElementById('chip-val-mid');
+            const chipFirst = document.getElementById('chip-val-first');
+            const chipFull = document.getElementById('chip-val-full');
 
-            if (!demoLast || !demoMid || !demoFirst || !demoFull) return;
+            if (!chipLast || !chipMid || !chipFirst || !chipFull) return;
 
             if (parts.length === 1) {
-                demoLast.textContent = '(Chưa rõ họ)';
-                demoMid.textContent = '(Không có)';
-                demoFirst.textContent = parts[0].toUpperCase();
+                chipLast.textContent = '(Không có)';
+                chipMid.textContent = '(Không có)';
+                chipFirst.textContent = parts[0].toUpperCase();
             } else if (parts.length === 2) {
-                demoLast.textContent = parts[0].toUpperCase();
-                demoMid.textContent = '(Không có)';
-                demoFirst.textContent = parts[1].toUpperCase();
+                chipLast.textContent = parts[0].toUpperCase();
+                chipMid.textContent = '(Không có)';
+                chipFirst.textContent = parts[1].toUpperCase();
             } else {
-                demoLast.textContent = parts[0].toUpperCase();
-                demoMid.textContent = parts.slice(1, -1).join(' ').toUpperCase();
-                demoFirst.textContent = parts[parts.length - 1].toUpperCase();
+                chipLast.textContent = parts[0].toUpperCase();
+                chipMid.textContent = parts.slice(1, -1).join(' ').toUpperCase();
+                chipFirst.textContent = parts[parts.length - 1].toUpperCase();
             }
-            demoFull.textContent = fullNameStr.toUpperCase();
-            
-            // Auto reveal full components
-            currentStep = totalParts;
-            updateDisplay();
+            chipFull.textContent = fullNameStr.toUpperCase();
         }
 
-        // Initialize state
-        updateDisplay();
+        // Initialize with first item
+        updateMasterState();
+        renderSpotlight(ORDER_KEYS[0], false);
     }
     initNameVocabInteractive();
 
