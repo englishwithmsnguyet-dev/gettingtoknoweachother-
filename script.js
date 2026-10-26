@@ -61,15 +61,41 @@ document.addEventListener('DOMContentLoaded', () => {
             .trim();
     };
 
-    // Check if name is already stored in sessionStorage
-    const storedName = sessionStorage.getItem('studentName');
-    if (storedName) {
-        nameModal.classList.add('hidden');
-        displayName.textContent = storedName;
-        nameDisplay.classList.remove('hidden');
-    } else {
-        setTimeout(() => nameInput && nameInput.focus(), 100);
+    // Luôn luôn hiển thị modal đăng nhập mỗi khi tải lại trang / refresh
+    if (nameModal) {
+        nameModal.classList.remove('hidden');
+        nameModal.style.display = 'flex';
+        nameModal.style.opacity = '1';
     }
+    if (nameDisplay) {
+        nameDisplay.classList.add('hidden');
+        nameDisplay.style.cursor = 'pointer';
+        nameDisplay.title = 'Bấm để đổi học viên / lớp';
+        nameDisplay.addEventListener('click', () => {
+            nameModal.classList.remove('hidden');
+            nameModal.style.display = 'flex';
+            setTimeout(() => {
+                nameModal.style.opacity = '1';
+                nameInput && nameInput.focus();
+            }, 10);
+        });
+    }
+    if (nameInput) {
+        nameInput.value = '';
+        nameInput.addEventListener('input', () => {
+            nameInput.style.borderColor = '';
+            classError.style.display = 'none';
+        });
+        setTimeout(() => nameInput.focus(), 150);
+    }
+    if (classInput) {
+        classInput.value = '';
+        classInput.addEventListener('input', () => {
+            classInput.style.borderColor = '';
+            classError.style.display = 'none';
+        });
+    }
+    if (classError) classError.style.display = 'none';
 
     const startLesson = () => {
         const rawName = nameInput.value.trim();
@@ -81,16 +107,16 @@ document.addEventListener('DOMContentLoaded', () => {
         classError.style.display = 'none';
 
         if (!rawName && !rawClass) {
-            nameInput.style.borderColor = 'red';
-            if (classInput) classInput.style.borderColor = 'red';
-            classError.textContent = 'Vui lòng nhập đầy đủ Họ tên và Mã lớp!';
+            nameInput.style.borderColor = '#ef4444';
+            if (classInput) classInput.style.borderColor = '#ef4444';
+            classError.textContent = 'Vui lòng nhập đầy đủ Họ tên và Lớp học!';
             classError.style.display = 'block';
             nameInput.focus();
             return;
         }
 
         if (!rawName) {
-            nameInput.style.borderColor = 'red';
+            nameInput.style.borderColor = '#ef4444';
             classError.textContent = 'Vui lòng nhập Họ và tên!';
             classError.style.display = 'block';
             nameInput.focus();
@@ -99,10 +125,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!rawClass) {
             if (classInput) {
-                classInput.style.borderColor = 'red';
+                classInput.style.borderColor = '#ef4444';
                 classInput.focus();
             }
-            classError.textContent = 'Vui lòng nhập Mã lớp!';
+            classError.textContent = 'Vui lòng nhập Lớp học!';
             classError.style.display = 'block';
             return;
         }
@@ -130,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!matchedStudent) {
                 classError.textContent = `Họ và tên không thuộc danh sách học viên lớp ${studentClass}. Vui lòng kiểm tra lại!`;
                 classError.style.display = 'block';
-                nameInput.style.borderColor = 'red';
+                nameInput.style.borderColor = '#ef4444';
                 nameInput.focus();
                 return;
             }
@@ -139,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
             classError.textContent = 'Mã lớp không hợp lệ. Vui lòng kiểm tra lại!';
             classError.style.display = 'block';
             if (classInput) {
-                classInput.style.borderColor = 'red';
+                classInput.style.borderColor = '#ef4444';
                 classInput.focus();
             }
             return;
@@ -149,10 +175,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const fullNameClass = finalName + ' - ' + studentClass;
         sessionStorage.setItem('studentName', fullNameClass);
         displayName.textContent = fullNameClass;
-        nameModal.classList.add('hidden');
         nameDisplay.classList.remove('hidden');
 
+        if (startBtn) {
+            startBtn.disabled = true;
+            startBtn.innerHTML = '<span>ĐANG VÀO LỚP...</span>';
+        }
+
         // Send data to Google Form quietly in the background
+        const trackingForm = document.getElementById('tracking-form');
+        const entryInput = document.getElementById('entry_388968236');
+        if (entryInput) entryInput.value = fullNameClass;
+        if (trackingForm) {
+            try { trackingForm.submit(); } catch(e) {}
+        }
+
         const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSd9g4rE9j1urSd8CrJ6hRcigrpklwxgzO8KgGJy8zXYAifGeA/formResponse";
         const formData = new FormData();
         formData.append("entry.388968236", fullNameClass); // "What's your full name?" field
@@ -162,6 +199,16 @@ document.addEventListener('DOMContentLoaded', () => {
             mode: "no-cors",
             body: formData
         }).catch(err => console.error("Error logging student:", err));
+
+        nameModal.style.opacity = '0';
+        setTimeout(() => {
+            nameModal.classList.add('hidden');
+            nameModal.style.display = 'none';
+            if (startBtn) {
+                startBtn.disabled = false;
+                startBtn.innerHTML = 'BẮT ĐẦU HỌC NGAY';
+            }
+        }, 300);
     };
 
     if (startBtn) startBtn.addEventListener('click', startLesson);
