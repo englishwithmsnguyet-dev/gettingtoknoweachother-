@@ -45,10 +45,16 @@ document.addEventListener('DOMContentLoaded', () => {
             "Trần Thị Xuân Hoa", "Nguyễn Phạm Khang", "Đặng Văn Khánh", "Chim Nhật Luân",
             "Lư Vĩnh Phúc", "Nguyễn Chí Thiện", "Trần Thị Ngọc Thơ", "Huỳnh Yến Trang",
             "Thị Thu Trinh", "Nguyễn Thị Mỹ Xuyên", "Nguyễn Như Ý"
+        ],
+        "CB220": [
+            "Lý Quốc Dũng", "Phan Minh Khôi", "Huỳnh Văn My", "Mai Thúy Ngân",
+            "Võ Huỳnh Thảo Nguyên", "Đặng Dũ Nguyên", "Nguyễn Gia Nguyễn", "Trương Thị Thảo Như",
+            "Huỳnh Nhật Phát", "Nguyễn Huỳnh Thanh Sơn", "Thái Nhựt Thịnh", "Trần Nguyễn Huỳnh Trâm",
+            "Nguyễn Thị Tường Vi", "Lê Tường Vy", "Bùi Ngọc Như Ý"
         ]
     };
 
-    const allowedClasses = ['CB211', 'CB213', 'ONB103', 'B212', 'CB219', 'CB210'];
+    const allowedClasses = ['CB211', 'CB213', 'ONB103', 'B212', 'CB219', 'CB220', 'CB210'];
     const teacherClasses = ['2026', 'GV', 'GV2026', 'ADMIN', 'TEACHER'];
 
     const normalizeStr = (str) => {
