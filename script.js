@@ -470,13 +470,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // ========================================================
     function initNameVocabInteractive() {
         const VOCAB_DATA = {
-            'first-name': {
+            'last-name': {
                 step: 1,
-                en: 'first name = given name',
-                vi: 'Tên gọi chính / Tên riêng',
-                audio: 'first name, given name',
-                desc: 'Tên dùng để xưng hô chính. Trong tiếng Anh, tên gọi thường đứng trước họ (Ví dụ: "John" trong John Smith). Trong tiếng Việt, tên gọi đứng ở cuối cùng.',
-                example: 'Trong tên <strong>Nguyễn Văn An</strong> ➔ <em>first name</em> là <strong>An</strong>. (Ví dụ nói: <em>"My first name is An."</em>)'
+                en: 'last name = family name = surname',
+                vi: 'Họ (Cả 3 từ đều đồng nghĩa)',
+                audio: 'last name, family name, surname',
+                desc: 'Họ của một người được kế thừa từ dòng họ gia đình. Người Anh/Mỹ viết họ ở cuối cùng, người Việt viết họ ở đầu tiên. Cả 3 từ "last name", "family name" và "surname" đều có nghĩa là Họ.',
+                example: 'Trong tên <strong>Nguyễn Văn An</strong> ➔ <em>last name</em> là <strong>Nguyễn</strong>. (Ví dụ nói: <em>"My last name is Nguyen."</em>)'
             },
             'middle-name': {
                 step: 2,
@@ -486,13 +486,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 desc: 'Phần tên nằm ở giữa Họ và Tên chính. Một số người có thể không có tên đệm, hoặc có từ 2 tên đệm trở lên.',
                 example: 'Trong tên <strong>Nguyễn Văn An</strong> ➔ <em>middle name</em> là <strong>Văn</strong>. (Ví dụ nói: <em>"My middle name is Van."</em>)'
             },
-            'last-name': {
+            'first-name': {
                 step: 3,
-                en: 'last name = family name = surname',
-                vi: 'Họ (Cả 3 từ đều đồng nghĩa)',
-                audio: 'last name, family name, surname',
-                desc: 'Họ của một người được kế thừa từ dòng họ gia đình. Người Anh/Mỹ viết họ ở cuối cùng, người Việt viết họ ở đầu tiên. Cả 3 từ "last name", "family name" và "surname" đều có nghĩa là Họ.',
-                example: 'Trong tên <strong>Nguyễn Văn An</strong> ➔ <em>last name</em> là <strong>Nguyễn</strong>. (Ví dụ nói: <em>"My last name is Nguyen."</em>)'
+                en: 'first name = given name',
+                vi: 'Tên gọi chính / Tên riêng',
+                audio: 'first name, given name',
+                desc: 'Tên dùng để xưng hô chính. Trong tiếng Anh, tên gọi thường đứng trước họ (Ví dụ: "John" trong John Smith). Trong tiếng Việt, tên gọi đứng ở cuối cùng.',
+                example: 'Trong tên <strong>Nguyễn Văn An</strong> ➔ <em>first name</em> là <strong>An</strong>. (Ví dụ nói: <em>"My first name is An."</em>)'
             },
             'full-name': {
                 step: 4,
@@ -520,10 +520,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
 
-        const ORDER_KEYS = ['first-name', 'middle-name', 'last-name', 'full-name', 'nickname', 'spell'];
+        const ORDER_KEYS = ['last-name', 'middle-name', 'first-name', 'full-name', 'nickname', 'spell'];
         const totalSteps = ORDER_KEYS.length; // 6
         let currentStepIndex = 0; // 0 means not started yet
-        let activeKey = 'first-name';
+        let activeKey = 'last-name';
 
         // DOM elements
         const masterBtn = document.getElementById('btn-master-name');
@@ -731,23 +731,29 @@ document.addEventListener('DOMContentLoaded', () => {
             const chipMid = document.getElementById('chip-val-mid');
             const chipFirst = document.getElementById('chip-val-first');
             const chipFull = document.getElementById('chip-val-full');
+            const chipSpell = document.getElementById('chip-val-spell');
 
             if (!chipLast || !chipMid || !chipFirst || !chipFull) return;
 
+            let firstPart = 'AN';
             if (parts.length === 1) {
                 chipLast.textContent = '(Không có)';
                 chipMid.textContent = '(Không có)';
-                chipFirst.textContent = parts[0].toUpperCase();
+                firstPart = parts[0].toUpperCase();
             } else if (parts.length === 2) {
                 chipLast.textContent = parts[0].toUpperCase();
                 chipMid.textContent = '(Không có)';
-                chipFirst.textContent = parts[1].toUpperCase();
+                firstPart = parts[1].toUpperCase();
             } else {
                 chipLast.textContent = parts[0].toUpperCase();
                 chipMid.textContent = parts.slice(1, -1).join(' ').toUpperCase();
-                chipFirst.textContent = parts[parts.length - 1].toUpperCase();
+                firstPart = parts[parts.length - 1].toUpperCase();
             }
+            chipFirst.textContent = firstPart;
             chipFull.textContent = fullNameStr.toUpperCase();
+            if (chipSpell) {
+                chipSpell.textContent = firstPart.split('').join(' - ');
+            }
         }
 
         // Initialize with first item

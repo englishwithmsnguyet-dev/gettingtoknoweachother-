@@ -143,54 +143,57 @@
 
                             <!-- Interactive Chips Row (4 Components of a Full Name) -->
                             <div class="name-chips-display">
-                                <!-- Last Name Chip -->
-                                <div class="chip-item chip-last" data-term="last-name" title="Nhấp để xem Last Name">
-                                    <div class="chip-tag">1. HỌ (Last Name)</div>
+                                <!-- Box 1: Last Name -->
+                                <div class="chip-item" data-term="last-name" title="Nhấp để nghe & xem chi tiết Họ">
+                                    <div class="chip-badge">1. HỌ</div>
+                                    <div class="chip-term">last name = family name = surname</div>
                                     <div class="chip-val" id="chip-val-last">NGUYỄN</div>
-                                    <div class="chip-alias">family name = surname</div>
                                 </div>
 
                                 <div class="chip-separator">+</div>
 
-                                <!-- Middle Name Chip -->
-                                <div class="chip-item chip-mid" data-term="middle-name" title="Nhấp để xem Middle Name">
-                                    <div class="chip-tag">2. TÊN ĐỆM (Middle Name)</div>
+                                <!-- Box 2: Middle Name -->
+                                <div class="chip-item" data-term="middle-name" title="Nhấp để nghe & xem chi tiết Tên đệm">
+                                    <div class="chip-badge">2. TÊN ĐỆM</div>
+                                    <div class="chip-term">middle name</div>
                                     <div class="chip-val" id="chip-val-mid">VĂN</div>
-                                    <div class="chip-alias">chữ lót</div>
                                 </div>
 
                                 <div class="chip-separator">+</div>
 
-                                <!-- First Name Chip -->
-                                <div class="chip-item chip-first" data-term="first-name" title="Nhấp để xem First Name">
-                                    <div class="chip-tag">3. TÊN CHÍNH (First Name)</div>
+                                <!-- Box 3: First Name -->
+                                <div class="chip-item" data-term="first-name" title="Nhấp để nghe & xem chi tiết Tên chính">
+                                    <div class="chip-badge">3. TÊN CHÍNH</div>
+                                    <div class="chip-term">first name = given name</div>
                                     <div class="chip-val" id="chip-val-first">AN</div>
-                                    <div class="chip-alias">given name</div>
                                 </div>
 
                                 <div class="chip-separator">=</div>
 
-                                <!-- Full Name Chip -->
-                                <div class="chip-item chip-full" data-term="full-name" title="Nhấp để xem Full Name">
-                                    <div class="chip-tag">4. HỌ & TÊN (Full Name)</div>
+                                <!-- Box 4: Full Name -->
+                                <div class="chip-item chip-item-full" data-term="full-name" title="Nhấp để nghe & xem chi tiết Họ và tên">
+                                    <div class="chip-badge">4. HỌ & TÊN</div>
+                                    <div class="chip-term">full name</div>
                                     <div class="chip-val" id="chip-val-full">NGUYỄN VĂN AN</div>
-                                    <div class="chip-alias">họ tên đầy đủ</div>
                                 </div>
                             </div>
 
-                            <!-- Additional Related Terms Row (Distinct communication terms) -->
+                            <!-- Additional Related Terms Row (2 Distinct Communication Terms) -->
                             <div class="related-terms-row">
                                 <span class="related-label">📌 Từ vựng mở rộng trong giao tiếp:</span>
                                 <div class="related-chips">
-                                    <div class="chip-item chip-extra chip-nickname" data-term="nickname" title="Nhấp để xem Nickname">
-                                        <span class="chip-extra-badge">5</span>
-                                        <strong>nickname</strong>
-                                        <span class="chip-extra-desc">(Biệt danh / Tên thân mật)</span>
+                                    <!-- Box 5: Nickname -->
+                                    <div class="chip-item chip-item-extra" data-term="nickname" title="Nhấp để nghe & xem chi tiết Biệt danh">
+                                        <div class="chip-badge">5. BIỆT DANH</div>
+                                        <div class="chip-term">nickname</div>
+                                        <div class="chip-val" id="chip-val-nickname">Andy / Bo</div>
                                     </div>
-                                    <div class="chip-item chip-extra chip-spell" data-term="spell" title="Nhấp để xem động từ Spell">
-                                        <span class="chip-extra-badge">6</span>
-                                        <strong>spell</strong> <em class="verb-tag">(v)</em>
-                                        <span class="chip-extra-desc">(Động từ: Đánh vần chữ cái)</span>
+
+                                    <!-- Box 6: Spell -->
+                                    <div class="chip-item chip-item-extra" data-term="spell" title="Nhấp để nghe & xem chi tiết Động từ đánh vần">
+                                        <div class="chip-badge">6. ĐÁNH VẦN (ĐỘNG TỪ)</div>
+                                        <div class="chip-term">spell <em class="verb-tag">(v)</em></div>
+                                        <div class="chip-val" id="chip-val-spell">A - N</div>
                                     </div>
                                 </div>
                             </div>
@@ -225,23 +228,23 @@
                         <div class="vocab-nav-pills" id="vocab-nav-pills">
                             <span class="nav-pills-label">Danh mục từ vựng (Nhấp để xem nhanh):</span>
                             <div class="pills-list">
-                                <button type="button" class="nav-vocab-pill" data-target="first-name">
-                                    <span class="pill-status">○</span> first name = given name
+                                <button type="button" class="nav-vocab-pill" data-target="last-name">
+                                    <span class="pill-status">○</span> 1. last name = family name = surname (Họ)
                                 </button>
                                 <button type="button" class="nav-vocab-pill" data-target="middle-name">
-                                    <span class="pill-status">○</span> middle name
+                                    <span class="pill-status">○</span> 2. middle name (Tên đệm)
                                 </button>
-                                <button type="button" class="nav-vocab-pill" data-target="last-name">
-                                    <span class="pill-status">○</span> last name = family name = surname
+                                <button type="button" class="nav-vocab-pill" data-target="first-name">
+                                    <span class="pill-status">○</span> 3. first name = given name (Tên chính)
                                 </button>
                                 <button type="button" class="nav-vocab-pill" data-target="full-name">
-                                    <span class="pill-status">○</span> full name
+                                    <span class="pill-status">○</span> 4. full name (Họ và tên)
                                 </button>
                                 <button type="button" class="nav-vocab-pill" data-target="nickname">
-                                    <span class="pill-status">○</span> nickname
+                                    <span class="pill-status">○</span> 5. nickname (Biệt danh)
                                 </button>
                                 <button type="button" class="nav-vocab-pill" data-target="spell">
-                                    <span class="pill-status">○</span> spell (động từ)
+                                    <span class="pill-status">○</span> 6. spell (Động từ: Đánh vần)
                                 </button>
                             </div>
                         </div>
