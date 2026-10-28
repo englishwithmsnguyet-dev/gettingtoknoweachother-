@@ -550,6 +550,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!data) return;
             activeKey = key;
 
+            if (spotlightCard) {
+                spotlightCard.setAttribute('data-active-theme', key);
+            }
+
             if (spotlightStepBadge) spotlightStepBadge.textContent = `TỪ VỰNG ${data.step} / ${totalSteps}`;
             if (spotlightTermEn) spotlightTermEn.textContent = data.en;
             if (spotlightTermVi) spotlightTermVi.textContent = data.vi;
