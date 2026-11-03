@@ -6,30 +6,61 @@
     <title>SPEAKING LESSON 01 - GETTING TO KNOW EACH OTHER</title>
     <meta name="description" content="Interactive English Speaking Lesson 01 by EnglishWithMissNguyet - Getting to know each other.">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Outfit:wght@400;600;800&family=Roboto+Serif:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <!-- Modal Đăng Nhập / Chào Mừng (Signature Miss Nguyet Login Modal) -->
     <div class="login-overlay" id="name-modal">
-        <div class="login-card">
-            <div class="login-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 20h9"></path>
-                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
-                </svg>
+        <div class="login-card-custom">
+            <!-- Miss Nguyet Avatar Brand Ring -->
+            <div class="login-teacher-avatar-wrap">
+                <div class="login-teacher-halo">
+                    <img src="miss_nguyet.jpg" alt="Miss Nguyet" class="login-teacher-avatar">
+                </div>
+                <span class="login-teacher-badge">
+                    <i class="fa-solid fa-certificate"></i> LEAD INSTRUCTOR
+                </span>
             </div>
-            <h2 class="login-title">CHÀO MỪNG BẠN ĐẾN VỚI LỚP<br>HỌC CỦA MISS NGUYET</h2>
-            <p class="login-subtitle">Vui lòng điền Họ tên và Lớp học của bạn để bắt đầu học. Kết quả luyện tập sẽ được ghi nhận và gửi báo cáo cho giáo viên.</p>
+
+            <div class="login-brand-tag">
+                <i class="fa-solid fa-graduation-cap"></i> Welcome to Miss Nguyet's Class!
+            </div>
+            <div class="login-course-title">SPEAKING LESSON 01 - GETTING TO KNOW EACH OTHER</div>
+            <h2 class="login-title-custom">NHẬP THÔNG TIN<br/>ĐỂ BẮT ĐẦU HỌC 🚀</h2>
             
             <div class="login-form">
-                <input type="text" id="student-name-input" placeholder="HỌ VÀ TÊN" autocomplete="off" spellcheck="false" required>
-                <input type="text" id="student-class-input" placeholder="LỚP HỌC" autocomplete="off" spellcheck="false" required>
+                <div class="input-group-custom">
+                    <label for="student-name-input">
+                        <i class="fa-solid fa-user-pen" style="color: #6366f1;"></i> HỌ VÀ TÊN HỌC VIÊN:
+                    </label>
+                    <input type="text" id="student-name-input" placeholder="Nhập họ và tên học viên..." autocomplete="off" spellcheck="false" required>
+                </div>
+
+                <div class="input-group-custom">
+                    <label for="student-class-input">
+                        <i class="fa-solid fa-chalkboard-user" style="color: #06b6d4;"></i> MÃ LỚP HỌC:
+                    </label>
+                    <input type="text" id="student-class-input" placeholder="Nhập mã lớp học..." autocomplete="off" spellcheck="false" required>
+                </div>
+
                 <p id="class-error" class="login-error" style="display: none;"></p>
-                <button id="start-lesson-btn" class="login-btn">BẮT ĐẦU HỌC NGAY</button>
+                <button id="start-lesson-btn" class="login-btn">
+                    <span>BẮT ĐẦU HỌC</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+
+                <div class="login-footer-signature">
+                    <a href="https://www.facebook.com/nguyetpham28" target="_blank" rel="noopener noreferrer">
+                        <i class="fa-brands fa-facebook" style="color: #1877f2;"></i>
+                        <span>ENGLISH WITH MISS NGUYET</span>
+                    </a>
+                </div>
             </div>
             <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
             <form id="tracking-form" action="https://docs.google.com/forms/d/e/1FAIpQLSd9g4rE9j1urSd8CrJ6hRcigrpklwxgzO8KgGJy8zXYAifGeA/formResponse" method="post" target="hidden_iframe" style="display:none;">
-                <input type="text" name="entry.388968236" id="entry_388968236">
+                <input type="text" name="entry.1444321303" id="entry_name">
+                <input type="text" name="entry.1989445838" id="entry_class">
             </form>
         </div>
     </div>
